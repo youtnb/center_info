@@ -75,8 +75,7 @@ class MCustomersTable extends Table
 
         $validator
             ->scalar('remarks')
-            ->requirePresence('remarks', 'create')
-            ->allowEmptyString('remarks', false);
+            ->allowEmptyString('remarks');
 
         $validator
             ->boolean('delete_flag')
