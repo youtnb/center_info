@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MRoles Model
@@ -63,5 +64,21 @@ class MRolesTable extends Table
             ->allowEmptyString('name', false);
 
         return $validator;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            //$query->where(['MRoles.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['MRoles.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

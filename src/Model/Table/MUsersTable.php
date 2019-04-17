@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MUsers Model
@@ -152,6 +153,22 @@ class MUsersTable extends Table
         $query->where([
             'MUsers.delete_flag' => 0,
         ]);
+        return $query;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            $query->where(['MUsers.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['MUsers.id' => 'ASC']);
+        }
+        
         return $query;
     }
 }

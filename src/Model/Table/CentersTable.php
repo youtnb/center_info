@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Centers Model
@@ -139,5 +140,21 @@ class CentersTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            $query->where(['Centers.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['Centers.m_customer_id' => 'ASC', 'Centers.m_prefecture_id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

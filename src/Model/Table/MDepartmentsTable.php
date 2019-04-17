@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MDepartments Model
@@ -66,5 +67,21 @@ class MDepartmentsTable extends Table
             ->allowEmptyString('sort');
 
         return $validator;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            //$query->where(['MDepartments.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['MDepartments.sort' => 'ASC', 'MDepartments.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

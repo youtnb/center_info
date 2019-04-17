@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MVersions Model
@@ -95,5 +96,21 @@ class MVersionsTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            $query->where(['MVersions.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['MVersions.sort' => 'ASC', 'MVersions.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

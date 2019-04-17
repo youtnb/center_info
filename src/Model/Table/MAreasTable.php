@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MAreas Model
@@ -68,5 +69,21 @@ class MAreasTable extends Table
             ->allowEmptyString('delete_flag', false);
 
         return $validator;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        if(!isset($query->where))
+        {
+            $query->where(['MAreas.delete_flag' => 0]);
+        }
+        // order
+        if(!isset($query->order))
+        {
+            $query->order(['MAreas.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }
