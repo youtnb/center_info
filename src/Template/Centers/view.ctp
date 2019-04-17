@@ -6,20 +6,18 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Center'), ['action' => 'edit', $center->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Center'), ['action' => 'delete', $center->id], ['confirm' => __('Are you sure you want to delete # {0}?', $center->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Centers'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Center'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Prefectures'), ['controller' => 'MPrefectures', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Prefecture'), ['controller' => 'MPrefectures', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?> </li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?> </li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?> </li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add']) ?> </li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers view large-9 medium-8 columns content">
     <h3><?= h($center->name) ?></h3>
@@ -98,66 +96,34 @@
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Center Id') ?></th>
                 <th scope="col"><?= __('M Device Type Id') ?></th>
                 <th scope="col"><?= __('Name') ?></th>
                 <th scope="col"><?= __('Ip Higher') ?></th>
                 <th scope="col"><?= __('Ip Lower') ?></th>
                 <th scope="col"><?= __('Reserve Flag') ?></th>
-                <th scope="col"><?= __('Security Flag') ?></th>
-                <th scope="col"><?= __('Model') ?></th>
-                <th scope="col"><?= __('Serial No') ?></th>
-                <th scope="col"><?= __('Support End Date') ?></th>
                 <th scope="col"><?= __('Setup Date') ?></th>
-                <th scope="col"><?= __('M Operation System Id') ?></th>
-                <th scope="col"><?= __('M Sqlserver Id') ?></th>
-                <th scope="col"><?= __('Admin Pass') ?></th>
-                <th scope="col"><?= __('M Product Id') ?></th>
-                <th scope="col"><?= __('M Version Id') ?></th>
-                <th scope="col"><?= __('Custom') ?></th>
                 <th scope="col"><?= __('Connect') ?></th>
                 <th scope="col"><?= __('Remote') ?></th>
-                <th scope="col"><?= __('Remarks') ?></th>
-                <th scope="col"><?= __('Running Flag') ?></th>
                 <th scope="col"><?= __('Delete Flag') ?></th>
-                <th scope="col"><?= __('M User Id') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
             <tr>
-                <td><?= h($devices->id) ?></td>
-                <td><?= h($devices->center_id) ?></td>
                 <td><?= h($devices->m_device_type_id) ?></td>
                 <td><?= h($devices->name) ?></td>
                 <td><?= h($devices->ip_higher) ?></td>
                 <td><?= h($devices->ip_lower) ?></td>
                 <td><?= h($devices->reserve_flag) ?></td>
-                <td><?= h($devices->security_flag) ?></td>
-                <td><?= h($devices->model) ?></td>
-                <td><?= h($devices->serial_no) ?></td>
-                <td><?= h($devices->support_end_date) ?></td>
                 <td><?= h($devices->setup_date) ?></td>
-                <td><?= h($devices->m_operation_system_id) ?></td>
-                <td><?= h($devices->m_sqlserver_id) ?></td>
-                <td><?= h($devices->admin_pass) ?></td>
-                <td><?= h($devices->m_product_id) ?></td>
-                <td><?= h($devices->m_version_id) ?></td>
-                <td><?= h($devices->custom) ?></td>
                 <td><?= h($devices->connect) ?></td>
                 <td><?= h($devices->remote) ?></td>
-                <td><?= h($devices->remarks) ?></td>
-                <td><?= h($devices->running_flag) ?></td>
                 <td><?= h($devices->delete_flag) ?></td>
-                <td><?= h($devices->m_user_id) ?></td>
-                <td><?= h($devices->created) ?></td>
-                <td><?= h($devices->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Devices', 'action' => 'delete', $devices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $devices->id)]) ?>
+                    <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
+                    /
+                    <?= $this->Html->link(__('編集'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
+                    /
+                    <?= $this->Form->postLink(__('削除'), ['controller' => 'Devices', 'action' => 'delete', $devices->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $devices->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

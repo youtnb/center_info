@@ -6,13 +6,18 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New M Customer'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?></li>
+        <li class="heading"><?= __('顧客マスタ') ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
+    </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master', ['own' => '顧客マスタ']); ?>
 </nav>
 <div class="mCustomers index large-9 medium-8 columns content">
     <h3><?= __('M Customers') ?></h3>

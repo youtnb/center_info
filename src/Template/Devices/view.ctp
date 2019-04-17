@@ -6,28 +6,17 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Device'), ['action' => 'edit', $device->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Device'), ['action' => 'delete', $device->id], ['confirm' => __('Are you sure you want to delete # {0}?', $device->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Devices'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Device'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Device Types'), ['controller' => 'MDeviceTypes', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Device Type'), ['controller' => 'MDeviceTypes', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Operation Systems'), ['controller' => 'MOperationSystems', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Operation System'), ['controller' => 'MOperationSystems', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Sqlservers'), ['controller' => 'MSqlservers', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Sqlserver'), ['controller' => 'MSqlservers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Products'), ['controller' => 'MProducts', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Product'), ['controller' => 'MProducts', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Versions'), ['controller' => 'MVersions', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M Version'), ['controller' => 'MVersions', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?> </li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?> </li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?> </li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?> </li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="devices view large-9 medium-8 columns content">
     <h3><?= h($device->name) ?></h3>
@@ -142,28 +131,24 @@
         <?php if (!empty($device->comments)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Device Id') ?></th>
-                <th scope="col"><?= __('Content') ?></th>
-                <th scope="col"><?= __('Delete Flag') ?></th>
-                <th scope="col"><?= __('M User Id') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
+                <th scope="col"><?= __('コメント') ?></th>
+                <th scope="col"><?= __('削除') ?></th>
+                <th scope="col"><?= __('ユーザー') ?></th>
+                <th scope="col"><?= __('作成日時') ?></th>
+                <th scope="col"><?= __('更新日時') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($device->comments as $comments): ?>
             <tr>
-                <td><?= h($comments->id) ?></td>
-                <td><?= h($comments->device_id) ?></td>
                 <td><?= h($comments->content) ?></td>
                 <td><?= h($comments->delete_flag) ?></td>
                 <td><?= h($comments->m_user_id) ?></td>
                 <td><?= h($comments->created) ?></td>
                 <td><?= h($comments->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Comments', 'action' => 'view', $comments->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Comments', 'action' => 'edit', $comments->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Comments', 'action' => 'delete', $comments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $comments->id)]) ?>
+                    <?= $this->Html->link(__('閲覧'), ['controller' => 'Comments', 'action' => 'view', $comments->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['controller' => 'Comments', 'action' => 'edit', $comments->id]) ?>
+                    <?= $this->Form->postLink(__('削除'), ['controller' => 'Comments', 'action' => 'delete', $comments->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $comments->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

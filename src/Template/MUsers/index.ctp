@@ -8,6 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New M User'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List M Departments'), ['controller' => 'MDepartments', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New M Department'), ['controller' => 'MDepartments', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List M Roles'), ['controller' => 'MRoles', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New M Role'), ['controller' => 'MRoles', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?></li>
@@ -35,10 +39,11 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('login') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('password') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('m_department_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('m_role_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -49,10 +54,11 @@
             <tr>
                 <td><?= $this->Number->format($mUser->id) ?></td>
                 <td><?= h($mUser->name) ?></td>
-                <td><?= h($mUser->login) ?></td>
+                <td><?= h($mUser->email) ?></td>
                 <td><?= h($mUser->password) ?></td>
+                <td><?= $mUser->has('m_department') ? $this->Html->link($mUser->m_department->name, ['controller' => 'MDepartments', 'action' => 'view', $mUser->m_department->id]) : '' ?></td>
+                <td><?= $mUser->has('m_role') ? $this->Html->link($mUser->m_role->name, ['controller' => 'MRoles', 'action' => 'view', $mUser->m_role->id]) : '' ?></td>
                 <td><?= h($mUser->delete_flag) ?></td>
-                <td><?= $this->Number->format($mUser->m_user_id) ?></td>
                 <td><?= h($mUser->created) ?></td>
                 <td><?= h($mUser->modified) ?></td>
                 <td class="actions">

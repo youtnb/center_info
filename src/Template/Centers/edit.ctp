@@ -6,23 +6,21 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?></li>
         <li><?= $this->Form->postLink(
-                __('Delete'),
+                __('削除'),
                 ['action' => 'delete', $center->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $center->id)]
+                ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Centers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Prefectures'), ['controller' => 'MPrefectures', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Prefecture'), ['controller' => 'MPrefectures', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?></li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add']) ?> </li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers form large-9 medium-8 columns content">
     <?= $this->Form->create($center) ?>
@@ -45,6 +43,6 @@
             echo $this->Form->control('m_user_id', ['options' => $mUsers, 'empty' => true]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('更新')) ?>
     <?= $this->Form->end() ?>
 </div>

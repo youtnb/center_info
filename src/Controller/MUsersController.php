@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * MUsers Controller
@@ -19,6 +20,9 @@ class MUsersController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['MDepartments', 'MRoles']
+        ];
         $mUsers = $this->paginate($this->MUsers);
 
         $this->set(compact('mUsers'));
@@ -34,7 +38,7 @@ class MUsersController extends AppController
     public function view($id = null)
     {
         $mUser = $this->MUsers->get($id, [
-            'contain' => ['MUsers', 'Centers', 'Comments', 'Devices', 'MCustomers', 'MDeviceTypes', 'MOperationSystems', 'MProducts', 'MSqlservers', 'MVersions']
+            'contain' => ['MDepartments', 'MRoles', 'Centers', 'Comments', 'Devices', 'MCustomers', 'MDeviceTypes', 'MOperationSystems', 'MProducts', 'MSqlservers', 'MVersions']
         ]);
 
         $this->set('mUser', $mUser);
@@ -57,7 +61,9 @@ class MUsersController extends AppController
             }
             $this->Flash->error(__('The m user could not be saved. Please, try again.'));
         }
-        $this->set(compact('mUser'));
+        $mDepartments = $this->MUsers->MDepartments->find('list', ['limit' => 200]);
+        $mRoles = $this->MUsers->MRoles->find('list', ['limit' => 200]);
+        $this->set(compact('mUser', 'mDepartments', 'mRoles'));
     }
 
     /**
@@ -81,7 +87,9 @@ class MUsersController extends AppController
             }
             $this->Flash->error(__('The m user could not be saved. Please, try again.'));
         }
-        $this->set(compact('mUser'));
+        $mDepartments = $this->MUsers->MDepartments->find('list', ['limit' => 200]);
+        $mRoles = $this->MUsers->MRoles->find('list', ['limit' => 200]);
+        $this->set(compact('mUser', 'mDepartments', 'mRoles'));
     }
 
     /**
@@ -102,5 +110,45 @@ class MUsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    /**
+     * 認証不要なアクションを定義
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add', 'logout']);
+    }
+
+    /**
+     * role別にアクセスを制御したい場合はここに記述。全ロールに許可する場合はreturn trueとだけ書く
+     */
+    public function isAuthorized($user)
+    {
+        return true;
+    }
+
+    /**
+     * ログインアクション
+     */
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error(__('Invalid username or password, try again'));
+        }
+    }
+    
+    /**
+     * ログアウトアクション
+     */
+    public function logout()
+    {
+        return $this->redirect($this->Auth->logout());
     }
 }

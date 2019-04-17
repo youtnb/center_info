@@ -332,7 +332,7 @@ pre {
 }
 
 .side-nav li.heading {
-    color: #1798A5;
+    color: #BE140B;
     font-size: 0.875rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -521,4 +521,12 @@ div.message.hidden {
 table td {
     vertical-align: top;
     word-break: break-all;
+}
+
+/* 以下追加調整分 */
+.large-3 {
+    width: 18%;
+}
+.large-9 {
+    width: 82%;
 }

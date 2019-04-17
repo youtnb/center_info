@@ -8,8 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List M Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List M Departments'), ['controller' => 'MDepartments', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New M Department'), ['controller' => 'MDepartments', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List M Roles'), ['controller' => 'MRoles', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New M Role'), ['controller' => 'MRoles', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?></li>
@@ -36,10 +38,11 @@
         <legend><?= __('Add M User') ?></legend>
         <?php
             echo $this->Form->control('name');
-            echo $this->Form->control('login');
+            echo $this->Form->control('email');
             echo $this->Form->control('password');
+            echo $this->Form->control('m_department_id', ['options' => $mDepartments]);
+            echo $this->Form->control('m_role_id', ['options' => $mRoles]);
             echo $this->Form->control('delete_flag');
-            echo $this->Form->control('m_user_id');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
