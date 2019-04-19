@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Centers Controller
@@ -22,9 +23,38 @@ class CentersController extends AppController
         $this->paginate = [
             'contain' => ['MCustomers', 'MPrefectures', 'MUsers']
         ];
+        
+        if ($this->request->is('post'))
+        {
+            $where = array();
+            
+            $m_customer_id = $this->request->data['m_customer_id'];
+            if (!empty($m_customer_id))
+            {
+                $where[] = ['m_customer_id' => $m_customer_id];
+            }
+            $m_prefecture_id = $this->request->data['m_prefecture_id'];
+            if (!empty($m_prefecture_id))
+            {
+                $where[] = ['m_prefecture_id' => $m_prefecture_id];
+            }
+            
+            if (!empty($where))
+            {
+                $this->paginate['conditions'] = $where;
+            }
+        }
+        
         $centers = $this->paginate($this->Centers);
-
         $this->set(compact('centers'));
+        
+        $m_customers_table = TableRegistry::getTableLocator()->get('MCustomers');
+        $m_customers = $m_customers_table->find('list');
+        $this->set(compact('m_customers'));
+        
+        $m_prefectures_table = TableRegistry::getTableLocator()->get('MPrefectures');
+        $m_prefectures = $m_prefectures_table->find('list');
+        $this->set(compact('m_prefectures'));
     }
 
     /**

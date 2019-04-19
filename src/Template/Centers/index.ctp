@@ -17,6 +17,13 @@
 </nav>
 <div class="centers index large-9 medium-8 columns content">
     <h3><?= __('拠点情報 一覧') ?></h3>
+    <?= $this->Form->create() ?>
+        <fieldset>
+            <?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $m_customers, 'empty' => '選択してください', 'label' => '顧客']) ?>
+            <?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $m_prefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?>
+            <?= $this->Form->button('送信') ?>
+        </fieldset>
+    <?= $this->Form->end() ?>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
