@@ -6,10 +6,6 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('顧客マスタ') ?></li>
-        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
-    </ul>
-    <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
         <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
     </ul>
@@ -17,7 +13,11 @@
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
     </ul>
-    <?php echo $this->element('navi_master', ['own' => '顧客マスタ']); ?>
+    <ul class="side-nav">
+        <li class="heading"><?= __('顧客マスタ') ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master', ['own' => 'MCustomers']); ?>
 </nav>
 <div class="mCustomers index large-9 medium-8 columns content">
     <h3><?= __('M Customers') ?></h3>

@@ -9,6 +9,10 @@
         <li class="heading"><?= TITLE_CENTER ?></li>
         <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?> </li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+    </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers form large-9 medium-8 columns content">

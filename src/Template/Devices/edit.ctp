@@ -12,6 +12,8 @@
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?> </li>
         <li><?= $this->Form->postLink(
                 __('削除'),
                 ['action' => 'delete', $device->id],

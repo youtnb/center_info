@@ -530,3 +530,8 @@ table td {
 .large-9 {
     width: 82%;
 }
+.no-anc{
+    display: block;
+    margin: 0;
+    padding: 0.4375rem 0.875rem;
+}
