@@ -101,12 +101,16 @@ class MProductsTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->order)){
-            $query->where(['MProducts.delete_flag' => 0]);
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        if(!isset($query->order)){
-            $query->order(['MProducts.sort' => 'ASC', 'MProducts.id' => 'ASC']);
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.sort' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;

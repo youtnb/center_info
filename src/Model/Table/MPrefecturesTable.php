@@ -93,12 +93,16 @@ class MPrefecturesTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->order)){
-            $query->where(['MPrefectures.delete_flag' => 0]);
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        if(!isset($query->order)){
-            $query->order(['MPrefectures.id' => 'ASC']);
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.id' => 'ASC']);
         }
         
         return $query;

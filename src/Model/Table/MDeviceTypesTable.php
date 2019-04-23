@@ -101,14 +101,16 @@ class MDeviceTypesTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->where))
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
         {
-            $query->where(['MDeviceTypes.delete_flag' => 0]);
+            $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        if(!isset($query->order))
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
         {
-            $query->order(['MDeviceTypes.sort' => 'ASC', 'MDeviceTypes.id' => 'ASC']);
+            $query->order([$this->alias().'.sort' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;

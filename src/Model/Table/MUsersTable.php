@@ -159,14 +159,16 @@ class MUsersTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->where))
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
         {
-            $query->where(['MUsers.delete_flag' => 0]);
+            $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        if(!isset($query->order))
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
         {
-            $query->order(['MUsers.id' => 'ASC']);
+            $query->order([$this->alias().'.id' => 'ASC']);
         }
         
         return $query;

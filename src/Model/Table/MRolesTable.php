@@ -69,14 +69,13 @@ class MRolesTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->where))
-        {
-            //$query->where(['MRoles.delete_flag' => 0]);
-        }
+        // delete_flag なし
+        
         // order
-        if(!isset($query->order))
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
         {
-            $query->order(['MRoles.id' => 'ASC']);
+            $query->order([$this->alias().'.id' => 'ASC']);
         }
         
         return $query;

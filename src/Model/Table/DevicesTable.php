@@ -189,14 +189,16 @@ class DevicesTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        if(!isset($query->where))
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
         {
-            $query->where(['Devices.delete_flag' => 0]);
+            $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        if(!isset($query->order))
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
         {
-            $query->order(['Devices.center_id' => 'ASC', 'Devices.id' => 'ASC']);
+            $query->order([$this->alias().'.center_id' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;
