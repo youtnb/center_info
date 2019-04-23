@@ -42,7 +42,7 @@
             echo $this->Form->control('password');
             echo $this->Form->control('m_department_id', ['options' => $mDepartments]);
             echo $this->Form->control('m_role_id', ['options' => $mRoles]);
-            echo $this->Form->control('delete_flag');
+            echo $this->Form->hidden('delete_flag', ['value' => 0]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -46,15 +46,12 @@ class CentersController extends AppController
         }
         
         $centers = $this->paginate($this->Centers);
-        $this->set(compact('centers'));
+        $mCustomers = $this->Centers->MCustomers->find('list');
+        $mPrefectures = $this->Centers->MPrefectures->find('list');
+
+        $this->set(compact('centers', 'mCustomers', 'mPrefectures'));
         
-        $m_customers_table = TableRegistry::getTableLocator()->get('MCustomers');
-        $m_customers = $m_customers_table->find('list');
-        $this->set(compact('m_customers'));
-        
-        $m_prefectures_table = TableRegistry::getTableLocator()->get('MPrefectures');
-        $m_prefectures = $m_prefectures_table->find('list');
-        $this->set(compact('m_prefectures'));
+        //var_dump($this->Auth->user('name'));
     }
 
     /**

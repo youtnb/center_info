@@ -21,7 +21,7 @@
         <?php
             echo $this->Form->control('name');
             echo $this->Form->control('m_area_id', ['options' => $mAreas]);
-            echo $this->Form->control('delete_flag');
+            echo $this->Form->hidden('delete_flag', ['value' => 0]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

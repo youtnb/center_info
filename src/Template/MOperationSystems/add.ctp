@@ -23,8 +23,8 @@
             echo $this->Form->control('server_flag');
             echo $this->Form->control('background_color');
             echo $this->Form->control('sort');
-            echo $this->Form->control('delete_flag');
-            echo $this->Form->control('m_user_id', ['options' => $mUsers, 'empty' => true]);
+            echo $this->Form->hidden('delete_flag', ['value' => 0]);
+            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

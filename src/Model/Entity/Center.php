@@ -18,6 +18,9 @@ use Cake\ORM\Entity;
  * @property string|null $access
  * @property string|null $job
  * @property string|null $remarks
+ * @property bool $thermo_dry_flag
+ * @property bool $thermo_chilled_flag
+ * @property bool $thermo_frozen_flag
  * @property bool $shoes_flag
  * @property bool $delete_flag
  * @property int|null $m_user_id
@@ -52,6 +55,9 @@ class Center extends Entity
         'access' => true,
         'job' => true,
         'remarks' => true,
+        'thermo_dry_flag' => true,
+        'thermo_chilled_flag' => true,
+        'thermo_frozen_flag' => true,
         'shoes_flag' => true,
         'delete_flag' => true,
         'm_user_id' => true,

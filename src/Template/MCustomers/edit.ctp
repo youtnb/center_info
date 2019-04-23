@@ -29,7 +29,7 @@
             echo $this->Form->control('full_name');
             echo $this->Form->control('remarks');
             echo $this->Form->control('delete_flag');
-            echo $this->Form->control('m_user_id', ['options' => $mUsers, 'empty' => true]);
+            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

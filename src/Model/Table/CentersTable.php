@@ -114,6 +114,21 @@ class CentersTable extends Table
             ->allowEmptyString('remarks');
 
         $validator
+            ->boolean('thermo_dry_flag')
+            ->requirePresence('thermo_dry_flag', 'create')
+            ->allowEmptyString('thermo_dry_flag', false);
+
+        $validator
+            ->boolean('thermo_chilled_flag')
+            ->requirePresence('thermo_chilled_flag', 'create')
+            ->allowEmptyString('thermo_chilled_flag', false);
+
+        $validator
+            ->boolean('thermo_frozen_flag')
+            ->requirePresence('thermo_frozen_flag', 'create')
+            ->allowEmptyString('thermo_frozen_flag', false);
+
+        $validator
             ->boolean('shoes_flag')
             ->requirePresence('shoes_flag', 'create')
             ->allowEmptyString('shoes_flag', false);

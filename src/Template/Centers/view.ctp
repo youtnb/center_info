@@ -70,6 +70,18 @@
             <td><?= h($center->modified) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
+            <td><?= $center->thermo_dry_flag ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
+            <td><?= $center->thermo_chilled_flag ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
+            <td><?= $center->thermo_frozen_flag ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Shoes Flag') ?></th>
             <td><?= $center->shoes_flag ? __('Yes') : __('No'); ?></td>
         </tr>

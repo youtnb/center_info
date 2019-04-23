@@ -11,3 +11,6 @@
         <li><?php if($own != 'MDepartments'){?><?= $this->Html->link(__('部署マスタ'), ['controller' => 'MDepartments', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">部署マスタ</span><?php } ?></li>
         <li><?php if($own != 'MRoles'){?><?= $this->Html->link(__('ロールマスタ'), ['controller' => 'MRoles', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ロールマスタ</span><?php } ?></li>
     </ul>
+    <ul class="side-nav">
+        <li><span class="no-anc">ログイン：<?= $this->request->session()->read('Auth.User.name') ?></span></li>
+    </ul>
