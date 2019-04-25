@@ -88,6 +88,11 @@ class DevicesTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('accepted_no')
+            ->maxLength('accepted_no', 15)
+            ->allowEmptyString('accepted_no');
+        
+        $validator
             ->scalar('name')
             ->maxLength('name', 50)
             ->allowEmptyString('name');
@@ -198,7 +203,7 @@ class DevicesTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.center_id' => 'ASC', $this->alias().'.id' => 'ASC']);
+            $query->order([$this->alias().'.center_id' => 'ASC', $this->alias().'.m_device_type_id' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;

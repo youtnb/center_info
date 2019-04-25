@@ -40,7 +40,7 @@
             <tr>
                 <td><?= $this->Number->format($mProduct->id) ?></td>
                 <td><?= h($mProduct->name) ?></td>
-                <td><?= h($mProduct->background_color) ?></td>
+                <td style="background-color: <?= h($mProduct->background_color) ?>;"><?= h($mProduct->background_color) ?></td>
                 <td><?= $this->Number->format($mProduct->sort) ?></td>
                 <td><?= h($mProduct->delete_flag) ?></td>
                 <td><?= $mProduct->has('m_user') ? $this->Html->link($mProduct->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mProduct->m_user->id]) : '' ?></td>

@@ -30,6 +30,10 @@
             <td><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Accepted No') ?></th>
+            <td><?= h($device->accepted_no) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Name') ?></th>
             <td><?= h($device->name) ?></td>
         </tr>

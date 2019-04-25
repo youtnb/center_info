@@ -48,7 +48,7 @@ class DevicesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($center_id = null)
     {
         $device = $this->Devices->newEntity();
         if ($this->request->is('post')) {
@@ -60,6 +60,7 @@ class DevicesController extends AppController
             }
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
+        
         $centers = $this->Devices->Centers->find('list', ['limit' => 200]);
         $mDeviceTypes = $this->Devices->MDeviceTypes->find('list', ['limit' => 200]);
         $mOperationSystems = $this->Devices->MOperationSystems->find('list', ['limit' => 200]);
@@ -67,7 +68,7 @@ class DevicesController extends AppController
         $mProducts = $this->Devices->MProducts->find('list', ['limit' => 200]);
         $mVersions = $this->Devices->MVersions->find('list', ['limit' => 200]);
         $mUsers = $this->Devices->MUsers->find('list', ['limit' => 200]);
-        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers'));
+        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers', 'center_id'));
     }
 
     /**

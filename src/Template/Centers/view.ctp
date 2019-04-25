@@ -15,6 +15,7 @@
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add', $center->id]) ?></li>
     </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>
@@ -108,6 +109,7 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('M Device Type Id') ?></th>
+                <th scope="col"><?= __('Accepted No') ?></th>
                 <th scope="col"><?= __('Name') ?></th>
                 <th scope="col"><?= __('Ip Higher') ?></th>
                 <th scope="col"><?= __('Ip Lower') ?></th>
@@ -121,6 +123,7 @@
             <?php foreach ($center->devices as $devices): ?>
             <tr>
                 <td><?= h($devices->m_device_type_id) ?></td>
+                <td><?= h($devices->accepted_no) ?></td>
                 <td><?= h($devices->name) ?></td>
                 <td><?= h($devices->ip_higher) ?></td>
                 <td><?= h($devices->ip_lower) ?></td>

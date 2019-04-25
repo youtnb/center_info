@@ -20,8 +20,9 @@
     <fieldset>
         <legend><?= __('Add Device') ?></legend>
         <?php
-            echo $this->Form->control('center_id', ['options' => $centers]);
+            echo $this->Form->control('center_id', ['options' => $centers, 'value' => $center_id]);
             echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes]);
+            echo $this->Form->control('accepted_no');
             echo $this->Form->control('name');
             echo $this->Form->control('ip_higher');
             echo $this->Form->control('ip_lower');

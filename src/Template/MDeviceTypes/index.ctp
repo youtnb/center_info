@@ -40,7 +40,7 @@
             <tr>
                 <td><?= $this->Number->format($mDeviceType->id) ?></td>
                 <td><?= h($mDeviceType->name) ?></td>
-                <td><?= h($mDeviceType->background_color) ?></td>
+                <td style="background-color: <?= h($mDeviceType->background_color) ?>;"><?= h($mDeviceType->background_color) ?></td>
                 <td><?= $this->Number->format($mDeviceType->sort) ?></td>
                 <td><?= h($mDeviceType->delete_flag) ?></td>
                 <td><?= $mDeviceType->has('m_user') ? $this->Html->link($mDeviceType->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mDeviceType->m_user->id]) : '' ?></td>

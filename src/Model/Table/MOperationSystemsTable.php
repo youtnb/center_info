@@ -63,7 +63,7 @@ class MOperationSystemsTable extends Table
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 20)
+            ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->allowEmptyString('name', false);
 
@@ -115,7 +115,7 @@ class MOperationSystemsTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.server_flag' => 'DESC', $this->alias().'.sort' => 'DESC']);
+            $query->order([$this->alias().'.server_flag' => 'DESC', $this->alias().'.sort' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;

@@ -40,7 +40,7 @@
             <tr>
                 <td><?= $this->Number->format($mSqlserver->id) ?></td>
                 <td><?= h($mSqlserver->name) ?></td>
-                <td><?= h($mSqlserver->background_color) ?></td>
+                <td style="background-color: <?= h($mSqlserver->background_color) ?>;"><?= h($mSqlserver->background_color) ?></td>
                 <td><?= $this->Number->format($mSqlserver->sort) ?></td>
                 <td><?= h($mSqlserver->delete_flag) ?></td>
                 <td><?= $mSqlserver->has('m_user') ? $this->Html->link($mSqlserver->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mSqlserver->m_user->id]) : '' ?></td>

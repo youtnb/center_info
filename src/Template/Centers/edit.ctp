@@ -20,6 +20,7 @@
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add', $center->id]) ?></li>
     </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>

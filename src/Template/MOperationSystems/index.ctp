@@ -42,7 +42,7 @@
                 <td><?= $this->Number->format($mOperationSystem->id) ?></td>
                 <td><?= h($mOperationSystem->name) ?></td>
                 <td><?= h($mOperationSystem->server_flag) ?></td>
-                <td><?= h($mOperationSystem->background_color) ?></td>
+                <td style="background-color: <?= h($mOperationSystem->background_color) ?>;"><?= h($mOperationSystem->background_color) ?></td>
                 <td><?= $this->Number->format($mOperationSystem->sort) ?></td>
                 <td><?= h($mOperationSystem->delete_flag) ?></td>
                 <td><?= $mOperationSystem->has('m_user') ? $this->Html->link($mOperationSystem->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mOperationSystem->m_user->id]) : '' ?></td>

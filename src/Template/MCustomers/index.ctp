@@ -24,26 +24,34 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
+                <!--
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                -->
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('full_name') ?></th>
+                <!--
                 <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+                -->
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($mCustomers as $mCustomer): ?>
             <tr>
+                <!--
                 <td><?= $this->Number->format($mCustomer->id) ?></td>
+                -->
                 <td><?= h($mCustomer->name) ?></td>
                 <td><?= h($mCustomer->full_name) ?></td>
+                <!--
                 <td><?= h($mCustomer->delete_flag) ?></td>
                 <td><?= $mCustomer->has('m_user') ? $this->Html->link($mCustomer->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mCustomer->m_user->id]) : '' ?></td>
                 <td><?= h($mCustomer->created) ?></td>
                 <td><?= h($mCustomer->modified) ?></td>
+                -->
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $mCustomer->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $mCustomer->id]) ?>

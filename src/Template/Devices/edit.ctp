@@ -30,6 +30,7 @@
         <?php
             echo $this->Form->control('center_id', ['options' => $centers]);
             echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes]);
+            echo $this->Form->control('accepted_no');
             echo $this->Form->control('name');
             echo $this->Form->control('ip_higher');
             echo $this->Form->control('ip_lower');

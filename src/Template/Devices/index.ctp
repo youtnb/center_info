@@ -22,6 +22,7 @@
             <tr>
                 <th scope="col" style="width:20%;"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
                 <th scope="col" style="width:8%;"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', '端末名') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
@@ -45,7 +46,9 @@
             <?php foreach ($devices as $device): ?>
             <tr>
                 <td><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
-                <td><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>
+                <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->
+                <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>
+                <td><?= h($device->accepted_no) ?></td>
                 <td><?= h($device->name) ?></td>
                 <td><?= h($device->ip_higher) ?></td>
                 <td><?= h($device->ip_lower) ?></td>

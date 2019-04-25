@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $center_id
  * @property int $m_device_type_id
+ * @property string|null $accepted_no
  * @property string|null $name
  * @property string|null $ip_higher
  * @property string|null $ip_lower
@@ -56,6 +57,7 @@ class Device extends Entity
     protected $_accessible = [
         'center_id' => true,
         'm_device_type_id' => true,
+        'accepted_no' => true,
         'name' => true,
         'ip_higher' => true,
         'ip_lower' => true,
