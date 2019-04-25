@@ -38,6 +38,11 @@ class CentersController extends AppController
             {
                 $where[] = ['m_prefecture_id' => $m_prefecture_id];
             }
+            $name = $this->request->data['name'];
+            if (!empty($name))
+            {
+                $where[] = ['Centers.name LIKE' => '%'.$name.'%'];
+            }
             
             if (!empty($where))
             {

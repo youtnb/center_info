@@ -19,9 +19,16 @@
     <h3><?= __('拠点情報 一覧') ?></h3>
     <?= $this->Form->create() ?>
         <fieldset>
-            <?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?>
-            <?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?>
-            <?= $this->Form->button('送信') ?>
+            <table>
+                <tr>
+                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
+                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('送信') ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名']) ?></td>
+                </tr>
+            </table>
         </fieldset>
     <?= $this->Form->end() ?>
     <table cellpadding="0" cellspacing="0">
