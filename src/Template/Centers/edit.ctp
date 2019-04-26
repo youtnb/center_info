@@ -9,13 +9,13 @@
         <li class="heading"><?= TITLE_CENTER ?></li>
         <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?> </li>
+        <li><?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?> </li><!--
         <li><?= $this->Form->postLink(
                 __('削除'),
                 ['action' => 'delete', $center->id],
                 ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]
             )
-        ?></li>
+        ?></li>-->
     </ul>
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>

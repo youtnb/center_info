@@ -39,7 +39,7 @@
                 <th scope="col" style="width:5%;"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
                 -->
                 <th scope="col" style="width:5%;"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
-                <th scope="col" style="width:13%;" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" style="width:10%;" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -64,13 +64,13 @@
                 <td><?= h($device->remote) ?></td>
                 <td><?= h($device->running_flag) ?></td>
                 -->
-                <td><?= h($device->delete_flag) ?></td>
+                <td><?php if($device->delete_flag){ echo '◆'; } ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
                     /
-                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?><!--
                     /
-                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?>
+                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>

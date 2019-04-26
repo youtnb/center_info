@@ -41,7 +41,7 @@
                 <th scope="col" style="width:8%;"><?= $this->Paginator->sort('m_prefecture_id', '都道府県') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('address', '住所') ?></th>
                 <th scope="col" style="width:5%;"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
-                <th scope="col" style="width:13%;" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" style="width:10%;" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -56,9 +56,9 @@
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
                     /
-                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?><!--
                     /
-                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?>
+                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>
