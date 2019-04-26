@@ -27,21 +27,33 @@ class CentersController extends AppController
         if ($this->request->is('post'))
         {
             $where = array();
-            
+            // 顧客
             $m_customer_id = $this->request->data['m_customer_id'];
             if (!empty($m_customer_id))
             {
                 $where[] = ['m_customer_id' => $m_customer_id];
             }
+            // 都道府県
             $m_prefecture_id = $this->request->data['m_prefecture_id'];
             if (!empty($m_prefecture_id))
             {
                 $where[] = ['m_prefecture_id' => $m_prefecture_id];
             }
+            // 拠点名
             $name = $this->request->data['name'];
             if (!empty($name))
             {
                 $where[] = ['Centers.name LIKE' => '%'.$name.'%'];
+            }
+            // 削除フラグ
+            $delete_flag = $this->request->data['delete_flag'];
+            if (!empty($delete_flag))
+            {
+                $where[] = ['Centers.delete_flag >=' => '0'];
+            }
+            else
+            {
+                $where[] = ['Centers.delete_flag =' => '0'];
             }
             
             if (!empty($where))
@@ -55,8 +67,6 @@ class CentersController extends AppController
         $mPrefectures = $this->Centers->MPrefectures->find('list');
 
         $this->set(compact('centers', 'mCustomers', 'mPrefectures'));
-        
-        //var_dump($this->Auth->user('name'));
     }
 
     /**
@@ -92,9 +102,9 @@ class CentersController extends AppController
             }
             $this->Flash->error(__('The center could not be saved. Please, try again.'));
         }
-        $mCustomers = $this->Centers->MCustomers->find('list', ['limit' => 200]);
-        $mPrefectures = $this->Centers->MPrefectures->find('list', ['limit' => 200]);
-        $mUsers = $this->Centers->MUsers->find('list', ['limit' => 200]);
+        $mCustomers = $this->Centers->MCustomers->find('list');
+        $mPrefectures = $this->Centers->MPrefectures->find('list');
+        $mUsers = $this->Centers->MUsers->find('list');
         $this->set(compact('center', 'mCustomers', 'mPrefectures', 'mUsers'));
     }
 
@@ -119,9 +129,9 @@ class CentersController extends AppController
             }
             $this->Flash->error(__('The center could not be saved. Please, try again.'));
         }
-        $mCustomers = $this->Centers->MCustomers->find('list', ['limit' => 200]);
-        $mPrefectures = $this->Centers->MPrefectures->find('list', ['limit' => 200]);
-        $mUsers = $this->Centers->MUsers->find('list', ['limit' => 200]);
+        $mCustomers = $this->Centers->MCustomers->find('list');
+        $mPrefectures = $this->Centers->MPrefectures->find('list');
+        $mUsers = $this->Centers->MUsers->find('list');
         $this->set(compact('center', 'mCustomers', 'mPrefectures', 'mUsers'));
     }
 

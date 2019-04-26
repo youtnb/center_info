@@ -26,7 +26,8 @@
                     <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名']) ?></td>
+                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名']) ?></td>
+                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>
                 </tr>
             </table>
         </fieldset>
@@ -46,12 +47,12 @@
         <tbody>
             <?php foreach ($centers as $center): ?>
             <tr>
-                <td><?= $center->has('m_customer') ? $this->Html->link($center->m_customer->name, ['controller' => 'MCustomers', 'action' => 'view', $center->m_customer->id]) : '' ?></td>
+                <td><?= $center->has('m_customer') ? $center->m_customer->name : '' ?></td>
                 <td><?= h($center->name) ?></td>
                 <td><?= h($center->postcode) ?></td>
-                <td><?= $center->has('m_prefecture') ? $this->Html->link($center->m_prefecture->name, ['controller' => 'MPrefectures', 'action' => 'view', $center->m_prefecture->id]) : '' ?></td>
+                <td><?= $center->has('m_prefecture') ? $center->m_prefecture->name : '' ?></td>
                 <td><?= h($center->address) ?></td>
-                <td><?= h($center->delete_flag) ?></td>
+                <td><?php if($center->delete_flag){ echo '◆'; } ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
                     /
