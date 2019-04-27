@@ -23,46 +23,40 @@ class CentersController extends AppController
         $this->paginate = [
             'contain' => ['MCustomers', 'MPrefectures', 'MUsers']
         ];
-        
+
+        $query = $this->Centers->find();
         if ($this->request->is('post'))
         {
-            $where = array();
             // 顧客
             $m_customer_id = $this->request->data['m_customer_id'];
             if (!empty($m_customer_id))
             {
-                $where[] = ['m_customer_id' => $m_customer_id];
+                $query->where(['m_customer_id' => $m_customer_id]);
             }
             // 都道府県
             $m_prefecture_id = $this->request->data['m_prefecture_id'];
             if (!empty($m_prefecture_id))
             {
-                $where[] = ['m_prefecture_id' => $m_prefecture_id];
+                $query->where(['m_prefecture_id' => $m_prefecture_id]);
             }
             // 拠点名
             $name = $this->request->data['name'];
             if (!empty($name))
             {
-                $where[] = ['Centers.name LIKE' => '%'.$name.'%'];
+                $query->where(['Centers.name LIKE' => '%'.$name.'%']);
             }
             // 削除フラグ
             $delete_flag = $this->request->data['delete_flag'];
             if (!empty($delete_flag))
             {
-                $where[] = ['Centers.delete_flag >=' => '0'];
+                $query->where(['Centers.delete_flag >=' => '0']);
             }
             else
             {
-                $where[] = ['Centers.delete_flag =' => '0'];
-            }
-            
-            if (!empty($where))
-            {
-                $this->paginate['conditions'] = $where;
+                $query->where(['Centers.delete_flag =' => '0']);
             }
         }
-        
-        $centers = $this->paginate($this->Centers);
+        $centers = $this->paginate($query);
         $mCustomers = $this->Centers->MCustomers->find('list');
         $mPrefectures = $this->Centers->MPrefectures->find('list');
 
