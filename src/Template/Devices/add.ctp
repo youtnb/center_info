@@ -10,7 +10,7 @@ $(document).ready(function()
     // 顧客・拠点リスト連動
     $('#search-m-customer-id').change(function()
     {
-        $('#list_centers').load('/center_info/devices/listCenters/' + $(this).val());
+        $('#center_list').load('/center_info/devices/addCenterList/' + $(this).val());
     });
 });
 </script>
@@ -31,7 +31,7 @@ $(document).ready(function()
         <legend><?= __('Add Device') ?></legend>
         <?php
             echo $this->Form->control('search_m_customer_id', ['options' => $mCustomers, 'value' => $m_customer_id]);
-            echo '<span id="list_centers">';
+            echo '<span id="center_list">';
             echo $this->Form->control('center_id', ['options' => $centers, 'value' => $center_id]);
             echo '</span>';
             echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes]);

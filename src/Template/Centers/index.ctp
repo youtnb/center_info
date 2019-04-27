@@ -23,11 +23,9 @@
                 <tr>
                     <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?></td>
-                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
-                </tr>
-                <tr>
                     <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名']) ?></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>
+                    <td style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
                 </tr>
             </table>
         </fieldset>

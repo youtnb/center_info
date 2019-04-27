@@ -4,6 +4,16 @@
  * @var \App\Model\Entity\Device[]|\Cake\Collection\CollectionInterface $devices
  */
 ?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    // 顧客・拠点リスト連動
+    $('#search-m-customer-id').change(function()
+    {
+        $('#center_list').load('/center_info/devices/indexCenterList/' + $(this).val());
+    });
+});
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
@@ -17,6 +27,23 @@
 </nav>
 <div class="devices index large-9 medium-8 columns content">
     <h3><?= __('端末情報一覧') ?></h3>
+    <?= $this->Form->create() ?>
+        <fieldset class="search_form">
+            <table>
+                <tr>
+                    <td><?= $this->Form->input('search_m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
+                    <td><span id="center_list"><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点']) ?></span></td>
+                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別']) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
+                </tr>
+                <tr>
+                    <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別']) ?></td>
+                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名']) ?></td>
+                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+    <?= $this->Form->end() ?>
     <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>

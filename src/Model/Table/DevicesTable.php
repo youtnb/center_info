@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
 
@@ -195,6 +196,14 @@ class DevicesTable extends Table
         return $rules;
     }
     
+    /**
+     * 検索初期条件
+     * @param Event $event
+     * @param Query $query
+     * @param type $options
+     * @param type $primary
+     * @return Query
+     */
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
@@ -208,6 +217,63 @@ class DevicesTable extends Table
         if ($order === null || !count($order))
         {
             $query->order([$this->alias().'.center_id' => 'ASC', $this->alias().'.m_device_type_id' => 'ASC', $this->alias().'.id' => 'ASC']);
+        }
+        
+        return $query;
+    }
+    
+    /**
+     * 一覧検索finder
+     * @param Query $query
+     * @param type $options
+     * @return Query
+     */
+    public function findSearch(Query $query, $options)
+    {
+        // 拠点
+        $center_id = $options['center_id'];
+        if (!empty($center_id))
+        {
+            $query->where(['center_id' => $center_id]);
+        }
+        else
+        {
+            // 顧客
+            $m_customer_id = $options['search_m_customer_id'];
+            if (!empty($m_customer_id))
+            {
+                $centers = TableRegistry::get('Centers'); 
+                $sub = $this->Centers->find()->where(['m_customer_id' => $m_customer_id])->select('id');
+                $query->where(['center_id IN' => $sub]);
+            }
+        }
+        // 端末種別
+        $m_device_type_id = $options['m_device_type_id'];
+        if (!empty($m_device_type_id))
+        {
+            $query->where(['m_device_type_id' => $m_device_type_id]);
+        }
+        // OS種別
+        $m_operation_system_id = $options['m_operation_system_id'];
+        if (!empty($m_operation_system_id))
+        {
+            $query->where(['m_operation_system_id' => $m_operation_system_id]);
+        }
+        // 端末名
+        $name = $options['name'];
+        if (!empty($name))
+        {
+            $query->where(['Devices.name LIKE' => '%'.$name.'%']);
+        }
+        // 削除フラグ
+        $delete_flag = $options['delete_flag'];
+        if (!empty($delete_flag))
+        {
+            $query->where(['Devices.delete_flag >=' => '0']);
+        }
+        else
+        {
+            $query->where(['Devices.delete_flag =' => '0']);
         }
         
         return $query;

@@ -157,6 +157,14 @@ class CentersTable extends Table
         return $rules;
     }
     
+    /**
+     * 検索初期条件
+     * @param Event $event
+     * @param Query $query
+     * @param type $options
+     * @param type $primary
+     * @return Query
+     */
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where

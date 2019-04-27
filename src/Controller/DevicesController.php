@@ -23,12 +23,29 @@ class DevicesController extends AppController
         $this->paginate = [
             'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
         ];
-        $devices = $this->paginate($this->Devices);
+        
+        $query = $this->Devices->find();
+        $m_customer_id = null;
+        if ($this->request->is('post'))
+        {
+            // 一覧検索
+            $query = $this->Devices->find('search', $this->request->data);
+            $m_customer_id = $this->request->data['search_m_customer_id'];
+        }
+        $devices = $this->paginate($query);
         
         $tableMCustomers = TableRegistry::get('MCustomers');
         $mCustomers = $tableMCustomers->find('list');
         
-        $this->set(compact('devices', 'mCustomers'));
+        $mDeviceTypes = $this->Devices->MDeviceTypes->find('list');
+        $mOperationSystems = $this->Devices->MOperationSystems->find('list');
+        $mSqlservers = $this->Devices->MSqlservers->find('list');
+        $mProducts = $this->Devices->MProducts->find('list');
+        $mVersions = $this->Devices->MVersions->find('list');
+        $centers = $this->Devices->Centers->find('list')
+            ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+        
+        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers'));
     }
 
     /**
@@ -88,7 +105,8 @@ class DevicesController extends AppController
             // 無ければ初期値
             $m_customer_id = array_keys($mCustomers->toArray())[0];
         }
-        $centers = $this->Devices->Centers->find('list')->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+        $centers = $this->Devices->Centers->find('list')
+            ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
         
         $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers', 'mCustomers', 'center_id', 'm_customer_id'));
     }
@@ -149,17 +167,40 @@ class DevicesController extends AppController
     }
     
     /**
-     * 顧客IDから関連する拠点リストを取得
+     * 顧客IDから関連する拠点リストを取得（登録画面用）
      * @param type $id
      * @return array $centers
      */
-    public function listCenters($m_customer_id = null)
+    public function addCenterList($m_customer_id = null)
     {
         if ($this->request->is('ajax') && $m_customer_id)
         {
             $this->viewBuilder()->setLayout(false);
             
-            $centers = $this->Devices->Centers->find('list')->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+            $centers = $this->Devices->Centers->find('list')
+                ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+            $this->set(compact('centers'));
+        }
+    }
+    
+    /**
+     * 顧客IDから関連する拠点リストを取得（登録画面用）
+     * @param type $id
+     * @return array $centers
+     */
+    public function indexCenterList($m_customer_id = null)
+    {
+        if ($this->request->is('ajax') && $m_customer_id)
+        {
+            $this->viewBuilder()->setLayout(false);
+            
+            $centers = $this->Devices->Centers->find('list')
+                ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+            $this->set(compact('centers'));
+        }
+        else
+        {
+            $centers = [];
             $this->set(compact('centers'));
         }
     }
