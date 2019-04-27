@@ -86,6 +86,10 @@ class DevicesTable extends Table
     {
         $validator
             ->allowEmptyString('id', 'create');
+        
+        $validator
+            ->requirePresence('center_id', 'create')
+            ->greaterThan('center_id', 0);
 
         $validator
             ->scalar('accepted_no')

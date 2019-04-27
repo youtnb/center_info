@@ -27,8 +27,9 @@
     <?= $this->Form->create($device) ?>
     <fieldset>
         <legend><?= __('Edit Device') ?></legend>
+        <h4><?= $centers->toArray()[$device->toArray()['center_id']]; ?></h4>
         <?php
-            echo $this->Form->control('center_id', ['options' => $centers]);
+            echo $this->Form->hidden('center_id');
             echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes]);
             echo $this->Form->control('accepted_no');
             echo $this->Form->control('name');

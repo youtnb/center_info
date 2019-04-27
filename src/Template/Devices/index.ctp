@@ -17,34 +17,37 @@
 </nav>
 <div class="devices index large-9 medium-8 columns content">
     <h3><?= __('端末情報一覧') ?></h3>
+    <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="width:20%;"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
-                <th scope="col" style="width:8%;"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', '端末名') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
-                <th scope="col" style="width:5%;"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
+                <th scope="col" class="th_customer"><?= __('顧客') ?></th>
+                <th scope="col" class="th_center"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('name', '端末名') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
                 <!--
                 <th scope="col"><?= $this->Paginator->sort('security_flag', 'セキュリティ') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('support_end_date', '保守終了日') ?></th>
                 -->
-                <th scope="col" style="width:10%;"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
+                <th scope="col" class="th_ymd"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
                 <!--
                 <th scope="col"><?= $this->Paginator->sort('m_version_id', 'バージョン') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('connect', '接続先') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('remote', 'リモート') ?></th>
-                <th scope="col" style="width:5%;"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
                 -->
-                <th scope="col" style="width:5%;"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
-                <th scope="col" style="width:10%;" class="actions"><?= __('') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                <th scope="col" class="actions th_actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($devices as $device): ?>
             <tr>
+                <td><?= $mCustomers->toArray()[$device->toArray()['center']['m_customer_id']] ?></td>
                 <td><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
                 <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->
                 <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>
@@ -52,9 +55,9 @@
                 <td><?= h($device->name) ?></td>
                 <td><?= h($device->ip_higher) ?></td>
                 <td><?= h($device->ip_lower) ?></td>
-                <td><?= h($device->reserve_flag) ?></td>
+                <td style="text-align: center"><?php if($device->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <!--
-                <td><?= h($device->security_flag) ?></td>
+                <td style="text-align: center"><?php if($device->security_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($device->support_end_date) ?></td>
                 -->
                 <td><?= h($device->setup_date) ?></td>
@@ -64,7 +67,7 @@
                 <td><?= h($device->remote) ?></td>
                 <td><?= h($device->running_flag) ?></td>
                 -->
-                <td><?php if($device->delete_flag){ echo '◆'; } ?></td>
+                <td style="text-align: center"><?php if($device->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
                     /
@@ -76,6 +79,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>

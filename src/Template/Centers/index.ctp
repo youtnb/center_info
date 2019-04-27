@@ -32,16 +32,17 @@
             </table>
         </fieldset>
     <?= $this->Form->end() ?>
+    <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="width:15%;"><?= $this->Paginator->sort('m_customer_id', '顧客') ?></th>
-                <th scope="col" style="width:20%;"><?= $this->Paginator->sort('name', '拠点名') ?></th>
-                <th scope="col" style="width:8%;"><?= $this->Paginator->sort('postcode', '〒') ?></th>
-                <th scope="col" style="width:8%;"><?= $this->Paginator->sort('m_prefecture_id', '都道府県') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('address', '住所') ?></th>
-                <th scope="col" style="width:5%;"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
-                <th scope="col" style="width:10%;" class="actions"><?= __('') ?></th>
+                <th scope="col" class="th_customer"><?= $this->Paginator->sort('m_customer_id', '顧客') ?></th>
+                <th scope="col" class="th_center"><?= $this->Paginator->sort('name', '拠点') ?></th>
+                <th scope="col" class="th_min"><?= $this->Paginator->sort('postcode', '〒') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('m_prefecture_id', '都道府県') ?></th>
+                <th scope="col" class="th_large"><?= $this->Paginator->sort('address', '住所') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                <th scope="col" class="actions th_actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +53,7 @@
                 <td><?= h($center->postcode) ?></td>
                 <td><?= $center->has('m_prefecture') ? $center->m_prefecture->name : '' ?></td>
                 <td><?= h($center->address) ?></td>
-                <td><?php if($center->delete_flag){ echo '◆'; } ?></td>
+                <td style="text-align: center"><?php if($center->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
                     /
@@ -64,6 +65,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>

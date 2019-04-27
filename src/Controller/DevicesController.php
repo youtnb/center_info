@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Devices Controller
@@ -23,8 +24,11 @@ class DevicesController extends AppController
             'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
         ];
         $devices = $this->paginate($this->Devices);
-
-        $this->set(compact('devices'));
+        
+        $tableMCustomers = TableRegistry::get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list');
+        
+        $this->set(compact('devices', 'mCustomers'));
     }
 
     /**
@@ -61,14 +65,32 @@ class DevicesController extends AppController
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
         
-        $centers = $this->Devices->Centers->find('list', ['limit' => 200]);
-        $mDeviceTypes = $this->Devices->MDeviceTypes->find('list', ['limit' => 200]);
-        $mOperationSystems = $this->Devices->MOperationSystems->find('list', ['limit' => 200]);
-        $mSqlservers = $this->Devices->MSqlservers->find('list', ['limit' => 200]);
-        $mProducts = $this->Devices->MProducts->find('list', ['limit' => 200]);
-        $mVersions = $this->Devices->MVersions->find('list', ['limit' => 200]);
-        $mUsers = $this->Devices->MUsers->find('list', ['limit' => 200]);
-        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers', 'center_id'));
+        $centers = $this->Devices->Centers->find('list');
+        $mDeviceTypes = $this->Devices->MDeviceTypes->find('list');
+        $mOperationSystems = $this->Devices->MOperationSystems->find('list');
+        $mSqlservers = $this->Devices->MSqlservers->find('list');
+        $mProducts = $this->Devices->MProducts->find('list');
+        $mVersions = $this->Devices->MVersions->find('list');
+        $mUsers = $this->Devices->MUsers->find('list');
+        
+        $tableMCustomers = TableRegistry::get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list');
+        
+        $m_customer_id = null;
+        if($center_id)
+        {
+            // 拠点指定あれば顧客ID逆引き
+            $center = $this->Devices->Centers->get($center_id);
+            $m_customer_id = $center['m_customer_id'];
+        }
+        else
+        {
+            // 無ければ初期値
+            $m_customer_id = array_keys($mCustomers->toArray())[0];
+        }
+        $centers = $this->Devices->Centers->find('list')->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+        
+        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers', 'mCustomers', 'center_id', 'm_customer_id'));
     }
 
     /**
@@ -92,14 +114,18 @@ class DevicesController extends AppController
             }
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
-        $centers = $this->Devices->Centers->find('list', ['limit' => 200]);
-        $mDeviceTypes = $this->Devices->MDeviceTypes->find('list', ['limit' => 200]);
-        $mOperationSystems = $this->Devices->MOperationSystems->find('list', ['limit' => 200]);
-        $mSqlservers = $this->Devices->MSqlservers->find('list', ['limit' => 200]);
-        $mProducts = $this->Devices->MProducts->find('list', ['limit' => 200]);
-        $mVersions = $this->Devices->MVersions->find('list', ['limit' => 200]);
-        $mUsers = $this->Devices->MUsers->find('list', ['limit' => 200]);
-        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers'));
+        $centers = $this->Devices->Centers->find('list');
+        $mDeviceTypes = $this->Devices->MDeviceTypes->find('list');
+        $mOperationSystems = $this->Devices->MOperationSystems->find('list');
+        $mSqlservers = $this->Devices->MSqlservers->find('list');
+        $mProducts = $this->Devices->MProducts->find('list');
+        $mVersions = $this->Devices->MVersions->find('list');
+        $mUsers = $this->Devices->MUsers->find('list');
+        
+        $tableMCustomers = TableRegistry::get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list');
+        
+        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers'. 'mCustomers'));
     }
 
     /**
@@ -120,5 +146,21 @@ class DevicesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    /**
+     * 顧客IDから関連する拠点リストを取得
+     * @param type $id
+     * @return array $centers
+     */
+    public function listCenters($m_customer_id = null)
+    {
+        if ($this->request->is('ajax') && $m_customer_id)
+        {
+            $this->viewBuilder()->setLayout(false);
+            
+            $centers = $this->Devices->Centers->find('list')->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
+            $this->set(compact('centers'));
+        }
     }
 }

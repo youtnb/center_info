@@ -4,6 +4,16 @@
  * @var \App\Model\Entity\Device $device
  */
 ?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    // 顧客・拠点リスト連動
+    $('#search-m-customer-id').change(function()
+    {
+        $('#list_centers').load('/center_info/devices/listCenters/' + $(this).val());
+    });
+});
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
@@ -20,7 +30,10 @@
     <fieldset>
         <legend><?= __('Add Device') ?></legend>
         <?php
+            echo $this->Form->control('search_m_customer_id', ['options' => $mCustomers, 'value' => $m_customer_id]);
+            echo '<span id="list_centers">';
             echo $this->Form->control('center_id', ['options' => $centers, 'value' => $center_id]);
+            echo '</span>';
             echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes]);
             echo $this->Form->control('accepted_no');
             echo $this->Form->control('name');

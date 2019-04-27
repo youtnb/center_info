@@ -13,4 +13,6 @@ return [
     define('TITLE_DEVICE','端末情報管理'),
     
     define('DELETE_CONFIRM','削除してよろしいですか？'),
+    
+    define('LIST_CHECK_MARK','ｖ'),
 ];

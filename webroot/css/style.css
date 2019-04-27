@@ -535,3 +535,39 @@ table td {
     margin: 0;
     padding: 0.4375rem 0.875rem;
 }
+
+div.list_table{
+    max-width: 1500px;
+    overflow: auto;
+}
+
+.th_customer{
+    width: 150px;
+}
+.th_center{
+    width: 270px;
+}
+.th_ymd{
+    width: 100px;
+}
+.th_flag{
+    width: 50px;
+}
+.th_actions{
+    width: 120px;
+}
+.th_min{
+    width: 80px;
+}
+.th_short{
+    width: 100px;
+}
+.th_short_20{
+    width: 120px;
+}
+.th_middle{
+    width: 150px;
+}
+.th_large{
+    width: 350px;
+}
