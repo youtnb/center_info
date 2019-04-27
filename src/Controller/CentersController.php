@@ -27,36 +27,11 @@ class CentersController extends AppController
         $query = $this->Centers->find();
         if ($this->request->is('post'))
         {
-            // 顧客
-            $m_customer_id = $this->request->data['m_customer_id'];
-            if (!empty($m_customer_id))
-            {
-                $query->where(['m_customer_id' => $m_customer_id]);
-            }
-            // 都道府県
-            $m_prefecture_id = $this->request->data['m_prefecture_id'];
-            if (!empty($m_prefecture_id))
-            {
-                $query->where(['m_prefecture_id' => $m_prefecture_id]);
-            }
-            // 拠点名
-            $name = $this->request->data['name'];
-            if (!empty($name))
-            {
-                $query->where(['Centers.name LIKE' => '%'.$name.'%']);
-            }
-            // 削除フラグ
-            $delete_flag = $this->request->data['delete_flag'];
-            if (!empty($delete_flag))
-            {
-                $query->where(['Centers.delete_flag >=' => '0']);
-            }
-            else
-            {
-                $query->where(['Centers.delete_flag =' => '0']);
-            }
+            // 一覧検索
+            $query = $this->Centers->find('search', $this->request->data);
         }
         $centers = $this->paginate($query);
+        
         $mCustomers = $this->Centers->MCustomers->find('list');
         $mPrefectures = $this->Centers->MPrefectures->find('list');
 

@@ -174,4 +174,44 @@ class CentersTable extends Table
         
         return $query;
     }
+    
+    /**
+     * 一覧検索finder
+     * @param Query $query
+     * @param type $options
+     * @return Query
+     */
+    public function findSearch(Query $query, $options)
+    {
+        // 顧客
+        $m_customer_id = $options['m_customer_id'];
+        if (!empty($m_customer_id))
+        {
+            $query->where(['m_customer_id' => $m_customer_id]);
+        }
+        // 都道府県
+        $m_prefecture_id = $options['m_prefecture_id'];
+        if (!empty($m_prefecture_id))
+        {
+            $query->where(['m_prefecture_id' => $m_prefecture_id]);
+        }
+        // 拠点名
+        $name = $options['name'];
+        if (!empty($name))
+        {
+            $query->where(['Centers.name LIKE' => '%'.$name.'%']);
+        }
+        // 削除フラグ
+        $delete_flag = $options['delete_flag'];
+        if (!empty($delete_flag))
+        {
+            $query->where(['Centers.delete_flag >=' => '0']);
+        }
+        else
+        {
+            $query->where(['Centers.delete_flag =' => '0']);
+        }
+        
+        return $query;
+    }
 }
