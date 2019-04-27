@@ -47,7 +47,7 @@
         </thead>
         <tbody>
             <?php foreach ($centers as $center): ?>
-            <tr>
+            <tr<?= $center->delete_flag?' class="delete_content"':'' ?>>
                 <td><?= $center->has('m_customer') ? $center->m_customer->name : '' ?></td>
                 <td><?= h($center->name) ?></td>
                 <td><?= h($center->postcode) ?></td>

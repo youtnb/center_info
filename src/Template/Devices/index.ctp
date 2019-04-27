@@ -46,7 +46,7 @@
         </thead>
         <tbody>
             <?php foreach ($devices as $device): ?>
-            <tr>
+            <tr<?= $device->delete_flag?' class="delete_content"':'' ?>>
                 <td><?= $mCustomers->toArray()[$device->toArray()['center']['m_customer_id']] ?></td>
                 <td><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
                 <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->

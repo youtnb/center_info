@@ -523,24 +523,29 @@ table td {
     word-break: break-all;
 }
 
-/* 以下追加調整分 */
+/* 
+以下追加調整分
+*/
+
+/* 基本画面左右ペイン幅調整 */
 .large-3 {
     width: 18%;
 }
 .large-9 {
     width: 82%;
 }
+/* サイドバーリンクなし文字位置調整 */
 .no-anc{
     display: block;
     margin: 0;
     padding: 0.4375rem 0.875rem;
 }
 
+/* テーブルコンテンツ幅指定 */
 div.list_table{
     max-width: 1500px;
     overflow: auto;
 }
-
 .th_customer{
     width: 150px;
 }
@@ -570,4 +575,12 @@ div.list_table{
 }
 .th_large{
     width: 350px;
+}
+/* テーブル奇数行背景色 */
+div.list_table table tr:nth-child(odd) td{
+    background: #eee;
+}
+/* 削除データ行文字色 */
+div.list_table table tr.delete_content td{
+    color: olive;
 }
