@@ -7,9 +7,11 @@
         <li><?php if($own != 'MSqlservers'){?><?= $this->Html->link(__('SQLServer種別マスタ'), ['controller' => 'MSqlservers', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">SQLServer種別マスタ</span><?php } ?></li>
         <li><?php if($own != 'MProducts'){?><?= $this->Html->link(__('製造種別マスタ'), ['controller' => 'MProducts', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">製造種別マスタ</span><?php } ?></li>
         <li><?php if($own != 'MVersions'){?><?= $this->Html->link(__('バージョンマスタ'), ['controller' => 'MVersions', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">バージョンマスタ</span><?php } ?></li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') == ROLE_ID_ADMIN){ ?>
         <li><?php if($own != 'MUsers'){?><?= $this->Html->link(__('ユーザーマスタ'), ['controller' => 'MUsers', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ユーザーマスタ</span><?php } ?></li>
         <li><?php if($own != 'MDepartments'){?><?= $this->Html->link(__('部署マスタ'), ['controller' => 'MDepartments', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">部署マスタ</span><?php } ?></li>
         <li><?php if($own != 'MRoles'){?><?= $this->Html->link(__('ロールマスタ'), ['controller' => 'MRoles', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ロールマスタ</span><?php } ?></li>
+        <?php } ?>
     </ul>
     <ul class="side-nav">
         <li><span class="no-anc">ログイン：<?= $this->request->session()->read('Auth.User.name') ?></span></li>

@@ -15,4 +15,9 @@ return [
     define('DELETE_CONFIRM','削除してよろしいですか？'),
     
     define('LIST_CHECK_MARK','ｖ'),
+    
+    define('ROLE_ID_ADMIN', 1),
+    define('ROLE_ID_MEMBER', 2),
+    define('ROLE_ID_GUEST', 3),
+    
 ];
