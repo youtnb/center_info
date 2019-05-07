@@ -32,7 +32,7 @@ $(document).ready(function()
             <table>
                 <tr>
                     <td><?= $this->Form->input('search_m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
-                    <td><span id="center_list"><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点']) ?></span></td>
+                    <td><span id="center_list"><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '顧客を選択してください', 'label' => '拠点']) ?></span></td>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別']) ?></td>
                     <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
                 </tr>
