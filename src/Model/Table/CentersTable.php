@@ -203,6 +203,16 @@ class CentersTable extends Table
         {
             $query->where(['m_prefecture_id' => $m_prefecture_id]);
         }
+        else
+        {
+            // 地域
+            $m_area_id = $options['m_area_id'];
+            if (!empty($m_area_id))
+            {
+                $sub = $this->MPrefectures->find()->where(['m_area_id' => $m_area_id])->select('id');
+                $query->where([$this->alias().'.m_prefecture_id IN' => $sub]);
+            }
+        }
         // 拠点名
         $name = $options['name'];
         if (!empty($name))

@@ -4,6 +4,16 @@
  * @var \App\Model\Entity\Center[]|\Cake\Collection\CollectionInterface $centers
  */
 ?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    // 地域選択時、都道府県選択クリア
+    $('#m-area-id').change(function()
+    {
+        $('#m-prefecture-id').val('');
+    });
+});
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
@@ -22,6 +32,7 @@
             <table>
                 <tr>
                     <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
+                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域']) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?></td>
                     <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名']) ?></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>

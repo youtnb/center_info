@@ -25,17 +25,26 @@ class CentersController extends AppController
         ];
 
         $query = $this->Centers->find();
+        $m_area_id = null;
         if ($this->request->is('post'))
         {
             // 一覧検索
             $query = $this->Centers->find('search', $this->request->data);
+            $m_area_id = $this->request->data['m_area_id'];
         }
         $centers = $this->paginate($query);
         
         $mCustomers = $this->Centers->MCustomers->find('list');
-        $mPrefectures = $this->Centers->MPrefectures->find('list');
-
-        $this->set(compact('centers', 'mCustomers', 'mPrefectures'));
+        
+        $tableMAreas = TableRegistry::get('MAreas');
+        $mAreas = $tableMAreas->find('list');
+        $mPrefectures = $this->Centers->MPrefectures->find('list')->where(['delete_flag' => 0]);
+        if($m_area_id)
+        {   // 都道府県絞り込み
+            $mPrefectures->where(['m_area_id' => $m_area_id]);
+        }
+        
+        $this->set(compact('centers', 'mCustomers', 'mPrefectures', 'mAreas'));
     }
 
     /**
