@@ -7,9 +7,13 @@
 /**
  * 送信フォームsubmit
  * class='search_form'配下のselectタグにonchangeイベントリスナ追加
+ * class='search_form'配下のinput type=checkboxタグにonchangeイベントリスナ追加
  * @returns {undefined}
  */
 $(document).on('change', '.search_form select', function(){
+    $('.search_form :submit').click();
+});
+$(document).on('change', '.search_form :checkbox', function(){
     $('.search_form :submit').click();
 });
 
