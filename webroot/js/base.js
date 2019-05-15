@@ -5,7 +5,17 @@
  */
 
 /**
- * 送信フォームリセット
+ * 送信フォームsubmit
+ * class='search_form'配下のselectタグにonchangeイベントリスナ追加
+ * @returns {undefined}
+ */
+$(document).on('change', '.search_form select', function(){
+    $('.search_form :submit').click();
+});
+
+/**
+ * 送信フォームreset
+ * class='search_form'のinputをすべてクリアしてsubmitボタンclick
  * @returns {undefined}
  */
 function reset_form()
