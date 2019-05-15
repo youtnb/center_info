@@ -28,13 +28,13 @@ class DevicesController extends AppController
         $m_customer_id = null;
         $m_area_id = null;
         $m_prefecture_id = null;
-        if ($this->request->is('post'))
+        if (!empty($this->request->query))
         {
             // 一覧検索
-            $query = $this->Devices->find('search', $this->request->data);
-            $m_customer_id = $this->request->data['m_customer_id'];
-            $m_area_id = $this->request->data['m_area_id'];
-            $m_prefecture_id = $this->request->data['m_prefecture_id'];
+            $query = $this->Devices->find('search', $this->request->query);
+            $m_customer_id = $this->request->query['m_customer_id'];
+            $m_area_id = $this->request->query['m_area_id'];
+            $m_prefecture_id = $this->request->query['m_prefecture_id'];
         }
         $devices = $this->paginate($query);
         

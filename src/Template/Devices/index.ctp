@@ -38,21 +38,21 @@ $(document).ready(function()
 </nav>
 <div class="devices index large-9 medium-8 columns content">
     <h3><?= __('端末情報一覧') ?></h3>
-    <?= $this->Form->create() ?>
+    <?= $this->Form->create(null, ['type' => 'get']) ?>
         <fieldset class="search_form">
             <table>
                 <tr>
-                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
-                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域']) ?></td>
-                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?></td>
-                    <td><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点']) ?></td>
+                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客', 'value' => $this->request->query('m_customer_id')]) ?></td>
+                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
+                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
+                    <td><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点', 'value' => $this->request->query('center_id')]) ?></td>
                     <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
                 </tr>
                 <tr>
-                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別']) ?></td>
-                    <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別']) ?></td>
-                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名']) ?></td>
-                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>
+                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
+                    <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
+                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名', 'value' => $this->request->query('name')]) ?></td>
+                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
             </table>
         </fieldset>
