@@ -7,10 +7,21 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-    // 顧客・拠点リスト連動
-    $('#search-m-customer-id').change(function()
+    // 顧客選択時、拠点選択クリア
+    $('#m-customer-id').change(function()
     {
-        $('#center_list').load('/center_info/devices/indexCenterList/' + $(this).val());
+        $('#center-id').val('');
+    });
+    // 地域選択時、都道府県選択クリアand拠点選択クリア
+    $('#m-area-id').change(function()
+    {
+        $('#m-prefecture-id').val('');
+        $('#center-id').val('');
+    });
+    // 都道府県選択時、拠点選択クリア
+    $('#m-prefecture-id').change(function()
+    {
+        $('#center-id').val('');
     });
 });
 </script>
@@ -31,12 +42,14 @@ $(document).ready(function()
         <fieldset class="search_form">
             <table>
                 <tr>
-                    <td><?= $this->Form->input('search_m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
-                    <td><span id="center_list"><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '顧客を選択してください', 'label' => '拠点']) ?></span></td>
-                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別']) ?></td>
+                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客']) ?></td>
+                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域']) ?></td>
+                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県']) ?></td>
+                    <td><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点']) ?></td>
                     <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
                 </tr>
                 <tr>
+                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別']) ?></td>
                     <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別']) ?></td>
                     <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名']) ?></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する']) ?></td>

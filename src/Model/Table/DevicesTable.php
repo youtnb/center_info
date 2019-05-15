@@ -237,46 +237,65 @@ class DevicesTable extends Table
         $center_id = $options['center_id'];
         if (!empty($center_id))
         {
-            $query->where(['center_id' => $center_id]);
+            $query->where([$this->alias().'.center_id' => $center_id]);
         }
         else
         {
+            // 都道府県
+            $m_prefecture_id = $options['m_prefecture_id'];
+            if (!empty($m_prefecture_id))
+            {
+                $sub = $this->Centers->find()->where(['m_prefecture_id' => $m_prefecture_id])->select('id');
+                $query->where([$this->alias().'.center_id IN' => $sub]);
+            }
+            else
+            {
+                // 地域
+                $m_area_id = $options['m_area_id'];
+                if (!empty($m_area_id))
+                {
+                    $tableMPrefectures = TableRegistry::get('MPrefectures');
+                    $sub_prefecture = $tableMPrefectures->find()->where(['m_area_id' => $m_area_id])->select('id');
+                    $sub = $this->Centers->find()->where(['m_prefecture_id IN' => $sub_prefecture])->select('id');
+                    $query->where([$this->alias().'.center_id IN' => $sub]);
+                }
+            }
+            
             // 顧客
-            $m_customer_id = $options['search_m_customer_id'];
+            $m_customer_id = $options['m_customer_id'];
             if (!empty($m_customer_id))
             {
-                $centers = TableRegistry::get('Centers'); 
                 $sub = $this->Centers->find()->where(['m_customer_id' => $m_customer_id])->select('id');
-                $query->where(['center_id IN' => $sub]);
+                $query->where([$this->alias().'.center_id IN' => $sub]);
             }
         }
         // 端末種別
         $m_device_type_id = $options['m_device_type_id'];
         if (!empty($m_device_type_id))
         {
-            $query->where(['m_device_type_id' => $m_device_type_id]);
+            $query->where([$this->alias().'.m_device_type_id' => $m_device_type_id]);
         }
         // OS種別
         $m_operation_system_id = $options['m_operation_system_id'];
         if (!empty($m_operation_system_id))
         {
-            $query->where(['m_operation_system_id' => $m_operation_system_id]);
+            $query->where([$this->alias().'.m_operation_system_id' => $m_operation_system_id]);
         }
         // 端末名
         $name = $options['name'];
         if (!empty($name))
         {
-            $query->where(['Devices.name LIKE' => '%'.$name.'%']);
+            $query->where([$this->alias().'.name LIKE' => '%'.$name.'%']);
         }
         // 削除フラグ
         $delete_flag = $options['delete_flag'];
         if (!empty($delete_flag))
         {
-            $query->where(['Devices.delete_flag >=' => '0']);
+            $query->where([$this->alias().'.delete_flag >=' => '0']);
         }
         else
         {
-            $query->where(['Devices.delete_flag =' => '0']);
+            $query->where([$this->alias().'.delete_flag =' => '0']);
         }
         
         return $query;

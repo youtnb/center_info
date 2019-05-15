@@ -26,11 +26,15 @@ class DevicesController extends AppController
         
         $query = $this->Devices->find();
         $m_customer_id = null;
+        $m_area_id = null;
+        $m_prefecture_id = null;
         if ($this->request->is('post'))
         {
             // 一覧検索
             $query = $this->Devices->find('search', $this->request->data);
-            $m_customer_id = $this->request->data['search_m_customer_id'];
+            $m_customer_id = $this->request->data['m_customer_id'];
+            $m_area_id = $this->request->data['m_area_id'];
+            $m_prefecture_id = $this->request->data['m_prefecture_id'];
         }
         $devices = $this->paginate($query);
         
@@ -42,10 +46,40 @@ class DevicesController extends AppController
         $mSqlservers = $this->Devices->MSqlservers->find('list');
         $mProducts = $this->Devices->MProducts->find('list');
         $mVersions = $this->Devices->MVersions->find('list');
-        $centers = $this->Devices->Centers->find('list')
-            ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
         
-        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers'));
+        $tableMAreas = TableRegistry::get('MAreas');
+        $mAreas = $tableMAreas->find('list');
+        
+        $tableMPrefectures = TableRegistry::get('MPrefectures');
+        $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0]);
+        
+        $centers = $this->Devices->Centers->find('list')->where(['delete_flag' => 0]);
+        
+        // 顧客指定時
+        if($m_customer_id)
+        {
+            // 拠点リスト絞り込み
+            $centers->where(['m_customer_id' => $m_customer_id]);
+        }
+        
+        // 地域指定時
+        if($m_area_id)
+        {
+            // 都道府県リスト絞り込み
+            $mPrefectures->where(['m_area_id' => $m_area_id]);
+            // 拠点リスト絞り込み
+            $sub = $tableMPrefectures->find()->where(['m_area_id' => $m_area_id])->select('id');
+            $centers->where(['m_prefecture_id IN' => $sub]);
+        }
+        
+        // 都道府県指定時
+        if($m_prefecture_id)
+        {
+            // 拠点リスト絞り込み
+            $centers->where(['m_prefecture_id' => $m_prefecture_id]);
+        }
+        
+        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers', 'mAreas', 'mPrefectures'));
     }
 
     /**
@@ -179,28 +213,6 @@ class DevicesController extends AppController
             
             $centers = $this->Devices->Centers->find('list')
                 ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
-            $this->set(compact('centers'));
-        }
-    }
-    
-    /**
-     * 顧客IDから関連する拠点リストを取得（登録画面用）
-     * @param type $id
-     * @return array $centers
-     */
-    public function indexCenterList($m_customer_id = null)
-    {
-        if ($this->request->is('ajax') && $m_customer_id)
-        {
-            $this->viewBuilder()->setLayout(false);
-            
-            $centers = $this->Devices->Centers->find('list')
-                ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
-            $this->set(compact('centers'));
-        }
-        else
-        {
-            $centers = [];
             $this->set(compact('centers'));
         }
     }
