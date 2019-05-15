@@ -92,7 +92,7 @@ class DevicesController extends AppController
     public function view($id = null)
     {
         $device = $this->Devices->get($id, [
-            'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers', 'Comments']
+            'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers', 'Comments', 'Customs']
         ]);
 
         $this->set('device', $device);
