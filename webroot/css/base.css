@@ -457,8 +457,11 @@ meta.foundation-version{font-family:"{{ VERSION }}"}meta.foundation-mq-small{fon
 /*
 以下既存調整分
 */
-table tr td {
+.list_table table tr td {
     padding: 0.3rem 0.625rem;
+}
+.search_form table tr td {
+    padding: 0.1rem 0.625rem;
 }
 
 input[type="text"], input[type="password"], input[type="date"], 
