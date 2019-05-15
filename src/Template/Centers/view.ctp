@@ -24,7 +24,7 @@
     <table class="avertical-table">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>
-            <td><?= $center->has('m_customer') ? $this->Html->link($center->m_customer->name, ['controller' => 'MCustomers', 'action' => 'view', $center->m_customer->id]) : '' ?></td>
+            <td><?= h($center->m_customer->name) ?></td>
             <th scope="row"><?= __('住所') ?></th>
             <td colspan="5"><?php
                 echo $center->postcode ? '〒'. substr($center->postcode, 0, 3). ' - '. substr($center->postcode, 3). '&nbsp;': '';
@@ -45,10 +45,10 @@
             <td><?= h($center->officer) ?></td>
             <th scope="row"><?= __('担当者') ?></th>
             <td><?= h($center->staff) ?></td>
-            <th scope="row"><?= __('更新日') ?></th>
+            <th scope="row"><?= __('最終更新日時') ?></th>
             <td><?= h($center->modified) ?></td>
             <th scope="row"><?= __('最終更新者') ?></th>
-            <td><?= $center->has('m_user') ? $this->Html->link($center->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $center->m_user->id]) : '' ?></td>
+            <td><?= h($center->m_user->name) ?></td>
         </tr>
     </table>
     <div class="row">

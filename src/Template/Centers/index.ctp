@@ -26,7 +26,7 @@ $(document).ready(function()
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers index large-9 medium-8 columns content">
-    <h3><?= __('拠点情報 一覧') ?></h3>
+    <h3><?= __('拠点情報一覧') ?></h3>
     <?= $this->Form->create() ?>
         <fieldset class="search_form">
             <table>
