@@ -65,6 +65,9 @@ class MUsersTable extends Table
         $this->hasMany('Comments', [
             'foreignKey' => 'm_user_id'
         ]);
+        $this->hasMany('Customs', [
+            'foreignKey' => 'm_user_id'
+        ]);
         $this->hasMany('Devices', [
             'foreignKey' => 'm_user_id'
         ]);

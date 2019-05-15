@@ -75,6 +75,9 @@ class DevicesTable extends Table
         $this->hasMany('Comments', [
             'foreignKey' => 'device_id'
         ]);
+        $this->hasMany('Customs', [
+            'foreignKey' => 'device_id'
+        ]);
     }
 
     /**
