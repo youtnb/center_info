@@ -21,74 +21,34 @@
 </nav>
 <div class="centers view large-9 medium-8 columns content">
     <h3><?= h($center->name) ?></h3>
-    <table class="vertical-table">
+    <table class="avertical-table">
         <tr>
-            <th scope="row"><?= __('M Customer') ?></th>
+            <th scope="row"><?= __('顧客') ?></th>
             <td><?= $center->has('m_customer') ? $this->Html->link($center->m_customer->name, ['controller' => 'MCustomers', 'action' => 'view', $center->m_customer->id]) : '' ?></td>
+            <th scope="row"><?= __('住所') ?></th>
+            <td colspan="5"><?php
+                echo $center->postcode ? '〒'. substr($center->postcode, 0, 3). ' - '. substr($center->postcode, 3). '&nbsp;': '';
+                echo $center->has('m_prefecture') ? $center->m_prefecture->name : '';
+                echo h($center->address);
+            ?>
         </tr>
         <tr>
-            <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($center->name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Postcode') ?></th>
-            <td><?= h($center->postcode) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('M Prefecture') ?></th>
-            <td><?= $center->has('m_prefecture') ? $this->Html->link($center->m_prefecture->name, ['controller' => 'MPrefectures', 'action' => 'view', $center->m_prefecture->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Address') ?></th>
-            <td><?= h($center->address) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Tel') ?></th>
+            <th scope="row"><?= __('電話番号') ?></th>
             <td><?= h($center->tel) ?></td>
+            <th scope="row"><?= __('温度帯') ?></th>
+            <td colspan="3"><?= $this->Display->thermo_list($center); ?></td>
+            <th scope="row"><?= __('要上履き') ?></th>
+            <td><?= $center->shoes_flag ? __('○') : __('×'); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Officer') ?></th>
+            <th scope="row"><?= __('責任者') ?></th>
             <td><?= h($center->officer) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Staff') ?></th>
+            <th scope="row"><?= __('担当者') ?></th>
             <td><?= h($center->staff) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('M User') ?></th>
-            <td><?= $center->has('m_user') ? $this->Html->link($center->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $center->m_user->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($center->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($center->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
+            <th scope="row"><?= __('更新日') ?></th>
             <td><?= h($center->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
-            <td><?= $center->thermo_dry_flag ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
-            <td><?= $center->thermo_chilled_flag ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Thermo Dry Flag') ?></th>
-            <td><?= $center->thermo_frozen_flag ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Shoes Flag') ?></th>
-            <td><?= $center->shoes_flag ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Delete Flag') ?></th>
-            <td><?= $center->delete_flag ? __('Yes') : __('No'); ?></td>
+            <th scope="row"><?= __('最終更新者') ?></th>
+            <td><?= $center->has('m_user') ? $this->Html->link($center->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $center->m_user->id]) : '' ?></td>
         </tr>
     </table>
     <div class="row">
