@@ -43,8 +43,8 @@ $(document).ready(function()
             echo $this->Form->control('security_flag');
             echo $this->Form->control('model');
             echo $this->Form->control('serial_no');
-            echo $this->Form->control('support_end_date', ['empty' => true]);
-            echo $this->Form->control('setup_date', ['empty' => true]);
+            echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true]);
+            echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true]);
             echo $this->Form->control('m_operation_system_id', ['options' => $mOperationSystems, 'empty' => true]);
             echo $this->Form->control('m_sqlserver_id', ['options' => $mSqlservers, 'empty' => true]);
             echo $this->Form->control('admin_pass');
