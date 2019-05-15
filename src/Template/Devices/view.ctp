@@ -159,4 +159,35 @@
         </table>
         <?php endif; ?>
     </div>
+    <div class="related">
+        <h4><?= __('Related Customs') ?></h4>
+        <?php if (!empty($device->customs)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('受入No') ?></th>
+                <th scope="col"><?= __('内容') ?></th>
+                <th scope="col"><?= __('削除') ?></th>
+                <th scope="col"><?= __('ユーザー') ?></th>
+                <th scope="col"><?= __('作成日時') ?></th>
+                <th scope="col"><?= __('更新日時') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($device->customs as $customs): ?>
+            <tr>
+                <td><?= h($customs->accepted_no) ?></td>
+                <td><?= h($customs->content) ?></td>
+                <td><?= h($customs->delete_flag) ?></td>
+                <td><?= h($customs->m_user_id) ?></td>
+                <td><?= h($customs->created) ?></td>
+                <td><?= h($customs->modified) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('閲覧'), ['controller' => 'Customs', 'action' => 'view', $customs->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['controller' => 'Customs', 'action' => 'edit', $customs->id]) ?>
+                    <?= $this->Form->postLink(__('削除'), ['controller' => 'Customs', 'action' => 'delete', $customs->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $customs->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>

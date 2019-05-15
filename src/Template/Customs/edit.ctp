@@ -28,6 +28,10 @@
             echo $this->Form->control('device_id', ['options' => $devices]);
             echo $this->Form->control('accepted_no');
             echo $this->Form->control('content');
+            echo $this->Form->control('exe_file');
+            echo $this->Form->control('config_file');
+            echo $this->Form->control('hht_file');
+            echo $this->Form->control('db_custom');
             echo $this->Form->control('delete_flag');
             echo $this->Form->control('m_user_id', ['options' => $mUsers, 'empty' => true]);
         ?>

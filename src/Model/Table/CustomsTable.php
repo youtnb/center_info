@@ -71,6 +71,22 @@ class CustomsTable extends Table
             ->allowEmptyString('content');
 
         $validator
+            ->scalar('exe_file')
+            ->allowEmptyFile('exe_file');
+
+        $validator
+            ->scalar('config_file')
+            ->allowEmptyFile('config_file');
+
+        $validator
+            ->scalar('hht_file')
+            ->allowEmptyFile('hht_file');
+
+        $validator
+            ->scalar('db_custom')
+            ->allowEmptyString('db_custom');
+
+        $validator
             ->boolean('delete_flag')
             ->requirePresence('delete_flag', 'create')
             ->allowEmptyString('delete_flag', false);
@@ -118,5 +134,4 @@ class CustomsTable extends Table
         
         return $query;
     }
-    
 }

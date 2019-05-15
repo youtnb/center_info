@@ -53,4 +53,20 @@
         <h4><?= __('Content') ?></h4>
         <?= $this->Text->autoParagraph(h($custom->content)); ?>
     </div>
+    <div class="row">
+        <h4><?= __('Exe File') ?></h4>
+        <?= $this->Text->autoParagraph(h($custom->exe_file)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Config File') ?></h4>
+        <?= $this->Text->autoParagraph(h($custom->config_file)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Hht File') ?></h4>
+        <?= $this->Text->autoParagraph(h($custom->hht_file)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Db Custom') ?></h4>
+        <?= $this->Text->autoParagraph(h($custom->db_custom)); ?>
+    </div>
 </div>

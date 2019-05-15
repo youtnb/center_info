@@ -10,6 +10,10 @@ use Cake\ORM\Entity;
  * @property int $device_id
  * @property string|null $accepted_no
  * @property string|null $content
+ * @property string|null $exe_file
+ * @property string|null $config_file
+ * @property string|null $hht_file
+ * @property string|null $db_custom
  * @property bool $delete_flag
  * @property int|null $m_user_id
  * @property \Cake\I18n\FrozenTime $created
@@ -33,6 +37,10 @@ class Custom extends Entity
         'device_id' => true,
         'accepted_no' => true,
         'content' => true,
+        'exe_file' => true,
+        'config_file' => true,
+        'hht_file' => true,
+        'db_custom' => true,
         'delete_flag' => true,
         'm_user_id' => true,
         'created' => true,
