@@ -541,6 +541,13 @@ table td {
     padding: 0.4375rem 0.875rem;
 }
 
+/* インプット位置調整*/
+input[type=checkbox],
+input[type=radio] {
+    margin-top: 1em;
+    margin-right: 0.5em;
+}
+
 /* テーブルコンテンツ幅指定 */
 div.list_table{
     max-width: 1500px;
