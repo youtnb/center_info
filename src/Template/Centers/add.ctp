@@ -18,23 +18,23 @@
 <div class="centers form large-9 medium-8 columns content">
     <?= $this->Form->create($center) ?>
     <fieldset>
-        <legend><?= __('Add Center') ?></legend>
+        <legend><?= __('拠点登録') ?></legend>
         <?php
-            echo $this->Form->control('m_customer_id', ['options' => $mCustomers]);
-            echo $this->Form->control('name');
-            echo $this->Form->control('postcode');
-            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true]);
-            echo $this->Form->control('address');
-            echo $this->Form->control('tel');
-            echo $this->Form->control('officer');
-            echo $this->Form->control('staff');
-            echo $this->Form->control('access');
-            echo $this->Form->control('job');
-            echo $this->Form->control('remarks');
-            echo $this->Form->control('thermo_dry_flag');
-            echo $this->Form->control('thermo_chilled_flag');
-            echo $this->Form->control('thermo_frozen_flag');
-            echo $this->Form->control('shoes_flag');
+            echo $this->Form->control('m_customer_id', ['options' => $mCustomers, 'label' => '顧客']);
+            echo $this->Form->control('name', ['label' => '拠点名']);
+            echo $this->Form->control('postcode', ['label' => '郵便番号']);
+            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true, 'label' => '都道府県']);
+            echo $this->Form->control('address', ['label' => '住所']);
+            echo $this->Form->control('tel', ['label' => '電話番号']);
+            echo $this->Form->control('officer', ['label' => '責任者']);
+            echo $this->Form->control('staff', ['label' => '担当者']);
+            echo $this->Form->control('access', ['label' => 'アクセス']);
+            echo $this->Form->control('job', ['label' => '業務内容']);
+            echo $this->Form->control('remarks', ['label' => '備考']);
+            echo $this->Form->control('thermo_dry_flag', ['label' => '【温度帯】ドライ']);
+            echo $this->Form->control('thermo_chilled_flag', ['label' => '【温度帯】チルド']);
+            echo $this->Form->control('thermo_frozen_flag', ['label' => '【温度帯】フローズン']);
+            echo $this->Form->control('shoes_flag', ['label' => '要上履き']);
             echo $this->Form->hidden('delete_flag', ['value' => 0]);
             echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>
