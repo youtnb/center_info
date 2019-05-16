@@ -192,36 +192,31 @@ class CentersTable extends Table
     public function findSearch(Query $query, $options)
     {
         // 顧客
-        $m_customer_id = $options['m_customer_id'];
-        if (!empty($m_customer_id))
+        if (isset($options['m_customer_id']) && !empty($options['m_customer_id']))
         {
-            $query->where(['m_customer_id' => $m_customer_id]);
+            $query->where(['m_customer_id' => $options['m_customer_id']]);
         }
         // 都道府県
-        $m_prefecture_id = $options['m_prefecture_id'];
-        if (!empty($m_prefecture_id))
+        if (isset($options['m_prefecture_id']) && !empty($options['m_prefecture_id']))
         {
-            $query->where(['m_prefecture_id' => $m_prefecture_id]);
+            $query->where(['m_prefecture_id' => $options['m_prefecture_id']]);
         }
         else
         {
             // 地域
-            $m_area_id = $options['m_area_id'];
-            if (!empty($m_area_id))
+            if (isset($options['m_area_id']) && !empty($options['m_area_id']))
             {
-                $sub = $this->MPrefectures->find()->where(['m_area_id' => $m_area_id])->select('id');
+                $sub = $this->MPrefectures->find()->where(['m_area_id' => $options['m_area_id']])->select('id');
                 $query->where([$this->alias().'.m_prefecture_id IN' => $sub]);
             }
         }
         // 拠点名
-        $name = $options['name'];
-        if (!empty($name))
+        if (isset($options['name']) && !empty($options['name']))
         {
-            $query->where(['Centers.name LIKE' => '%'.$name.'%']);
+            $query->where(['Centers.name LIKE' => '%'. $options['name']. '%']);
         }
         // 削除フラグ
-        $delete_flag = $options['delete_flag'];
-        if (!empty($delete_flag))
+        if (isset($options['delete_flag']) && !empty($options['delete_flag']))
         {
             $query->where(['Centers.delete_flag >=' => '0']);
         }

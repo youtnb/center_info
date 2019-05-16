@@ -30,7 +30,7 @@ class CentersController extends AppController
         {
             // 一覧検索
             $query = $this->Centers->find('search', $this->request->query);
-            $m_area_id = $this->request->query['m_area_id'];
+            if (isset($this->request->query['m_area_id'])) $m_area_id = $this->request->query['m_area_id'];
         }
         $centers = $this->paginate($query);
         

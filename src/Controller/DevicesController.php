@@ -32,9 +32,9 @@ class DevicesController extends AppController
         {
             // 一覧検索
             $query = $this->Devices->find('search', $this->request->query);
-            $m_customer_id = $this->request->query['m_customer_id'];
-            $m_area_id = $this->request->query['m_area_id'];
-            $m_prefecture_id = $this->request->query['m_prefecture_id'];
+            if (isset($this->request->query['m_customer_id'])) $m_customer_id = $this->request->query['m_customer_id'];
+            if (isset($this->request->query['m_area_id'])) $m_area_id = $this->request->query['m_area_id'];
+            if (isset($this->request->query['m_prefecture_id'])) $m_prefecture_id = $this->request->query['m_prefecture_id'];
         }
         $devices = $this->paginate($query);
         
