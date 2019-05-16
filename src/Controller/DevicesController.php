@@ -116,7 +116,6 @@ class DevicesController extends AppController
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
         
-        $centers = $this->Devices->Centers->find('list');
         $mDeviceTypes = $this->Devices->MDeviceTypes->find('list');
         $mOperationSystems = $this->Devices->MOperationSystems->find('list');
         $mSqlservers = $this->Devices->MSqlservers->find('list');
@@ -155,7 +154,7 @@ class DevicesController extends AppController
     public function edit($id = null)
     {
         $device = $this->Devices->get($id, [
-            'contain' => []
+            'contain' => ['Centers']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $device = $this->Devices->patchEntity($device, $this->request->getData());

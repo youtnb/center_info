@@ -177,7 +177,7 @@ class CentersTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.m_customer_id' => 'ASC', $this->alias().'.m_prefecture_id' => 'ASC', $this->alias().'.name' => 'ASC']);
+            $query->order([$this->alias().'.m_prefecture_id' => 'ASC', $this->alias().'.m_customer_id' => 'ASC', $this->alias().'.name' => 'ASC']);
         }
         
         return $query;

@@ -217,9 +217,9 @@ class DevicesTable extends Table
         }
         // order
         $order = $query->clause('order');
-        if ($order === null || !count($order))
+        if (($order === null || !count($order)) && $primary)
         {
-            $query->order([$this->alias().'.center_id' => 'ASC', $this->alias().'.m_device_type_id' => 'ASC', $this->alias().'.id' => 'ASC']);
+            $query->order(['Centers.m_prefecture_id' => 'ASC', 'Centers.m_customer_id' => 'ASC', 'Centers.name' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;
