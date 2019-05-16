@@ -42,6 +42,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\MVersion $m_version
  * @property \App\Model\Entity\MUser $m_user
  * @property \App\Model\Entity\Comment[] $comments
+ * @property \App\Model\Entity\Custom[] $customs
  */
 class Device extends Entity
 {
@@ -88,6 +89,7 @@ class Device extends Entity
         'm_product' => true,
         'm_version' => true,
         'm_user' => true,
-        'comments' => true
+        'comments' => true,
+        'customs' => true
     ];
 }
