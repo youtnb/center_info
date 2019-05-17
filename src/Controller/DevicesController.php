@@ -189,7 +189,9 @@ class DevicesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $device = $this->Devices->get($id);
+        $device = $this->Devices->get($id, [
+            'contain' => ['Centers']
+        ]);
         if ($this->Devices->delete($device)) {
             $this->Flash->success(__('The device has been deleted.'));
         } else {
