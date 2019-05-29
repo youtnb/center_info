@@ -21,7 +21,7 @@
 </nav>
 <div class="centers view large-9 medium-8 columns content">
     <h3><?= h($center->name) ?></h3>
-    <table class="avertical-table">
+    <table class="">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>
             <td><?= h($center->m_customer->name) ?></td>
@@ -38,7 +38,7 @@
             <th scope="row"><?= __('温度帯') ?></th>
             <td colspan="3"><?= $this->Display->thermo_list($center); ?></td>
             <th scope="row"><?= __('要上履き') ?></th>
-            <td><?= $center->shoes_flag ? __('○') : __('×'); ?></td>
+            <td><?= $center->shoes_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('責任者') ?></th>
@@ -52,19 +52,19 @@
         </tr>
     </table>
     <div class="row">
-        <h4><?= __('Access') ?></h4>
+        <h4><?= __('アクセス') ?></h4>
         <?= $this->Text->autoParagraph(h($center->access)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Job') ?></h4>
+        <h4><?= __('業務内容') ?></h4>
         <?= $this->Text->autoParagraph(h($center->job)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Remarks') ?></h4>
+        <h4><?= __('備考') ?></h4>
         <?= $this->Text->autoParagraph(h($center->remarks)); ?>
     </div>
     <div class="related">
-        <h4><?= __('Related Devices') ?></h4>
+        <h4><?= __('端末情報') ?></h4>
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
@@ -77,7 +77,7 @@
                 <th scope="col"><?= __('設置日') ?></th>
                 <th scope="col"><?= __('接続先') ?></th>
                 <th scope="col"><?= __('リモート') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
             <tr>
@@ -94,8 +94,6 @@
                     <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
                     /
                     <?= $this->Html->link(__('編集'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
-                    /
-                    <?= $this->Form->postLink(__('削除'), ['controller' => 'Devices', 'action' => 'delete', $devices->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $devices->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
