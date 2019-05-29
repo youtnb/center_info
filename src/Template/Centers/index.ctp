@@ -5,7 +5,7 @@
  */
 ?>
 <script type="text/javascript">
-$(document).ready(function()
+jQuery(function($)
 {
     // 地域選択時、都道府県選択クリア
     $('#m-area-id').change(function()
@@ -58,7 +58,7 @@ $(document).ready(function()
         </thead>
         <tbody>
             <?php foreach ($centers as $center): ?>
-            <tr<?= $center->delete_flag?' class="delete_content"':'' ?>>
+            <tr class="clickable <?= $center->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Centers', 'action' => 'view', $center->id]) ?>">
                 <td><?= $center->has('m_customer') ? $center->m_customer->name : '' ?></td>
                 <td><?= h($center->name) ?></td>
                 <td><?= h($center->postcode) ?></td>

@@ -5,6 +5,21 @@
  */
 
 /**
+ * 行クリック
+ * trタグにdata-hrefを指定
+ * @param {type} $
+ * @returns {undefined}
+ */
+jQuery(function($)
+{
+    $('tr[data-href]').addClass('clickable').click(function(e) {
+        if(!$(e.target).is('a')){
+            window.location = $(e.target).closest('tr').data('href');
+        };
+    });
+});
+
+/**
  * 送信フォームsubmit
  * class='search_form'配下のselectタグにonchangeイベントリスナ追加
  * class='search_form'配下のinput type=checkboxタグにonchangeイベントリスナ追加
