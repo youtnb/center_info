@@ -68,30 +68,28 @@
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('M Device Type Id') ?></th>
-                <th scope="col"><?= __('Accepted No') ?></th>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Ip Higher') ?></th>
-                <th scope="col"><?= __('Ip Lower') ?></th>
-                <th scope="col"><?= __('Reserve Flag') ?></th>
-                <th scope="col"><?= __('Setup Date') ?></th>
-                <th scope="col"><?= __('Connect') ?></th>
-                <th scope="col"><?= __('Remote') ?></th>
-                <th scope="col"><?= __('Delete Flag') ?></th>
+                <th scope="col"><?= __('端末名') ?></th>
+                <th scope="col"><?= __('端末種別') ?></th>
+                <th scope="col"><?= __('受入No') ?></th>
+                <th scope="col"><?= __('上位IP') ?></th>
+                <th scope="col"><?= __('下位IP') ?></th>
+                <th scope="col"><?= __('予備') ?></th>
+                <th scope="col"><?= __('設置日') ?></th>
+                <th scope="col"><?= __('接続先') ?></th>
+                <th scope="col"><?= __('リモート') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
             <tr>
-                <td><?= h($devices->m_device_type_id) ?></td>
-                <td><?= h($devices->accepted_no) ?></td>
                 <td><?= h($devices->name) ?></td>
+                <td><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td>
+                <td><?= h($devices->accepted_no) ?></td>
                 <td><?= h($devices->ip_higher) ?></td>
                 <td><?= h($devices->ip_lower) ?></td>
                 <td><?= h($devices->reserve_flag) ?></td>
                 <td><?= h($devices->setup_date) ?></td>
                 <td><?= h($devices->connect) ?></td>
                 <td><?= h($devices->remote) ?></td>
-                <td><?= h($devices->delete_flag) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
                     /

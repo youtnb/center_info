@@ -60,7 +60,10 @@ class CentersController extends AppController
             'contain' => ['MCustomers', 'MPrefectures', 'MUsers', 'Devices']
         ]);
 
-        $this->set('center', $center);
+        $tableMDeviceTypes = TableRegistry::get('MDeviceTypes');
+        $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
+        
+        $this->set(compact('center', 'mDeviceTypes'));
     }
 
     /**
