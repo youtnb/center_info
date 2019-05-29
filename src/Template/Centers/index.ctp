@@ -43,6 +43,7 @@ jQuery(function($)
             </table>
         </fieldset>
     <?= $this->Form->end() ?>
+    <div style="margin:0 0 0 auto; width: 10%;"><?= $this->Paginator->limitControl([10 => 10, 20 => 20, 50 => 50], null, ['label' => '']) ?></div>
     <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
@@ -88,3 +89,4 @@ jQuery(function($)
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>
 </div>
+    
