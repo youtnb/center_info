@@ -42,3 +42,20 @@ function reset_form()
     $('.search_form :input').val('');
     $('.search_form :submit').click();
 }
+
+/**
+ * 
+ * @param {type} copy_text
+ * @returns {undefined}
+ */
+function clipboard_copy(copy_text)
+{
+    var input = document.createElement('input');
+    input.setAttribute('id', 'clipboard_copy');
+    document.body.appendChild(input);
+    input.value = copy_text;
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    alert('コピーしました');
+}

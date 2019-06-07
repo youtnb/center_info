@@ -37,9 +37,15 @@
         </tr>
         <tr>
             <th scope="row"><?= __('上位IP') ?></th>
-            <td><?= h($device->ip_higher) ?></td>
+            <td><?= h($device->ip_higher) ?><?php if(!empty($device->ip_higher)){
+                echo '&nbsp;';
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboard_copy(\''.$device->ip_higher.'\');']);
+            } ?></td>
             <th scope="row"><?= __('下位IP') ?></th>
-            <td><?= h($device->ip_lower) ?></td>
+            <td><?= h($device->ip_lower) ?><?php if(!empty($device->ip_lower)){
+                echo '&nbsp;';
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboard_copy(\''.$device->ip_lower.'\');']);
+            } ?></td>
             <th scope="row"><?= __('製造番号') ?></th>
             <td><?= h($device->serial_no) ?></td>
         </tr>
