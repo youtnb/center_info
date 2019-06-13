@@ -5,7 +5,7 @@
  */
 ?>
 <script type="text/javascript">
-$(document).ready(function()
+jQuery(function($)
 {
     // 顧客選択時、拠点選択クリア
     $('#m-customer-id').change(function()
@@ -110,9 +110,9 @@ $(document).ready(function()
                 -->
                 <td style="text-align: center"><?php if($device->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
+                    <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
                     /
-                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?><!--
+                    --><?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?><!--
                     /
                     <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?>-->
                 </td>

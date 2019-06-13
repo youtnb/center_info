@@ -67,9 +67,9 @@ jQuery(function($)
                 <td><?= h($center->address) ?></td>
                 <td style="text-align: center"><?php if($center->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
+                    <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
                     /
-                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?><!--
+                    --><?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?><!--
                     /
                     <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?>-->
                 </td>
