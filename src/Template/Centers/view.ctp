@@ -24,9 +24,11 @@
     <table class="">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>
-            <td><?= h($center->m_customer->name) ?></td>
+            <td colspan="3"><?= h($center->m_customer->name) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('住所') ?></th>
-            <td colspan="5"><?php
+            <td colspan="3"><?php
                 echo $center->postcode ? '〒'. substr($center->postcode, 0, 3). ' - '. substr($center->postcode, 3). '&nbsp;': '';
                 echo $center->has('m_prefecture') ? $center->m_prefecture->name : '';
                 echo h($center->address);
@@ -35,16 +37,20 @@
         <tr>
             <th scope="row"><?= __('電話番号') ?></th>
             <td><?= h($center->tel) ?></td>
-            <th scope="row"><?= __('温度帯') ?></th>
-            <td colspan="3"><?= $this->Display->thermo_list($center); ?></td>
             <th scope="row"><?= __('要上履き') ?></th>
             <td><?= $center->shoes_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('温度帯') ?></th>
+            <td colspan="3"><?= $this->Display->thermo_list($center); ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('責任者') ?></th>
             <td><?= h($center->officer) ?></td>
             <th scope="row"><?= __('担当者') ?></th>
             <td><?= h($center->staff) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('最終更新日時') ?></th>
             <td><?= h($center->modified) ?></td>
             <th scope="row"><?= __('最終更新者') ?></th>

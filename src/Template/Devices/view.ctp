@@ -23,17 +23,21 @@
     <table class="">
         <tr>
             <th scope="row"><?= __('拠点') ?></th>
-            <td colspan="3"><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
-            <th scope="row"><?= __('受入No') ?></th>
-            <td><?= h($device->accepted_no) ?></td>
+            <td colspan="5"><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('受入No') ?></th>
+            <td><?= h($device->accepted_no) ?></td>
             <th scope="row"><?= __('端末種別') ?></th>
-            <td><?= $device->has('m_device_type') ? $device->m_device_type->name : '' ?></td>
+            <td colspan="3"><?= $device->has('m_device_type') ? $device->m_device_type->name : '' ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('端末名') ?></th>
             <td><?= h($device->name) ?></td>
             <th scope="row"><?= __('型式') ?></th>
             <td><?= h($device->model) ?></td>
+            <th scope="row"><?= __('製造番号') ?></th>
+            <td><?= h($device->serial_no) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('上位IP') ?></th>
@@ -46,46 +50,44 @@
                 echo '&nbsp;';
                 echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboard_copy(\''.$device->ip_lower.'\');']);
             } ?></td>
-            <th scope="row"><?= __('製造番号') ?></th>
-            <td><?= h($device->serial_no) ?></td>
+            <th scope="row"><?= __('AdminPass') ?></th>
+            <td><?= h($device->admin_pass) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('設置日') ?></th>
             <td><?= h($device->setup_date) ?></td>
             <th scope="row"><?= __('サポート終了日') ?></th>
-            <td><?= h($device->support_end_date) ?></td>
+            <td colspan="3"><?= h($device->support_end_date) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('予備') ?></th>
             <td><?= $device->reserve_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('OS種別') ?></th>
-            <td><?= $device->has('m_operation_system') ? $device->m_operation_system->name : '' ?></td>
-            <th scope="row"><?= __('SQLServer種別') ?></th>
-            <td><?= $device->has('m_sqlserver') ? $device->m_sqlserver->name : '' ?></td>
-            <th scope="row"><?= __('AdminPass') ?></th>
-            <td><?= h($device->admin_pass) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('製造') ?></th>
-            <td><?= $device->has('m_product') ? $device->m_product->name : '' ?></td>
-            <th scope="row"><?= __('Appバージョン') ?></th>
-            <td><?= $device->has('m_version') ? $device->m_version->name : '' ?></td>
-            <th scope="row"><?= __('接続先') ?></th>
-            <td><?= h($device->connect) ?></td>
-        </tr>
-        <tr>
         <!--
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($device->id) ?></td>
             <th scope="row"><?= __('Created') ?></th>
             <td><?= h($device->created) ?></td>
         -->
-            <th scope="row"><?= __('リモート') ?></th>
-            <td><?= h($device->remote) ?></td>
             <th scope="row"><?= __('稼働中') ?></th>
             <td><?= $device->running_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
             <th scope="row"><?= __('セキュリティソフト') ?></th>
             <td><?= $device->security_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('OS種別') ?></th>
+            <td><?= $device->has('m_operation_system') ? $device->m_operation_system->name : '' ?></td>
+            <th scope="row"><?= __('SQLServer種別') ?></th>
+            <td><?= $device->has('m_sqlserver') ? $device->m_sqlserver->name : '' ?></td>
+            <th scope="row"><?= __('接続先') ?></th>
+            <td><?= h($device->connect) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('製造') ?></th>
+            <td><?= $device->has('m_product') ? $device->m_product->name : '' ?></td>
+            <th scope="row"><?= __('Appバージョン') ?></th>
+            <td><?= $device->has('m_version') ? $device->m_version->name : '' ?></td>
+            <th scope="row"><?= __('リモート') ?></th>
+            <td><?= h($device->remote) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('最終更新日時') ?></th>

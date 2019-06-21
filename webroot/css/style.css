@@ -604,3 +604,21 @@ tbody tr.clickable:nth-child(odd):hover td{
     background: #dce2fa;
     cursor: pointer;
 }
+
+/* フォームレイアウト調整 */
+div.float_05{
+    float: left;
+    padding-right: 0.5em;
+}
+div.float_10{
+    float: left;
+    padding-right: 1.0em;
+}
+div.float_15{
+    float: left;
+    padding-right: 1.5em;
+}
+div.float_30{
+    float: left;
+    padding-right: 3.0em;
+}

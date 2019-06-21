@@ -30,31 +30,65 @@ $(document).ready(function()
     <fieldset>
         <legend><?= __('端末登録') ?></legend>
         <?php
-            echo $this->Form->control('search_m_customer_id', ['options' => $mCustomers, 'value' => $m_customer_id, 'label' => '顧客']);
+            echo "<div class='float_10'>";
+            echo $this->Form->control('search_m_customer_id', ['options' => $mCustomers, 'value' => $m_customer_id, 'label' => '顧客', 'style' => 'width: 300px;']);
+            echo "</div>";
             echo '<span id="center_list">';
-            echo $this->Form->control('center_id', ['options' => $centers, 'value' => $center_id, 'label' => '拠点']);
+            echo $this->Form->control('center_id', ['options' => $centers, 'value' => $center_id, 'label' => '拠点', 'style' => 'width: 300px;']);
             echo '</span>';
-            echo $this->Form->control('accepted_no', ['label' => '受入No']);
-            echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes, 'label' => '端末種別']);
-            echo $this->Form->control('name', ['label' => '端末名']);
-            echo $this->Form->control('model', ['label' => '型式']);
-            echo $this->Form->control('serial_no', ['label' => '製造番号']);
-            echo $this->Form->control('ip_higher', ['label' => '上位IP']);
-            echo $this->Form->control('ip_lower', ['label' => '下位IP']);
+
+            echo "<div class='float_10'>";
+            echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 300px;']);
+            echo "</div>";
+            echo $this->Form->control('m_device_type_id', ['options' => $mDeviceTypes, 'label' => '端末種別', 'style' => 'width: 200px;']);
+
+            echo "<div class='float_05'>";
+            echo $this->Form->control('name', ['label' => '端末名', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('model', ['label' => '型式', 'style' => 'width: 250px;']);
+            echo "</div>";
+            echo $this->Form->control('serial_no', ['label' => '製造番号', 'style' => 'width: 200px;']);
+
+            echo "<div class='float_05'>";
+            echo $this->Form->control('ip_higher', ['label' => '上位IP', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('ip_lower', ['label' => '下位IP', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo $this->Form->control('admin_pass', ['label' => 'AdminPass', 'style' => 'width: 250px;']);
+
+            echo "<div class='float_30'>";
             echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '設置日']);
+            echo "</div>";
             echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => 'サポート終了日']);
+            
+            echo "<div class='float_30'>";
             echo $this->Form->control('reserve_flag', ['label' => '予備']);
-            echo $this->Form->control('m_operation_system_id', ['options' => $mOperationSystems, 'empty' => true, 'label' => 'OS種別']);
-            echo $this->Form->control('m_sqlserver_id', ['options' => $mSqlservers, 'empty' => true, 'label' => 'SQLServer種別']);
-            echo $this->Form->control('admin_pass', ['label' => 'AdminPass']);
-            echo $this->Form->control('m_product_id', ['options' => $mProducts, 'empty' => true, 'label' => '製造']);
-            echo $this->Form->control('m_version_id', ['options' => $mVersions, 'empty' => true, 'label' => 'Appバージョン']);
-            echo $this->Form->control('connect', ['label' => '接続先']);
-            echo $this->Form->control('remote', ['label' => 'リモート']);
+            echo "</div>";
+            echo "<div class='float_30'>";
             echo $this->Form->control('running_flag', ['label' => '稼働中']);
+            echo "</div>";
             echo $this->Form->control('security_flag', ['label' => 'セキュリティソフト']);
-            echo $this->Form->control('custom', ['label' => '改造内容']);
-            echo $this->Form->control('remarks', ['label' => '備考']);
+            
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_operation_system_id', ['options' => $mOperationSystems, 'empty' => true, 'label' => 'OS種別', 'style' => 'width: 250px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_sqlserver_id', ['options' => $mSqlservers, 'empty' => true, 'label' => 'SQLServer種別', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo $this->Form->control('connect', ['label' => '接続先', 'style' => 'width: 200px;']);
+            
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_product_id', ['options' => $mProducts, 'empty' => true, 'label' => '製造', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_version_id', ['options' => $mVersions, 'empty' => true, 'label' => 'Appバージョン', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo $this->Form->control('remote', ['label' => 'リモート', 'style' => 'width: 250px;']);
+
+            echo $this->Form->control('custom', ['label' => '改造内容', 'style' => 'width: 700px;']);
+            echo $this->Form->control('remarks', ['label' => '備考', 'style' => 'width: 700px;']);
             echo $this->Form->hidden('delete_flag', ['value' => 0]);
             echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>

@@ -31,21 +31,41 @@
     <fieldset>
         <legend><?= __('拠点情報') ?></legend>
         <?php
-            echo $this->Form->control('m_customer_id', ['options' => $mCustomers, 'label' => '顧客']);
-            echo $this->Form->control('name', ['label' => '拠点名']);
-            echo $this->Form->control('postcode', ['label' => '郵便番号']);
-            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true, 'label' => '都道府県']);
-            echo $this->Form->control('address', ['label' => '住所']);
-            echo $this->Form->control('tel', ['label' => '電話番号']);
+            echo "<div class='float_10'>";
+            echo $this->Form->control('m_customer_id', ['options' => $mCustomers, 'label' => '顧客', 'style' => 'width: 200px;']);
+             echo "</div>";
+            echo $this->Form->control('name', ['label' => '拠点名', 'style' => 'width: 400px;']);
+
+            echo "<div class='float_05'>";
+            echo $this->Form->control('postcode', ['label' => '郵便番号', 'style' => 'width: 100px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true, 'label' => '都道府県', 'style' => 'width: 100px;']);
+            echo "</div>";
+            echo $this->Form->control('address', ['label' => '住所', 'style' => 'width: 400px;']);
+
+            echo $this->Form->control('tel', ['label' => '電話番号', 'style' => 'width: 250px;']);
+
+            echo "<div class='float_15'>";
             echo $this->Form->control('thermo_dry_flag', ['label' => '温度帯【ドライ】']);
+            echo "</div>";
+            echo "<div class='float_15'>";
             echo $this->Form->control('thermo_chilled_flag', ['label' => '温度帯【チルド】']);
+            echo "</div>";
+            echo "<div class='float_30'>";
             echo $this->Form->control('thermo_frozen_flag', ['label' => '温度帯【フローズン】']);
+            echo "</div>";
             echo $this->Form->control('shoes_flag', ['label' => '要上履き']);
-            echo $this->Form->control('officer', ['label' => '責任者']);
-            echo $this->Form->control('staff', ['label' => '担当者']);
-            echo $this->Form->control('access', ['label' => 'アクセス']);
-            echo $this->Form->control('job', ['label' => '業務内容']);
-            echo $this->Form->control('remarks', ['label' => '備考']);
+            
+            echo "<div class='float_10'>";
+            echo $this->Form->control('officer', ['label' => '責任者', 'style' => 'width: 250px;']);
+            echo "</div>";
+            echo $this->Form->control('staff', ['label' => '担当者', 'style' => 'width: 250px;']);
+            
+            echo $this->Form->control('access', ['label' => 'アクセス', 'style' => 'width: 700px;']);
+            echo $this->Form->control('job', ['label' => '業務内容', 'style' => 'width: 700px;']);
+            echo $this->Form->control('remarks', ['label' => '備考', 'style' => 'width: 700px;']);
+
             echo $this->Form->control('delete_flag', ['label' => '削除']);
             echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
 
