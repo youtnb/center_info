@@ -219,7 +219,14 @@ class DevicesTable extends Table
         $order = $query->clause('order');
         if (($order === null || !count($order)) && $primary)
         {
-            $query->order(['Centers.m_prefecture_id' => 'ASC', 'Centers.m_customer_id' => 'ASC', 'Centers.name' => 'ASC', $this->alias().'.id' => 'ASC']);
+            $query->order([
+                'Centers.m_prefecture_id' => 'ASC',
+                'Centers.m_customer_id' => 'ASC',
+                'Centers.name' => 'ASC',
+                'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
+                'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
+                $this->alias().'.reserve_flag' => 'ASC'
+                ]);
         }
         
         return $query;
