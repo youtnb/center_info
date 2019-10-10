@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use RuntimeException;
 
 /**
  * Devices Controller
@@ -13,6 +14,11 @@ use Cake\ORM\TableRegistry;
  */
 class DevicesController extends AppController
 {
+    public $components = ['AttachedFile'];
+    
+    const UPLOAD_DIR = UPLOAD_DIR_DEVICE;
+    const UPLOAD_PATH = WWW_ROOT.'/'.self::UPLOAD_DIR.'/';
+    
     /**
      * Index method
      *
@@ -94,8 +100,16 @@ class DevicesController extends AppController
         $device = $this->Devices->get($id, [
             'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers', 'Comments', 'Customs']
         ]);
-
-        $this->set('device', $device);
+        
+        // 添付ファイル
+        $result = glob(self::UPLOAD_PATH.$device['id'].'/*');
+        $file_list = array();
+        foreach($result as $file)
+        {
+            $file_list[basename($file)] = '/'.self::UPLOAD_DIR.'/'.$device['id'].'/'.basename($file);
+        }
+        
+        $this->set(compact('device', 'file_list'));
     }
 
     /**
@@ -106,12 +120,13 @@ class DevicesController extends AppController
     public function add($center_id = null)
     {
         $device = $this->Devices->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post'))
+        {
             $device = $this->Devices->patchEntity($device, $this->request->getData());
-            if ($this->Devices->save($device)) {
+            if ($this->Devices->save($device))
+            {
                 $this->Flash->success(__('The device has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $device['id']]);
             }
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
@@ -156,12 +171,13 @@ class DevicesController extends AppController
         $device = $this->Devices->get($id, [
             'contain' => ['Centers']
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
             $device = $this->Devices->patchEntity($device, $this->request->getData());
-            if ($this->Devices->save($device)) {
+            if ($this->Devices->save($device))
+            {
                 $this->Flash->success(__('The device has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $device['id']]);
             }
             $this->Flash->error(__('The device could not be saved. Please, try again.'));
         }
@@ -203,7 +219,7 @@ class DevicesController extends AppController
     
     /**
      * 顧客IDから関連する拠点リストを取得（登録画面用）
-     * @param type $id
+     * @param type $m_customer_id
      * @return array $centers
      */
     public function addCenterList($m_customer_id = null)
@@ -217,4 +233,49 @@ class DevicesController extends AppController
             $this->set(compact('centers'));
         }
     }
+    
+    /**
+     * ファイル保存処理
+     * @param type $id
+     * @return type
+     */
+    public function addFile($id = null)
+    {
+        $device = $this->Devices->get($id, [
+            'contain' => ['Centers']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
+            $device = $this->Devices->patchEntity($device, $this->request->getData());
+            $dir = self::UPLOAD_PATH.$device['id'];
+            try {
+                $device['import_file'] = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
+            } catch (RuntimeException $e){
+                $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
+                $this->Flash->error(__($e->getMessage()));
+
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->Flash->success(__('The file has been uploaded.'));
+            return $this->redirect(['action' => 'view', $device['id']]);
+        }
+    }
+    
+    /**
+     * ファイル削除処理
+     * @param type $id
+     * @param type $filename
+     * @return type
+     */
+    public function deleteFile($id = null, $filename = null)
+    {
+        if ($filename)
+        {
+            $this->AttachedFile->delete(self::UPLOAD_PATH.$id.'/'.urldecode($filename));
+        }
+        
+        return $this->redirect(['action' => 'view', $id]);
+    }
+    
 }

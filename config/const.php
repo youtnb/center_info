@@ -20,4 +20,6 @@ return [
     define('ROLE_ID_MEMBER', 2),
     define('ROLE_ID_GUEST', 3),
     
+    define('UPLOAD_DIR_CENTER', 'upfilescen'),
+    define('UPLOAD_DIR_DEVICE', 'upfilesdev'),
 ];

@@ -4,6 +4,15 @@
  * @var \App\Model\Entity\Device $device
  */
 ?>
+<script type="text/javascript">
+function del_file(filename)
+{
+   if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
+   {
+       window.location.href = '/center_info/devices/deleteFile/<?= $device->id ?>/' + encodeURI(filename);
+   }
+}
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
@@ -105,6 +114,18 @@
     <div class="row">
         <h4><?= __('備考') ?></h4>
         <?= $this->Text->autoParagraph(h($device->remarks)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('添付ファイル') ?></h4>
+        <ul>
+        <?php foreach ($file_list as $key => $val): ?>
+            <li><?= $this->Html->link(__($key), $val) ?><?= '&nbsp;'.$this->Form->button('DEL', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></li>
+        <?php endforeach; ?>            
+        </ul>
+        <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+        <?= $this->Form->file('import_file', ['label' => '仕様書']) ?>
+        <?= $this->Form->button(__('保存')) ?>
+        <?= $this->Form->end() ?>
     </div>
     <div class="related">
         <h4><?= __('コメント') ?></h4>
