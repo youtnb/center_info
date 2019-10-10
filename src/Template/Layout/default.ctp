@@ -41,7 +41,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
                 <!--<h1><a href=""><?= $this->fetch('title') ?></a></h1>-->
-                <h1 style='white-space: nowrap;'><?= $this->Html->link(__('拠点情報管理システム'), ['controller' => 'Centers', 'action' => 'index']) ?></h1>
+                <h1 style='white-space: nowrap;'><?= $this->Html->link(__('物流拠点ポータル'), ['controller' => 'Centers', 'action' => 'index']) ?></h1>
             </li>
         </ul>
         <div class="top-bar-section">
