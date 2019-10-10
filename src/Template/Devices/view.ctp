@@ -119,11 +119,11 @@ function del_file(filename)
         <h4><?= __('添付ファイル') ?></h4>
         <ul>
         <?php foreach ($file_list as $key => $val): ?>
-            <li><?= $this->Html->link(__($key), $val) ?><?= '&nbsp;'.$this->Form->button('DEL', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></li>
+            <li><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?><?= '&nbsp;'.$this->Form->button('DEL', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></li>
         <?php endforeach; ?>            
         </ul>
         <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
-        <?= $this->Form->file('import_file', ['label' => '仕様書']) ?>
+        <?= $this->Form->file('import_file') ?>
         <?= $this->Form->button(__('保存')) ?>
         <?= $this->Form->end() ?>
     </div>
