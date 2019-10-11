@@ -53,16 +53,20 @@ class CustomsController extends AppController
         $custom = $this->Customs->newEntity();
         if ($this->request->is('post')) {
             $custom = $this->Customs->patchEntity($custom, $this->request->getData());
-            if ($this->Customs->save($custom)) {
+            if ($this->Customs->save($custom))
+            {
                 $this->Flash->success(__('The custom has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The custom could not be saved. Please, try again.'));
+            else
+            {
+                $this->Flash->error(__('The custom could not be saved. Please, try again.'));                
+            }
         }
-        $devices = $this->Customs->Devices->find('list', ['limit' => 200]);
-        $mUsers = $this->Customs->MUsers->find('list', ['limit' => 200]);
-        $this->set(compact('custom', 'devices', 'mUsers'));
+//        $devices = $this->Customs->Devices->find('list', ['limit' => 200]);
+//        $mUsers = $this->Customs->MUsers->find('list', ['limit' => 200]);
+//        $this->set(compact('custom', 'devices', 'mUsers'));
+
+        return $this->redirect(['controller' => 'devices', 'action' => 'view', $custom['device_id']]);
     }
 
     /**
@@ -86,8 +90,8 @@ class CustomsController extends AppController
             }
             $this->Flash->error(__('The custom could not be saved. Please, try again.'));
         }
-        $devices = $this->Customs->Devices->find('list', ['limit' => 200]);
-        $mUsers = $this->Customs->MUsers->find('list', ['limit' => 200]);
+//        $devices = $this->Customs->Devices->find('list', ['limit' => 200]);
+//        $mUsers = $this->Customs->MUsers->find('list', ['limit' => 200]);
         $this->set(compact('custom', 'devices', 'mUsers'));
     }
 

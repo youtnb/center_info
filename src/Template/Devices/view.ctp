@@ -177,14 +177,32 @@ function del_file(filename)
                 <td><?= h($customs->m_user_id) ?></td>
                 <td><?= h($customs->created) ?></td>
                 <td><?= h($customs->modified) ?></td>
-                <td class="actions">
+                <td class="actions"><!--
                     <?= $this->Html->link(__('閲覧'), ['controller' => 'Customs', 'action' => 'view', $customs->id]) ?>
                     /
-                    <?= $this->Html->link(__('編集'), ['controller' => 'Customs', 'action' => 'edit', $customs->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['controller' => 'Customs', 'action' => 'edit', $customs->id]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
+        <?= $this->Form->create($device, ['type' => 'post', 'url' => '/customs/add/']) ?>
+        <fieldset>
+        <?php 
+            echo $this->Form->hidden('device_id', ['value' => $device->id]);
+            echo "<div class='float_10'>";
+            echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 300px;']);
+            echo "</div>";
+            echo $this->Form->control('content', ['label' => '内容', 'style' => 'width: 500px;']);
+            echo $this->Form->control('exe_file', ['label' => '実行ファイル']);
+            echo $this->Form->control('config_file', ['label' => '設定ファイル']);
+            echo $this->Form->control('hht_file', ['label' => 'HHTファイル']);
+            echo $this->Form->control('db_custom', ['label' => 'DB変更']);
+            echo $this->Form->hidden('delete_flag', ['value' => 0]);
+            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+        ?>
+        <?= $this->Form->button(__('SAVE')) ?>
+        </fieldset>
+        <?= $this->Form->end() ?>
     </div>
 </div>
