@@ -111,7 +111,7 @@ class MCustomersTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.id' => 'ASC']);
+            $query->order([$this->alias().'.name' => 'ASC', $this->alias().'.id' => 'ASC']);
         }
         
         return $query;
