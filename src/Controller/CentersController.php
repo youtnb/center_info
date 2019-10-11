@@ -17,7 +17,7 @@ class CentersController extends AppController
     public $components = ['AttachedFile'];
     
     const UPLOAD_DIR = UPLOAD_DIR_CENTER;
-    const UPLOAD_PATH = WWW_ROOT.'/'.self::UPLOAD_DIR.'/';
+    const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
     
     /**
      * Index method
@@ -70,11 +70,11 @@ class CentersController extends AppController
         $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
         
         // 添付ファイル
-        $result = glob(self::UPLOAD_PATH.$center['id'].'/*');
+        $result = glob(self::UPLOAD_PATH. $center['id']. '/'. '*');
         $file_list = array();
         foreach($result as $file)
         {
-            $file_list[basename($file)] = '/'.self::UPLOAD_DIR.'/'.$center['id'].'/'.basename($file);
+            $file_list[basename($file)] = '/'. implode('/', [self::UPLOAD_DIR, $center['id'], basename($file)]);
         }
         
         $this->set(compact('center', 'mDeviceTypes', 'file_list'));
@@ -165,7 +165,7 @@ class CentersController extends AppController
         if ($this->request->is(['patch', 'post', 'put']))
         {
             $center = $this->Centers->patchEntity($center, $this->request->getData());
-            $dir = self::UPLOAD_PATH.$center['id'];
+            $dir = self::UPLOAD_PATH. $center['id'];
             try {
                 $center['import_file'] = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
             } catch (RuntimeException $e){
@@ -190,7 +190,7 @@ class CentersController extends AppController
     {
         if ($filename)
         {
-            $this->AttachedFile->delete(self::UPLOAD_PATH.$id.'/'.urldecode($filename));
+            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
         }
         
         return $this->redirect(['action' => 'view', $id]);

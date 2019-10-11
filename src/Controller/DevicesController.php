@@ -17,7 +17,7 @@ class DevicesController extends AppController
     public $components = ['AttachedFile'];
     
     const UPLOAD_DIR = UPLOAD_DIR_DEVICE;
-    const UPLOAD_PATH = WWW_ROOT.'/'.self::UPLOAD_DIR.'/';
+    const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
     
     /**
      * Index method
@@ -102,11 +102,11 @@ class DevicesController extends AppController
         ]);
         
         // 添付ファイル
-        $result = glob(self::UPLOAD_PATH.$device['id'].'/*');
+        $result = glob(self::UPLOAD_PATH. $device['id']. '/'. '*');
         $file_list = array();
         foreach($result as $file)
         {
-            $file_list[basename($file)] = '/'.self::UPLOAD_DIR.'/'.$device['id'].'/'.basename($file);
+            $file_list[basename($file)] = '/'. implode('/', [self::UPLOAD_DIR, $device['id'], basename($file)]);
         }
         
         $this->set(compact('device', 'file_list'));
@@ -247,7 +247,7 @@ class DevicesController extends AppController
         if ($this->request->is(['patch', 'post', 'put']))
         {
             $device = $this->Devices->patchEntity($device, $this->request->getData());
-            $dir = self::UPLOAD_PATH.$device['id'];
+            $dir = self::UPLOAD_PATH. $device['id'];
             try {
                 $device['import_file'] = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
             } catch (RuntimeException $e){
@@ -272,7 +272,7 @@ class DevicesController extends AppController
     {
         if ($filename)
         {
-            $this->AttachedFile->delete(self::UPLOAD_PATH.$id.'/'.urldecode($filename));
+            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
         }
         
         return $this->redirect(['action' => 'view', $id]);
