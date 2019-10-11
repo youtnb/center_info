@@ -73,15 +73,15 @@ class CustomsTable extends Table
 
         $validator
             ->scalar('exe_file')
-            ->allowEmptyFile('exe_file');
+            ->allowEmptyString('exe_file');
 
         $validator
             ->scalar('config_file')
-            ->allowEmptyFile('config_file');
+            ->allowEmptyString('config_file');
 
         $validator
             ->scalar('hht_file')
-            ->allowEmptyFile('hht_file');
+            ->allowEmptyString('hht_file');
 
         $validator
             ->scalar('db_custom')
@@ -121,11 +121,8 @@ class CustomsTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        $where = $query->clause('where');
-        if ($where === null || !count($where))
-        {
-            $query->where([$this->alias().'.delete_flag' => 0]);
-        }
+        $query->where([$this->alias().'.delete_flag' => 0]);
+
         // order
         $order = $query->clause('order');
         if ($order === null || !count($order))

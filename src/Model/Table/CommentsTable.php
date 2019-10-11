@@ -92,11 +92,8 @@ class CommentsTable extends Table
     public function beforeFind(Event $event ,Query $query, $options, $primary)
     {
         // where
-        $where = $query->clause('where');
-        if ($where === null || !count($where))
-        {
-            $query->where([$this->alias().'.delete_flag' => 0]);
-        }
+        $query->where([$this->alias().'.delete_flag' => 0]);
+        
         // order
         $order = $query->clause('order');
         if ($order === null || !count($order))

@@ -12,6 +12,20 @@ function del_file(filename)
        window.location.href = '/center_info/devices/deleteFile/<?= $device->id ?>/' + encodeURI(filename);
    }
 }
+function del_custom(id)
+{
+   if(confirm('改造履歴を削除します。よろしいですか？'))
+   {
+       window.location.href = '/center_info/customs/deleteLogical/' + id + '/<?= $device->id ?>';
+   }
+}
+function del_comment(id)
+{
+   if(confirm('コメントを削除します。よろしいですか？'))
+   {
+       window.location.href = '/center_info/comments/deleteLogical/' + id + '/<?= $device->id ?>';
+   }
+}
 </script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
@@ -117,71 +131,45 @@ function del_file(filename)
     </div>
     <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
+        <!-- テーブル表示の場合 -->
+        <!--<table class="">
+        <?php foreach ($file_list as $key => $val): ?>
+            <tr>
+                <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
+                <td><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></td>
+            </tr>
+        <?php endforeach; ?>            
+        </table>-->
+        <!-- リスト表示の場合 -->
         <ul>
         <?php foreach ($file_list as $key => $val): ?>
-            <li><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></li>
+            <li><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?>&nbsp;<?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></li>
         <?php endforeach; ?>            
         </ul>
         <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
         <?= $this->Form->file('import_file') ?>
-        <?= $this->Form->button(__('UPLOAD')) ?>
+        <?= $this->Form->button(__('登録')) ?>
         <?= $this->Form->end() ?>
-    </div>
-    <div class="related">
-        <h4><?= __('コメント') ?></h4>
-        <?php if (!empty($device->comments)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('コメント') ?></th>
-                <th scope="col"><?= __('削除') ?></th>
-                <th scope="col"><?= __('ユーザー') ?></th>
-                <th scope="col"><?= __('作成日時') ?></th>
-                <th scope="col"><?= __('更新日時') ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
-            </tr>
-            <?php foreach ($device->comments as $comments): ?>
-            <tr>
-                <td><?= h($comments->content) ?></td>
-                <td><?= h($comments->delete_flag) ?></td>
-                <td><?= h($comments->m_user_id) ?></td>
-                <td><?= h($comments->created) ?></td>
-                <td><?= h($comments->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('閲覧'), ['controller' => 'Comments', 'action' => 'view', $comments->id]) ?>
-                    /
-                    <?= $this->Html->link(__('編集'), ['controller' => 'Comments', 'action' => 'edit', $comments->id]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
     </div>
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
         <?php if (!empty($device->customs)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('受入No') ?></th>
+                <th scope="col" class="th_short"><?= __('受入No') ?></th>
                 <th scope="col"><?= __('内容') ?></th>
-                <th scope="col"><?= __('削除') ?></th>
-                <th scope="col"><?= __('ユーザー') ?></th>
-                <th scope="col"><?= __('作成日時') ?></th>
-                <th scope="col"><?= __('更新日時') ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
+                <th scope="col" class="th_short"><?= __('ユーザー') ?></th>
+                <th scope="col" class="th_ymd"><?= __('作成日時') ?></th>
+                <th scope="col" class="th_short"><?= __('') ?></th>
             </tr>
             <?php foreach ($device->customs as $customs): ?>
             <tr>
                 <td><?= h($customs->accepted_no) ?></td>
-                <td><?= h($customs->content) ?></td>
-                <td><?= h($customs->delete_flag) ?></td>
-                <td><?= h($customs->m_user_id) ?></td>
+                <td><?= $this->Text->autoParagraph(h($customs->content)) ?></td>
+                <td><?= array_key_exists($customs->m_user_id, $mUsers) ? $mUsers[$customs->m_user_id] : $customs->m_user_id; ?></td>
                 <td><?= h($customs->created) ?></td>
                 <td><?= h($customs->modified) ?></td>
-                <td class="actions"><!--
-                    <?= $this->Html->link(__('閲覧'), ['controller' => 'Customs', 'action' => 'view', $customs->id]) ?>
-                    /
-                    <?= $this->Html->link(__('編集'), ['controller' => 'Customs', 'action' => 'edit', $customs->id]) ?>-->
-                </td>
+                <td class="actions"><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_custom('".$customs->id."')"]) ?></td>
             </tr>
             <?php endforeach; ?>
         </table>
@@ -191,17 +179,50 @@ function del_file(filename)
         <?php 
             echo $this->Form->hidden('device_id', ['value' => $device->id]);
             echo "<div class='float_10'>";
-            echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 300px;']);
+            echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 100px;']);
             echo "</div>";
-            echo $this->Form->control('content', ['label' => '内容', 'style' => 'width: 500px;']);
-            echo $this->Form->control('exe_file', ['label' => '実行ファイル']);
-            echo $this->Form->control('config_file', ['label' => '設定ファイル']);
-            echo $this->Form->control('hht_file', ['label' => 'HHTファイル']);
-            echo $this->Form->control('db_custom', ['label' => 'DB変更']);
+            echo $this->Form->control('content', ['label' => '改造内容', 'type' => 'textarea', 'style' => 'width: 500px;']);
+            echo $this->Form->hidden('exe_file', ['label' => '実行ファイル', 'value' => '']);
+            echo $this->Form->hidden('config_file', ['label' => '設定ファイル', 'value' => '']);
+            echo $this->Form->hidden('hht_file', ['label' => 'HHTファイル', 'value' => '']);
+            echo $this->Form->hidden('db_custom', ['label' => 'DB変更', 'value' => '']);
             echo $this->Form->hidden('delete_flag', ['value' => 0]);
             echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>
-        <?= $this->Form->button(__('SAVE')) ?>
+        <?= $this->Form->button(__('登録')) ?>
+        </fieldset>
+        <?= $this->Form->end() ?>
+    </div>
+    <div class="related">
+        <h4><?= __('コメント') ?></h4>
+        <?php if (!empty($device->comments)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('コメント') ?></th>
+                <th scope="col" class="th_short"><?= __('ユーザー') ?></th>
+                <th scope="col" class="th_ymd"><?= __('作成日時') ?></th>
+                <th scope="col" class="th_short"><?= __('') ?></th>
+            </tr>
+            <?php foreach ($device->comments as $comments): ?>
+            <tr>
+                <td><?= h($comments->content) ?></td>
+                <td><?= array_key_exists($comments->m_user_id, $mUsers) ? $mUsers[$comments->m_user_id] : $comments->m_user_id; ?></td>
+                <td><?= h($comments->created) ?></td>
+                <td><?= h($comments->modified) ?></td>
+                <td class="actions"><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_comment('".$comments->id."')"]) ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+        <?= $this->Form->create($device, ['type' => 'post', 'url' => '/comments/add/']) ?>
+        <fieldset>
+        <?php
+            echo $this->Form->hidden('device_id', ['value' => $device->id]);
+            echo $this->Form->control('content', ['label' => 'コメント', 'type' => 'textarea', 'style' => 'width: 500px;']);
+            echo $this->Form->hidden('delete_flag', ['value' => 0]);
+            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+        ?>
+        <?= $this->Form->button(__('登録')) ?>
         </fieldset>
         <?= $this->Form->end() ?>
     </div>

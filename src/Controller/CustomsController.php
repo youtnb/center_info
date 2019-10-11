@@ -114,4 +114,29 @@ class CustomsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    /**
+     * 論理削除
+     *
+     * @param string|null $id Custom id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function deleteLogical($id = null, $device_id = null)
+    {
+        $custom = $this->Customs->get($id);
+        if ($id !== null && $device_id !== null)
+        {
+            $custom->delete_flag = 1;
+            $custom = $this->Customs->patchEntity($custom, $this->request->getData());
+            if ($this->Customs->save($custom)) {
+                $this->Flash->success(__('The custom has been deleted.'));
+            }
+            else
+            {
+                $this->Flash->error(__('The custom could not be saved. Please, try again.'));                
+            }
+        }
+        return $this->redirect(['controller' => 'devices', 'action' => 'view', $device_id]);
+    }
 }

@@ -101,6 +101,10 @@ class DevicesController extends AppController
             'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers', 'Comments', 'Customs']
         ]);
         
+        // ユーザー
+        $tableMUsers = TableRegistry::get('MUsers');
+        $mUsers = $tableMUsers->find('list')->toArray();
+        
         // 添付ファイル
         $result = glob(self::UPLOAD_PATH. $device['id']. '/'. '*');
         $file_list = array();
@@ -109,7 +113,7 @@ class DevicesController extends AppController
             $file_list[basename($file)] = '/'. implode('/', [self::UPLOAD_DIR, $device['id'], basename($file)]);
         }
         
-        $this->set(compact('device', 'file_list'));
+        $this->set(compact('device', 'file_list', 'mUsers'));
     }
 
     /**
