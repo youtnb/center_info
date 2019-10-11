@@ -113,7 +113,7 @@ function del_file(filename)
                 <td><?= h($devices->accepted_no) ?></td>
                 <td><?= h($devices->ip_higher) ?></td>
                 <td><?= h($devices->ip_lower) ?></td>
-                <td><?= h($devices->reserve_flag) ?></td>
+                <td><?php if($devices->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($devices->setup_date) ?></td>
                 <td><?= h($devices->connect) ?></td>
                 <td><?= h($devices->remote) ?></td>
