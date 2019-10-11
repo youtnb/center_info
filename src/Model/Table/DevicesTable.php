@@ -216,17 +216,32 @@ class DevicesTable extends Table
             $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
-        $order = $query->clause('order');
-        if (($order === null || !count($order)) && $primary)
-        {
-            $query->order([
-                'Centers.m_prefecture_id' => 'ASC',
-                'Centers.m_customer_id' => 'ASC',
-                'Centers.name' => 'ASC',
-                'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
-                'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
-                $this->alias().'.reserve_flag' => 'ASC'
-                ]);
+        $sql_array = explode(' ', $query->sql());
+        if (count($sql_array) > 2 && $sql_array[1] <> '1')
+        {   //SQLがexisting(select 1 ～)の場合はorder句を付けない
+            $order = $query->clause('order');
+            if ($order === null || !count($order))
+            {
+                if ($primary)
+                {
+                    $query->order([
+                        'Centers.m_prefecture_id' => 'ASC',
+                        'Centers.m_customer_id' => 'ASC',
+                        'Centers.name' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
+                        $this->alias().'.reserve_flag' => 'ASC'
+                        ]);
+                }
+                else
+                {
+                    $query->order([
+                        'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
+                        $this->alias().'.reserve_flag' => 'ASC'
+                        ]);
+                }
+            }
         }
         
         return $query;
