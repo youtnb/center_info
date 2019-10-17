@@ -35,12 +35,15 @@ $(document).on('change', '.search_form :checkbox', function(){
 /**
  * 送信フォームreset
  * class='search_form'のinputをすべてクリアしてsubmitボタンclick
+ * =>指定したurlにリダイレクト
+ * @param {type} url
  * @returns {undefined}
  */
-function reset_form()
+function reset_form(url)
 {
-    $('.search_form :input').val('');
-    $('.search_form :submit').click();
+    //$('.search_form :input').val('');
+    //$('.search_form :submit').click();
+    window.location.href = url;
 }
 
 /**

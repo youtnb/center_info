@@ -19,6 +19,12 @@ class CentersController extends AppController
     const UPLOAD_DIR = UPLOAD_DIR_CENTER;
     const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
     
+    // セッションに保存する検索条件
+    const SESSION_CLASS = 'Center.';
+    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'delete_flag'];
+    const SESSION_CLASS_SUB = 'Device.';
+    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id']; // nameとdelete_flagは共有しない
+
     /**
      * Index method
      *
@@ -30,6 +36,16 @@ class CentersController extends AppController
             'contain' => ['MCustomers', 'MPrefectures', 'MUsers']
         ];
 
+        // パラメータ無いときはセッションから検索条件取得
+        $session = $this->request->session();
+        if (empty($this->request->query))
+        {
+            foreach($this->search_items as $i)
+            {
+                if ($session->check(self::SESSION_CLASS.$i) && !empty($session->read(self::SESSION_CLASS.$i))) $this->request->query[$i] = $session->read(self::SESSION_CLASS.$i);
+            }
+        }
+
         $query = $this->Centers->find();
         $m_area_id = null;
         if (!empty($this->request->query))
@@ -37,6 +53,16 @@ class CentersController extends AppController
             // 一覧検索
             $query = $this->Centers->find('search', $this->request->query);
             if (isset($this->request->query['m_area_id'])) $m_area_id = $this->request->query['m_area_id'];
+            
+            // セッションに検索条件保存
+            foreach($this->search_items as $i)
+            {
+                if (isset($this->request->query[$i])) $session->write([self::SESSION_CLASS.$i => $this->request->query[$i]]);
+            }
+            foreach($this->search_items_sub as $i)
+            {
+                if (isset($this->request->query[$i])) $session->write([self::SESSION_CLASS_SUB.$i => $this->request->query[$i]]);
+            }
         }
         $centers = $this->paginate($query);
         
@@ -53,6 +79,27 @@ class CentersController extends AppController
         $this->set(compact('centers', 'mCustomers', 'mPrefectures', 'mAreas'));
     }
 
+    /**
+     * セッションクリア
+     * @return type
+     */
+    public function clear()
+    {
+        // セッションから検索条件削除
+        $session = $this->request->session();
+        foreach($this->search_items as $i)
+        {
+            $session->delete(self::SESSION_CLASS.$i);
+        }
+//        foreach($this->search_items_sub as $i)
+//        {
+//            $session->delete(self::SESSION_CLASS_SUB.$i);
+//        }
+
+        // リダイレクト
+        return $this->redirect(['action' => 'index']);
+    }
+    
     /**
      * View method
      *
@@ -171,7 +218,6 @@ class CentersController extends AppController
             } catch (RuntimeException $e){
                 $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
                 $this->Flash->error(__($e->getMessage()));
-
                 return $this->redirect(['action' => 'index']);
             }
 

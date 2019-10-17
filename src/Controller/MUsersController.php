@@ -149,6 +149,9 @@ class MUsersController extends AppController
      */
     public function logout()
     {
+        $session = $this->request->session();
+        $session->destroy();
+        
         return $this->redirect($this->Auth->logout());
     }
 }

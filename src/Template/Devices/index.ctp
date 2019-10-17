@@ -46,7 +46,7 @@ jQuery(function($)
                     <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
                     <td><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点', 'value' => $this->request->query('center_id')]) ?></td>
-                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => 'reset_form();']) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "reset_form('devices/clear');"]) ?></td>
                 </tr>
                 <tr>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
