@@ -23,7 +23,7 @@ class DevicesController extends AppController
     const SESSION_CLASS = 'Device.';
     private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag'];
     const SESSION_CLASS_SUB = 'Center.';
-    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id']; // nameとdelete_flagは共有しない
+    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id']; // nameとdelete_flagは共有しない
     
     /**
      * Index method
@@ -123,10 +123,10 @@ class DevicesController extends AppController
         {
             $session->delete(self::SESSION_CLASS.$i);
         }
-//        foreach($this->search_items_sub as $i)
-//        {
-//            $session->delete(self::SESSION_CLASS_SUB.$i);
-//        }
+        foreach($this->search_items_sub as $i)
+        {
+            $session->delete(self::SESSION_CLASS_SUB.$i);
+        }
 
         // リダイレクト
         return $this->redirect(['action' => 'index']);

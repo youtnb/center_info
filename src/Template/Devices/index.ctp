@@ -54,6 +54,9 @@ jQuery(function($)
                     <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名', 'value' => $this->request->query('name')]) ?></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
+                <tr>
+                    <td colspan="4">※顧客・地域・都道府県の指定は、拠点情報一覧と共通です</td>
+                </tr>
             </table>
         </fieldset>
     <?= $this->Form->end() ?>

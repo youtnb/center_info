@@ -91,10 +91,10 @@ class CentersController extends AppController
         {
             $session->delete(self::SESSION_CLASS.$i);
         }
-//        foreach($this->search_items_sub as $i)
-//        {
-//            $session->delete(self::SESSION_CLASS_SUB.$i);
-//        }
+        foreach($this->search_items_sub as $i)
+        {
+            $session->delete(self::SESSION_CLASS_SUB.$i);
+        }
 
         // リダイレクト
         return $this->redirect(['action' => 'index']);
