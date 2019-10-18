@@ -21,6 +21,8 @@
         <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Logs'), ['controller' => 'Logs', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Log'), ['controller' => 'Logs', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List M Device Types'), ['controller' => 'MDeviceTypes', 'action' => 'index']) ?> </li>
@@ -74,7 +76,7 @@
             <th scope="row"><?= __('Delete Flag') ?></th>
             <td><?= $mUser->delete_flag ? __('Yes') : __('No'); ?></td>
         </tr>
-    </table>
+    </table><!--
     <div class="related">
         <h4><?= __('Related Centers') ?></h4>
         <?php if (!empty($mUser->centers)): ?>
@@ -226,6 +228,37 @@
                     <?= $this->Html->link(__('View'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['controller' => 'Devices', 'action' => 'delete', $devices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $devices->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
+    <div class="related">
+        <h4><?= __('Related Logs') ?></h4>
+        <?php if (!empty($mUser->logs)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('Id') ?></th>
+                <th scope="col"><?= __('M User Id') ?></th>
+                <th scope="col"><?= __('Type') ?></th>
+                <th scope="col"><?= __('Content') ?></th>
+                <th scope="col"><?= __('Created') ?></th>
+                <th scope="col"><?= __('Modified') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($mUser->logs as $Logs): ?>
+            <tr>
+                <td><?= h($Logs->id) ?></td>
+                <td><?= h($Logs->m_user_id) ?></td>
+                <td><?= h($Logs->type) ?></td>
+                <td><?= h($Logs->content) ?></td>
+                <td><?= h($Logs->created) ?></td>
+                <td><?= h($Logs->modified) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Logs', 'action' => 'view', $Logs->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Logs', 'action' => 'edit', $Logs->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Logs', 'action' => 'delete', $Logs->id], ['confirm' => __('Are you sure you want to delete # {0}?', $Logs->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -443,5 +476,5 @@
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
-    </div>
+    </div>-->
 </div>

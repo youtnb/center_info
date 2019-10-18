@@ -15,6 +15,7 @@ use Cake\Event\Event;
  * @property \App\Model\Table\CentersTable|\Cake\ORM\Association\HasMany $Centers
  * @property \App\Model\Table\CommentsTable|\Cake\ORM\Association\HasMany $Comments
  * @property \App\Model\Table\DevicesTable|\Cake\ORM\Association\HasMany $Devices
+ * @property \App\Model\Table\LogssTable|\Cake\ORM\Association\HasMany $Logs
  * @property \App\Model\Table\MCustomersTable|\Cake\ORM\Association\HasMany $MCustomers
  * @property \App\Model\Table\MDeviceTypesTable|\Cake\ORM\Association\HasMany $MDeviceTypes
  * @property \App\Model\Table\MOperationSystemsTable|\Cake\ORM\Association\HasMany $MOperationSystems
@@ -69,6 +70,9 @@ class MUsersTable extends Table
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('Devices', [
+            'foreignKey' => 'm_user_id'
+        ]);
+        $this->hasMany('Logs', [
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('MCustomers', [

@@ -38,7 +38,7 @@ class MUsersController extends AppController
     public function view($id = null)
     {
         $mUser = $this->MUsers->get($id, [
-            'contain' => ['MDepartments', 'MRoles', 'Centers', 'Comments', 'Devices', 'MCustomers', 'MDeviceTypes', 'MOperationSystems', 'MProducts', 'MSqlservers', 'MVersions']
+            'contain' => ['MDepartments', 'MRoles', 'Centers', 'Comments', 'Devices', 'Logs', 'MCustomers', 'MDeviceTypes', 'MOperationSystems', 'MProducts', 'MSqlservers', 'MVersions']
         ]);
 
         $this->set('mUser', $mUser);
