@@ -19,6 +19,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('class') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
@@ -29,7 +30,8 @@
             <?php foreach ($logs as $log): ?>
             <tr>
                 <td><?= $this->Number->format($log->id) ?></td>
-                <td><?= $log->has('m_user') ? $this->Html->link($log->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $log->m_user->id]) : '' ?></td>
+                <td><?= $log->has('m_user') ? $this->Html->link($log->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $log->m_user->name]) : '' ?></td>
+                <td><?= h($log->class) ?></td>
                 <td><?= h($log->type) ?></td>
                 <td><?= h($log->created) ?></td>
                 <td><?= h($log->modified) ?></td>

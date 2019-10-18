@@ -241,6 +241,7 @@
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('M User Id') ?></th>
+                <th scope="col"><?= __('Class') ?></th>
                 <th scope="col"><?= __('Type') ?></th>
                 <th scope="col"><?= __('Content') ?></th>
                 <th scope="col"><?= __('Created') ?></th>
@@ -251,6 +252,7 @@
             <tr>
                 <td><?= h($Logs->id) ?></td>
                 <td><?= h($Logs->m_user_id) ?></td>
+                <td><?= h($Logs->class) ?></td>
                 <td><?= h($Logs->type) ?></td>
                 <td><?= h($Logs->content) ?></td>
                 <td><?= h($Logs->created) ?></td>

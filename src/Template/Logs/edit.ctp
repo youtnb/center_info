@@ -24,6 +24,7 @@
         <legend><?= __('Edit Log') ?></legend>
         <?php
             echo $this->Form->control('m_user_id', ['options' => $mUsers]);
+            echo $this->Form->control('class');
             echo $this->Form->control('type');
             echo $this->Form->control('content');
         ?>

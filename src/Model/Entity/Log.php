@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $m_user_id
+ * @property string|null $class
  * @property string|null $type
  * @property string|null $content
  * @property \Cake\I18n\FrozenTime $created
@@ -28,6 +29,7 @@ class Log extends Entity
      */
     protected $_accessible = [
         'm_user_id' => true,
+        'class' => true,
         'type' => true,
         'content' => true,
         'created' => true,

@@ -23,8 +23,16 @@
             <td><?= $log->has('m_user') ? $this->Html->link($log->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $log->m_user->id]) : '' ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Class') ?></th>
+            <td><?= h($log->class) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Type') ?></th>
             <td><?= h($log->type) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Content') ?></th>
+            <td><?= h($log->content) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
