@@ -273,7 +273,7 @@ class DevicesTable extends Table
                 // 地域
                 if (isset($options['m_area_id']) && !empty($options['m_area_id']))
                 {
-                    $tableMPrefectures = TableRegistry::get('MPrefectures');
+                    $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
                     $sub_prefecture = $tableMPrefectures->find()->where(['m_area_id' => $options['m_area_id']])->select('id');
                     $sub = $this->Centers->find()->where(['m_prefecture_id IN' => $sub_prefecture])->select('id');
                     $query->where([$this->alias().'.center_id IN' => $sub]);

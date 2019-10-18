@@ -68,7 +68,7 @@ class CentersController extends AppController
         
         $mCustomers = $this->Centers->MCustomers->find('list');
         
-        $tableMAreas = TableRegistry::get('MAreas');
+        $tableMAreas = TableRegistry::getTableLocator()->get('MAreas');
         $mAreas = $tableMAreas->find('list');
         $mPrefectures = $this->Centers->MPrefectures->find('list')->where(['delete_flag' => 0]);
         if($m_area_id)
@@ -113,7 +113,7 @@ class CentersController extends AppController
             'contain' => ['MCustomers', 'MPrefectures', 'MUsers', 'Devices']
         ]);
 
-        $tableMDeviceTypes = TableRegistry::get('MDeviceTypes');
+        $tableMDeviceTypes = TableRegistry::getTableLocator()->get('MDeviceTypes');
         $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
         
         // 添付ファイル

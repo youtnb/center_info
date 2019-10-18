@@ -70,7 +70,7 @@ class DevicesController extends AppController
         }
         $devices = $this->paginate($query);
         
-        $tableMCustomers = TableRegistry::get('MCustomers');
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list');
         
         $mDeviceTypes = $this->Devices->MDeviceTypes->find('list');
@@ -79,10 +79,10 @@ class DevicesController extends AppController
         $mProducts = $this->Devices->MProducts->find('list');
         $mVersions = $this->Devices->MVersions->find('list');
         
-        $tableMAreas = TableRegistry::get('MAreas');
+        $tableMAreas = TableRegistry::getTableLocator()->get('MAreas');
         $mAreas = $tableMAreas->find('list');
         
-        $tableMPrefectures = TableRegistry::get('MPrefectures');
+        $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
         $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0]);
         
         $centers = $this->Devices->Centers->find('list')->where(['delete_flag' => 0]);
@@ -146,7 +146,7 @@ class DevicesController extends AppController
         ]);
         
         // ユーザー
-        $tableMUsers = TableRegistry::get('MUsers');
+        $tableMUsers = TableRegistry::getTableLocator()->get('MUsers');
         $mUsers = $tableMUsers->find('list')->toArray();
         
         // 添付ファイル
@@ -186,7 +186,7 @@ class DevicesController extends AppController
         $mVersions = $this->Devices->MVersions->find('list');
         $mUsers = $this->Devices->MUsers->find('list');
         
-        $tableMCustomers = TableRegistry::get('MCustomers');
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list');
         
         $m_customer_id = null;
@@ -237,7 +237,7 @@ class DevicesController extends AppController
         $mVersions = $this->Devices->MVersions->find('list');
         $mUsers = $this->Devices->MUsers->find('list');
         
-        $tableMCustomers = TableRegistry::get('MCustomers');
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list');
         
         $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers'. 'mCustomers'));
