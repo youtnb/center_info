@@ -604,6 +604,16 @@ tbody tr.clickable:nth-child(odd):hover td{
     background: #dce2fa;
     cursor: pointer;
 }
+/* 行内アンカータグ */
+tbody tr.clickable a{
+    color: #fff;
+    background: #966600;
+    padding: 0.2rem;
+    transition: background-color 0.3s ease-out 0s;
+}
+tbody tr.clickable a:hover{
+    background: #007095;
+}
 
 /* フォームレイアウト調整 */
 div.float_05{

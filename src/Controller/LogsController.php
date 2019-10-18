@@ -136,7 +136,9 @@ class LogsController extends AppController
         {   // 一覧検索
             $query = $this->Logs->find('search', $this->request->query);
         }
+        
         $query->contain(['MUsers']);
+        
         $logs = $query->all();
         
         $this->set(compact('logs'));
