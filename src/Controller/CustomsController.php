@@ -12,6 +12,8 @@ use App\Controller\AppController;
  */
 class CustomsController extends AppController
 {
+    public $components = ['Log'];
+    
     /**
      * Index method
      *
@@ -55,6 +57,13 @@ class CustomsController extends AppController
             $custom = $this->Customs->patchEntity($custom, $this->request->getData());
             if ($this->Customs->save($custom))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $custom->id,
+                    'device_id:'. $custom->device_id,
+                    'accepted_no:'. $custom->accepted_no,
+                    'content:'. $custom->content,
+                ]));
                 $this->Flash->success(__('The custom has been saved.'));
             }
             else
@@ -129,7 +138,14 @@ class CustomsController extends AppController
         {
             $custom->delete_flag = 1;
             $custom = $this->Customs->patchEntity($custom, $this->request->getData());
-            if ($this->Customs->save($custom)) {
+            if ($this->Customs->save($custom))
+            {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $custom->id,
+                    'device_id:'. $custom->device_id,
+                ]));
+                
                 $this->Flash->success(__('The custom has been deleted.'));
             }
             else

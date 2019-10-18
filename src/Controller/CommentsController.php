@@ -12,6 +12,8 @@ use App\Controller\AppController;
  */
 class CommentsController extends AppController
 {
+    public $components = ['Log'];
+    
     /**
      * Index method
      *
@@ -56,6 +58,12 @@ class CommentsController extends AppController
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
             if ($this->Comments->save($comment))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $comment->id,
+                    'device_id:'. $comment->device_id,
+                    'content:'. $comment->content,
+                ]));
                 $this->Flash->success(__('The comment has been saved.'));
             }
             else
@@ -130,7 +138,14 @@ class CommentsController extends AppController
         {
             $comment->delete_flag = 1;
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment)) {
+            if ($this->Comments->save($comment))
+            {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $comment->id,
+                    'device_id:'. $comment->device_id,
+                ]));
+                
                 $this->Flash->success(__('The comment has been deleted.'));
             }
             else

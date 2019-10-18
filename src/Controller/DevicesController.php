@@ -14,7 +14,7 @@ use RuntimeException;
  */
 class DevicesController extends AppController
 {
-    public $components = ['AttachedFile'];
+    public $components = ['AttachedFile', 'Log'];
     
     const UPLOAD_DIR = UPLOAD_DIR_DEVICE;
     const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
@@ -173,6 +173,15 @@ class DevicesController extends AppController
             $device = $this->Devices->patchEntity($device, $this->request->getData());
             if ($this->Devices->save($device))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $device->id,
+                    'center_id:'. $device->center_id,
+                    'name:'. $device->name,
+                    'ip_higher:'. $device->ip_higher,
+                    'ip_lower:'. $device->ip_lower,
+                ]));
+                
                 $this->Flash->success(__('The device has been saved.'));
                 return $this->redirect(['action' => 'view', $device['id']]);
             }
@@ -224,6 +233,15 @@ class DevicesController extends AppController
             $device = $this->Devices->patchEntity($device, $this->request->getData());
             if ($this->Devices->save($device))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $device->id,
+                    'center_id:'. $device->center_id,
+                    'name:'. $device->name,
+                    'ip_higher:'. $device->ip_higher,
+                    'ip_lower:'. $device->ip_lower,
+                ]));
+                
                 $this->Flash->success(__('The device has been saved.'));
                 return $this->redirect(['action' => 'view', $device['id']]);
             }
@@ -304,6 +322,12 @@ class DevicesController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. $this->request->data['import_file']['name'],
+            ]));
+
             $this->Flash->success(__('The file has been uploaded.'));
             return $this->redirect(['action' => 'view', $device['id']]);
         }
@@ -322,6 +346,12 @@ class DevicesController extends AppController
             $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
         }
         
+        // ログ
+        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+            'id:'. $id,
+            'file:'. urldecode($filename),
+        ]));
+
         return $this->redirect(['action' => 'view', $id]);
     }
     

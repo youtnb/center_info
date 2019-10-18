@@ -14,7 +14,7 @@ use RuntimeException;
  */
 class CentersController extends AppController
 {
-    public $components = ['AttachedFile'];
+    public $components = ['AttachedFile', 'Log'];
     
     const UPLOAD_DIR = UPLOAD_DIR_CENTER;
     const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
@@ -140,6 +140,13 @@ class CentersController extends AppController
             $center = $this->Centers->patchEntity($center, $this->request->getData());
             if ($this->Centers->save($center))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $center->id,
+                    'm_customer_id:'. $center->m_customer_id,
+                    'name:'. $center->name,
+                ]));
+            
                 $this->Flash->success(__('The center has been saved.'));
                 return $this->redirect(['action' => 'view', $center['id']]);
             }
@@ -168,6 +175,13 @@ class CentersController extends AppController
             $center = $this->Centers->patchEntity($center, $this->request->getData());
             if ($this->Centers->save($center))
             {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $center->id,
+                    'm_customer_id:'. $center->m_customer_id,
+                    'name:'. $center->name,
+                ]));
+                
                 $this->Flash->success(__('The center has been saved.'));
                 return $this->redirect(['action' => 'view', $center['id']]);
             }
@@ -190,9 +204,19 @@ class CentersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $center = $this->Centers->get($id);
-        if ($this->Centers->delete($center)) {
+        if ($this->Centers->delete($center))
+        {
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $center->id,
+                'm_customer_id:'. $center->m_customer_id,
+                'name:'. $center->name,
+            ]));
+
             $this->Flash->success(__('The center has been deleted.'));
-        } else {
+        }
+        else
+        {
             $this->Flash->error(__('The center could not be deleted. Please, try again.'));
         }
 
@@ -220,6 +244,12 @@ class CentersController extends AppController
                 $this->Flash->error(__($e->getMessage()));
                 return $this->redirect(['action' => 'index']);
             }
+            
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. $this->request->data['import_file']['name'],
+            ]));
 
             $this->Flash->success(__('The file has been uploaded.'));
             return $this->redirect(['action' => 'view', $center['id']]);
@@ -239,6 +269,12 @@ class CentersController extends AppController
             $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
         }
         
+        // ログ
+        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+            'id:'. $id,
+            'file:'. urldecode($filename),
+        ]));
+
         return $this->redirect(['action' => 'view', $id]);
     }
 }
