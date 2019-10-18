@@ -112,7 +112,7 @@ class LogsTable extends Table
      */
     public function findSearch(Query $query, $options)
     {
-        // 半角数字8文字ならOKとする
+        // 半角数字8文字(yyyyMMdd)または12文字(yyyyMMddhhmm)ならOKとする
 
         // FROM
         if (isset($options['created_from']) && !empty($options['created_from']))
