@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Logs Model
@@ -81,5 +82,59 @@ class LogsTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    /**
+     * 検索初期条件
+     * @param Event $event
+     * @param Query $query
+     * @param type $options
+     * @param type $primary
+     * @return Query
+     */
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.created' => 'DESC']);
+        }
+        
+        return $query;
+    }
+    
+    /**
+     * 一覧検索finder
+     * @param Query $query
+     * @param type $options
+     * @return Query
+     */
+    public function findSearch(Query $query, $options)
+    {
+        // 半角数字8文字ならOKとする
+
+        // FROM
+        if (isset($options['created_from']) && !empty($options['created_from']))
+        {
+            $from = $options['created_from'];
+            if (preg_match("/^[0-9]+$/", $from))
+            {
+                if (strlen($from) == 8) $query->where([$this->alias().'.created >=' => $from. '000000']);
+                if (strlen($from) == 12) $query->where([$this->alias().'.created >=' => $from. '00']);
+            }
+        }
+        // TO
+        if (isset($options['created_to']) && !empty($options['created_to']))
+        {
+            $to = $options['created_to'];
+            if (preg_match("/^[0-9]+$/", $to))
+            {
+                if (strlen($to) == 8) $query->where([$this->alias().'.created <=' => $to. '235959']);
+                if (strlen($to) == 12) $query->where([$this->alias().'.created <=' => $to. '59']);
+            }
+        }
+        
+        return $query;
     }
 }

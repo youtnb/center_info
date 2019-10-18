@@ -1,3 +1,4 @@
+    <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
     <ul class="side-nav">
         <li class="heading"><?= __('マスタ管理') ?></li>
         <?php if(!isset($own)){$own='';} ?>
@@ -13,6 +14,14 @@
         <li><?php if($own != 'MRoles'){?><?= $this->Html->link(__('ロールマスタ'), ['controller' => 'MRoles', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ロールマスタ</span><?php } ?></li>
         <?php } ?>
     </ul>
+    <?php if($this->request->session()->read('Auth.User.m_role_id') == ROLE_ID_ADMIN){ ?>
+    <ul class="side-nav">
+        <li class="heading"><?= __('ログ管理') ?></li>
+        <?php if(!isset($own)){$own='';} ?>
+        <li><?php if($own != 'Logs'){?><?= $this->Html->link(__('ログ管理'), ['controller' => 'Logs', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ログ管理</span><?php } ?></li>
+    </ul>
+    <?php } ?>
     <ul class="side-nav">
         <li><span class="no-anc">ログイン：<?= $this->request->session()->read('Auth.User.name') ?></span></li>
     </ul>
+    <?php } ?>

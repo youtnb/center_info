@@ -22,11 +22,28 @@ class LogsController extends AppController
         $this->paginate = [
             'contain' => ['MUsers']
         ];
-        $logs = $this->paginate($this->Logs);
+        
+        $query = $this->Logs->find();
+        if (!empty($this->request->query))
+        {   // 一覧検索
+            $query = $this->Logs->find('search', $this->request->query);
+        }
+        
+        $logs = $this->paginate($query);
 
         $this->set(compact('logs'));
     }
 
+    /**
+     * 検索条件クリア
+     * @return type
+     */
+    public function clear()
+    {
+        // リダイレクト
+        return $this->redirect(['action' => 'index']);
+    }
+    
     /**
      * View method
      *
@@ -107,5 +124,27 @@ class LogsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    /**
+     * CSV出力
+     */
+    public function output()
+    {
+        $query = $this->Logs->find();
+        if (!empty($this->request->query))
+        {   // 一覧検索
+            $query = $this->Logs->find('search', $this->request->query);
+        }
+        $query->contain(['MUsers']);
+        $logs = $query->all();
+        
+        $this->set(compact('logs'));
+        
+        $this->viewBuilder()->setLayout(false);
+        
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=GRAYCODE.csv');
+        header('Content-Transfer-Encoding: binary');
     }
 }

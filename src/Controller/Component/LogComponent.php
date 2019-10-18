@@ -18,6 +18,12 @@ class LogComponent extends Component
      */
     protected $_defaultConfig = [];
     
+    /**
+     * ログDB書き込み
+     * @param type $class __CLASS__
+     * @param type $type __FUNCTION__
+     * @param type $content content
+     */
     public function write($class, $type, $content)
     {
         $tableLogs = TableRegistry::getTableLocator()->get('Logs');
