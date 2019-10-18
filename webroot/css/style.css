@@ -595,7 +595,10 @@ div.list_table table tr:nth-child(odd) td{
 div.list_table table tr.delete_content td{
     color: olive;
 }
-/* 行クリックポインター */
+/* 行クリック */
+tbody tr.clickable td {
+    transition: background-color 0.05s ease-out 0s;
+}
 tbody tr.clickable:hover td {
     background: #dce2fa;
     cursor: pointer;
