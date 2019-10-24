@@ -152,7 +152,7 @@ class CentersController extends AppController
             }
             $this->Flash->error(__('The center could not be saved. Please, try again.'));
         }
-        $mCustomers = $this->Centers->MCustomers->find('list');
+        $mCustomers = $this->Centers->MCustomers->find('list', ['order' => 'id']);
         $mPrefectures = $this->Centers->MPrefectures->find('list');
         $mUsers = $this->Centers->MUsers->find('list');
         $this->set(compact('center', 'mCustomers', 'mPrefectures', 'mUsers'));
@@ -187,7 +187,7 @@ class CentersController extends AppController
             }
             $this->Flash->error(__('The center could not be saved. Please, try again.'));
         }
-        $mCustomers = $this->Centers->MCustomers->find('list');
+        $mCustomers = $this->Centers->MCustomers->find('list', ['order' => 'id']);
         $mPrefectures = $this->Centers->MPrefectures->find('list');
         $mUsers = $this->Centers->MUsers->find('list');
         $this->set(compact('center', 'mCustomers', 'mPrefectures', 'mUsers'));
