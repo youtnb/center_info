@@ -28,7 +28,7 @@ class LogsController extends AppController
         {   // 一覧検索
             $query = $this->Logs->find('search', $this->request->query);
         }
-        
+        $this->paginate['limit'] = 50;
         $logs = $this->paginate($query);
 
         $this->set(compact('logs'));
@@ -146,7 +146,7 @@ class LogsController extends AppController
         $this->viewBuilder()->setLayout(false);
         
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=GRAYCODE.csv');
+        header('Content-Disposition: attachment; filename=system_log.csv');
         header('Content-Transfer-Encoding: binary');
     }
 }
