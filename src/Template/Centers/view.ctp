@@ -80,15 +80,28 @@ function del_file(filename)
     </div>
     <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
-        <ul>
+        <!-- テーブル表示の場合 -->
+        <table class="">
+        <?php foreach ($file_list as $key => $val): ?>
+            <tr>
+                <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
+                <td><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></td>
+            </tr>
+        <?php endforeach; ?>            
+        </table>
+        <!-- リスト表示の場合 -->
+        <!--<ul>
         <?php foreach ($file_list as $key => $val): ?>
             <li><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?>&nbsp;<?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></li>
         <?php endforeach; ?>
-        </ul>
-        <?= $this->Form->create($center, ['action' => 'addFile/'.$center->id, 'enctype' => 'multipart/form-data']) ?>
-        <?= $this->Form->file('import_file') ?>
-        <?= $this->Form->button(__('UPLOAD')) ?>
-        <?= $this->Form->end() ?>
+        </ul>-->
+        <?= $this->Form->button('ファイル保存フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#file_form').toggle(300);"]) ?>
+        <div id="file_form" style="display: none;">
+            <?= $this->Form->create($center, ['action' => 'addFile/'.$center->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('UPLOAD')) ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
     <div class="related">
         <h4><?= __('端末情報') ?></h4>

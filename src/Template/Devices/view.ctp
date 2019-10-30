@@ -132,24 +132,27 @@ function del_comment(id)
     <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
         <!-- テーブル表示の場合 -->
-        <!--<table class="">
+        <table class="">
         <?php foreach ($file_list as $key => $val): ?>
             <tr>
                 <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
                 <td><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></td>
             </tr>
         <?php endforeach; ?>            
-        </table>-->
+        </table>
         <!-- リスト表示の場合 -->
-        <ul>
+        <!--<ul>
         <?php foreach ($file_list as $key => $val): ?>
             <li><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?>&nbsp;<?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></li>
         <?php endforeach; ?>            
-        </ul>
-        <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
-        <?= $this->Form->file('import_file') ?>
-        <?= $this->Form->button(__('登録')) ?>
-        <?= $this->Form->end() ?>
+        </ul>-->
+        <?= $this->Form->button('ファイル保存フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#file_form').toggle(300);"]) ?>
+        <div id="file_form" style="display: none;">
+            <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('登録')) ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
@@ -174,24 +177,27 @@ function del_comment(id)
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
-        <?= $this->Form->create($device, ['type' => 'post', 'url' => '/customs/add/']) ?>
-        <fieldset>
-        <?php 
-            echo $this->Form->hidden('device_id', ['value' => $device->id]);
-            echo "<div class='float_10'>";
-            echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 100px;']);
-            echo "</div>";
-            echo $this->Form->control('content', ['label' => '改造内容', 'type' => 'textarea', 'style' => 'width: 500px;']);
-            echo $this->Form->hidden('exe_file', ['label' => '実行ファイル', 'value' => '']);
-            echo $this->Form->hidden('config_file', ['label' => '設定ファイル', 'value' => '']);
-            echo $this->Form->hidden('hht_file', ['label' => 'HHTファイル', 'value' => '']);
-            echo $this->Form->hidden('db_custom', ['label' => 'DB変更', 'value' => '']);
-            echo $this->Form->hidden('delete_flag', ['value' => 0]);
-            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
-        ?>
-        <?= $this->Form->button(__('登録')) ?>
-        </fieldset>
-        <?= $this->Form->end() ?>
+        <?= $this->Form->button('改造履歴入力フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#custom_form').toggle(300);"]) ?>
+        <div id="custom_form" style="display: none;">
+            <?= $this->Form->create($device, ['type' => 'post', 'url' => '/customs/add/']) ?>
+            <fieldset>
+            <?php 
+                echo $this->Form->hidden('device_id', ['value' => $device->id]);
+                echo "<div class='float_10'>";
+                echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 100px;']);
+                echo "</div>";
+                echo $this->Form->control('content', ['label' => '改造内容', 'type' => 'textarea', 'style' => 'width: 500px;']);
+                echo $this->Form->hidden('exe_file', ['label' => '実行ファイル', 'value' => '']);
+                echo $this->Form->hidden('config_file', ['label' => '設定ファイル', 'value' => '']);
+                echo $this->Form->hidden('hht_file', ['label' => 'HHTファイル', 'value' => '']);
+                echo $this->Form->hidden('db_custom', ['label' => 'DB変更', 'value' => '']);
+                echo $this->Form->hidden('delete_flag', ['value' => 0]);
+                echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+            ?>
+            <?= $this->Form->button(__('登録')) ?>
+            </fieldset>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
     <div class="related">
         <h4><?= __('コメント') ?></h4>
@@ -214,16 +220,19 @@ function del_comment(id)
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
-        <?= $this->Form->create($device, ['type' => 'post', 'url' => '/comments/add/']) ?>
-        <fieldset>
-        <?php
-            echo $this->Form->hidden('device_id', ['value' => $device->id]);
-            echo $this->Form->control('content', ['label' => 'コメント', 'type' => 'textarea', 'style' => 'width: 500px;']);
-            echo $this->Form->hidden('delete_flag', ['value' => 0]);
-            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
-        ?>
-        <?= $this->Form->button(__('登録')) ?>
-        </fieldset>
-        <?= $this->Form->end() ?>
+        <?= $this->Form->button('コメント入力フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#comment_form').toggle(300);"]) ?>
+        <div id="comment_form" style="display: none;">
+            <?= $this->Form->create($device, ['type' => 'post', 'url' => '/comments/add/']) ?>
+            <fieldset>
+            <?php
+                echo $this->Form->hidden('device_id', ['value' => $device->id]);
+                echo $this->Form->control('content', ['label' => 'コメント', 'type' => 'textarea', 'style' => 'width: 500px;']);
+                echo $this->Form->hidden('delete_flag', ['value' => 0]);
+                echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+            ?>
+            <?= $this->Form->button(__('登録')) ?>
+            </fieldset>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
 </div>
