@@ -235,7 +235,7 @@ class CentersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put']))
         {
-            if ($this->request->data['import_file'])
+            if (empty($this->request->data['import_file']['tmp_name']))
             {
                 $this->Flash->error(__('Please input attached file.'));
                 return $this->redirect(['action' => 'view', $center['id']]);                
