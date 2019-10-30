@@ -312,6 +312,12 @@ class DevicesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put']))
         {
+            if ($this->request->data['import_file'])
+            {
+                $this->Flash->error(__('Please input attached file.'));
+                return $this->redirect(['action' => 'view', $device['id']]);
+            }
+            
             $device = $this->Devices->patchEntity($device, $this->request->getData());
             $dir = self::UPLOAD_PATH. $device['id'];
             try {

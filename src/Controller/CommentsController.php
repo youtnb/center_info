@@ -56,19 +56,26 @@ class CommentsController extends AppController
         if ($this->request->is('post'))
         {
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment))
+            if (empty($comment->content))
             {
-                // ログ
-                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $comment->id,
-                    'device_id:'. $comment->device_id,
-                    'content:'. $comment->content,
-                ]));
-                $this->Flash->success(__('The comment has been saved.'));
+                $this->Flash->error(__('Please input content.'));
             }
             else
             {
-                $this->Flash->error(__('The comment could not be saved. Please, try again.'));                
+                if ($this->Comments->save($comment))
+                {
+                    // ログ
+                    $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                        'id:'. $comment->id,
+                        'device_id:'. $comment->device_id,
+                        'content:'. $comment->content,
+                    ]));
+                    $this->Flash->success(__('The comment has been saved.'));
+                }
+                else
+                {
+                    $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+                }
             }
         }
 //        $devices = $this->Comments->Devices->find('list', ['limit' => 200]);

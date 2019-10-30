@@ -53,22 +53,30 @@ class CustomsController extends AppController
     public function add()
     {
         $custom = $this->Customs->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post'))
+        {
             $custom = $this->Customs->patchEntity($custom, $this->request->getData());
-            if ($this->Customs->save($custom))
+            if (empty($custom->content))
             {
-                // ログ
-                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $custom->id,
-                    'device_id:'. $custom->device_id,
-                    'accepted_no:'. $custom->accepted_no,
-                    'content:'. $custom->content,
-                ]));
-                $this->Flash->success(__('The custom has been saved.'));
+                $this->Flash->error(__('Please input content.'));
             }
             else
             {
-                $this->Flash->error(__('The custom could not be saved. Please, try again.'));                
+                if ($this->Customs->save($custom))
+                {
+                    // ログ
+                    $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                        'id:'. $custom->id,
+                        'device_id:'. $custom->device_id,
+                        'accepted_no:'. $custom->accepted_no,
+                        'content:'. $custom->content,
+                    ]));
+                    $this->Flash->success(__('The custom has been saved.'));
+                }
+                else
+                {
+                    $this->Flash->error(__('The custom could not be saved. Please, try again.'));                
+                }
             }
         }
 //        $devices = $this->Customs->Devices->find('list', ['limit' => 200]);

@@ -235,6 +235,12 @@ class CentersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put']))
         {
+            if ($this->request->data['import_file'])
+            {
+                $this->Flash->error(__('Please input attached file.'));
+                return $this->redirect(['action' => 'view', $center['id']]);                
+            }
+            
             $center = $this->Centers->patchEntity($center, $this->request->getData());
             $dir = self::UPLOAD_PATH. $center['id'];
             try {
