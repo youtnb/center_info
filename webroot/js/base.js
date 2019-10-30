@@ -60,5 +60,5 @@ function clipboard_copy(copy_text)
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
-    alert('コピーしました');
+    alert('クリップボードにコピーしました');
 }
