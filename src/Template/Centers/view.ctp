@@ -5,7 +5,7 @@
  */
 ?>
 <script type="text/javascript">
-function del_file(filename)
+function delFile(filename)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
    {
@@ -78,32 +78,23 @@ function del_file(filename)
         <h4><?= __('備考') ?></h4>
         <?= $this->Text->autoParagraph(h($center->remarks)); ?>
     </div>
-    <div class="row">
+    <div class="related">
         <h4><?= __('添付ファイル') ?></h4>
-        <!-- テーブル表示の場合 -->
+        <?= $this->Form->button('ファイル保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
         <table class="">
+            <tr>
+                <th scope="col"><?= __('ファイル') ?></th>
+                <th scope="col" class="th_short"><?= __('') ?></th>
+            </tr>
         <?php foreach ($file_list as $key => $val): ?>
             <tr>
                 <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
-                <td><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></td>
+                <td><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delFile('".$key."')"]) ?></td>
             </tr>
         <?php endforeach; ?>            
         </table>
-        <!-- リスト表示の場合 -->
-        <!--<ul>
-        <?php foreach ($file_list as $key => $val): ?>
-            <li><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?>&nbsp;<?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></li>
-        <?php endforeach; ?>
-        </ul>-->
-        <?= $this->Form->button('ファイル保存フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#file_form').toggle(300);"]) ?>
-        <div id="file_form" style="display: none;">
-            <?= $this->Form->create($center, ['action' => 'addFile/'.$center->id, 'enctype' => 'multipart/form-data']) ?>
-            <?= $this->Form->file('import_file') ?>
-            <?= $this->Form->button(__('UPLOAD')) ?>
-            <?= $this->Form->end() ?>
-        </div>
     </div>
-    <div class="related">
+    <div class="row">
         <h4><?= __('端末情報') ?></h4>
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
@@ -141,3 +132,19 @@ function del_file(filename)
         <?php endif; ?>
     </div>
 </div>
+<!-- モーダルエリアここから -->
+<section id="modalAreaFile" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('File')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
+            <?= $this->Form->create($center, ['action' => 'addFile/'.$center->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('UPLOAD')) ?>
+            <?= $this->Form->end() ?>
+        </div>
+        <div class="close_modal" onclick="closeModal('File')">
+        ×
+        </div>
+    </div>
+</section>
+<!-- モーダルエリアここまで -->

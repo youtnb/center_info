@@ -34,7 +34,7 @@ jQuery(function($)
                     <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客', 'value' => $this->request->query('m_customer_id')]) ?></td>
                     <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
-                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "reset_form('centers/clear');"]) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('centers/clear');"]) ?></td>
                 </tr>
                 <tr>
                     <td colspan="2"><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点', 'value' => $this->request->query('name')]) ?></td>

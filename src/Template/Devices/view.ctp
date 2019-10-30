@@ -5,21 +5,21 @@
  */
 ?>
 <script type="text/javascript">
-function del_file(filename)
+function delFile(filename)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
    {
        window.location.href = '/center_info/devices/deleteFile/<?= $device->id ?>/' + encodeURI(filename);
    }
 }
-function del_custom(id)
+function delCustom(id)
 {
    if(confirm('改造履歴を削除します。よろしいですか？'))
    {
        window.location.href = '/center_info/customs/deleteLogical/' + id + '/<?= $device->id ?>';
    }
 }
-function del_comment(id)
+function delComment(id)
 {
    if(confirm('コメントを削除します。よろしいですか？'))
    {
@@ -66,12 +66,12 @@ function del_comment(id)
             <th scope="row"><?= __('上位IP') ?></th>
             <td><?= h($device->ip_higher) ?><?php if(!empty($device->ip_higher)){
                 echo '&nbsp;';
-                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboard_copy(\''.$device->ip_higher.'\');']);
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_higher.'\');']);
             } ?></td>
             <th scope="row"><?= __('下位IP') ?></th>
             <td><?= h($device->ip_lower) ?><?php if(!empty($device->ip_lower)){
                 echo '&nbsp;';
-                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboard_copy(\''.$device->ip_lower.'\');']);
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_lower.'\');']);
             } ?></td>
             <th scope="row"><?= __('AdminPass') ?></th>
             <td><?= h($device->admin_pass) ?></td>
@@ -129,40 +129,32 @@ function del_comment(id)
         <h4><?= __('備考') ?></h4>
         <?= $this->Text->autoParagraph(h($device->remarks)); ?>
     </div>
-    <div class="row">
+    <div class="related">
         <h4><?= __('添付ファイル') ?></h4>
-        <!-- テーブル表示の場合 -->
+        <?= $this->Form->button('ファイル保存', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
         <table class="">
+            <tr>
+                <th scope="col"><?= __('ファイル') ?></th>
+                <th scope="col" class="th_short"><?= __('') ?></th>
+            </tr>
         <?php foreach ($file_list as $key => $val): ?>
             <tr>
                 <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
-                <td><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?></td>
+                <td><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delFile('".$key."')"]) ?></td>
             </tr>
         <?php endforeach; ?>            
         </table>
-        <!-- リスト表示の場合 -->
-        <!--<ul>
-        <?php foreach ($file_list as $key => $val): ?>
-            <li><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_file('".$key."')"]) ?>&nbsp;<?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></li>
-        <?php endforeach; ?>            
-        </ul>-->
-        <?= $this->Form->button('ファイル保存フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#file_form').toggle(300);"]) ?>
-        <div id="file_form" style="display: none;">
-            <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
-            <?= $this->Form->file('import_file') ?>
-            <?= $this->Form->button(__('登録')) ?>
-            <?= $this->Form->end() ?>
-        </div>
     </div>
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
+        <?= $this->Form->button('改造履歴登録', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('Custom')"]) ?>
         <?php if (!empty($device->customs)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col" class="th_short"><?= __('受入No') ?></th>
                 <th scope="col"><?= __('内容') ?></th>
                 <th scope="col" class="th_short"><?= __('ユーザー') ?></th>
-                <th scope="col" class="th_ymd"><?= __('作成日時') ?></th>
+                <th scope="col" class="th_ymd"><?= __('登録日時') ?></th>
                 <th scope="col" class="th_short"><?= __('') ?></th>
             </tr>
             <?php foreach ($device->customs as $customs): ?>
@@ -171,21 +163,59 @@ function del_comment(id)
                 <td><?= $this->Text->autoParagraph(h($customs->content)) ?></td>
                 <td><?= array_key_exists($customs->m_user_id, $mUsers) ? $mUsers[$customs->m_user_id] : $customs->m_user_id; ?></td>
                 <td><?= h($customs->created) ?></td>
-                <td><?= h($customs->modified) ?></td>
-                <td class="actions"><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_custom('".$customs->id."')"]) ?></td>
+                <td class="actions"><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delCustom('".$customs->id."')"]) ?></td>
             </tr>
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
-        <?= $this->Form->button('改造履歴入力フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#custom_form').toggle(300);"]) ?>
-        <div id="custom_form" style="display: none;">
+    </div>
+    <div class="related">
+        <h4><?= __('コメント') ?></h4>
+        <?= $this->Form->button('コメント登録', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('Comment')"]) ?>
+        <?php if (!empty($device->comments)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('コメント') ?></th>
+                <th scope="col" class="th_short"><?= __('ユーザー') ?></th>
+                <th scope="col" class="th_ymd"><?= __('登録日時') ?></th>
+                <th scope="col" class="th_short"><?= __('') ?></th>
+            </tr>
+            <?php foreach ($device->comments as $comments): ?>
+            <tr>
+                <td><?= h($comments->content) ?></td>
+                <td><?= array_key_exists($comments->m_user_id, $mUsers) ? $mUsers[$comments->m_user_id] : $comments->m_user_id; ?></td>
+                <td><?= h($comments->created) ?></td>
+                <td class="actions"><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delComment('".$comments->id."')"]) ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
+</div>
+<!-- モーダルエリアここから -->
+<section id="modalAreaFile" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('File')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
+            <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('登録')) ?>
+            <?= $this->Form->end() ?>
+        </div>
+        <div class="close_modal" onclick="closeModal('File')">
+        ×
+        </div>
+    </div>
+</section>
+<section id="modalAreaCustom" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('Custom')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
             <?= $this->Form->create($device, ['type' => 'post', 'url' => '/customs/add/']) ?>
             <fieldset>
             <?php 
                 echo $this->Form->hidden('device_id', ['value' => $device->id]);
-                echo "<div class='float_10'>";
                 echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 100px;']);
-                echo "</div>";
                 echo $this->Form->control('content', ['label' => '改造内容', 'type' => 'textarea', 'style' => 'width: 500px;']);
                 echo $this->Form->hidden('exe_file', ['label' => '実行ファイル', 'value' => '']);
                 echo $this->Form->hidden('config_file', ['label' => '設定ファイル', 'value' => '']);
@@ -198,30 +228,15 @@ function del_comment(id)
             </fieldset>
             <?= $this->Form->end() ?>
         </div>
+        <div class="close_modal" onclick="closeModal('Custom')">
+        ×
+        </div>
     </div>
-    <div class="related">
-        <h4><?= __('コメント') ?></h4>
-        <?php if (!empty($device->comments)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('コメント') ?></th>
-                <th scope="col" class="th_short"><?= __('ユーザー') ?></th>
-                <th scope="col" class="th_ymd"><?= __('作成日時') ?></th>
-                <th scope="col" class="th_short"><?= __('') ?></th>
-            </tr>
-            <?php foreach ($device->comments as $comments): ?>
-            <tr>
-                <td><?= h($comments->content) ?></td>
-                <td><?= array_key_exists($comments->m_user_id, $mUsers) ? $mUsers[$comments->m_user_id] : $comments->m_user_id; ?></td>
-                <td><?= h($comments->created) ?></td>
-                <td><?= h($comments->modified) ?></td>
-                <td class="actions"><?= '&nbsp;'.$this->Form->button('DELETE', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "del_comment('".$comments->id."')"]) ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-        <?= $this->Form->button('コメント入力フォーム表示', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "$('#comment_form').toggle(300);"]) ?>
-        <div id="comment_form" style="display: none;">
+</section>
+<section id="modalAreaComment" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('Comment')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
             <?= $this->Form->create($device, ['type' => 'post', 'url' => '/comments/add/']) ?>
             <fieldset>
             <?php
@@ -234,5 +249,9 @@ function del_comment(id)
             </fieldset>
             <?= $this->Form->end() ?>
         </div>
+        <div class="close_modal" onclick="closeModal('Comment')">
+        ×
+        </div>
     </div>
-</div>
+</section>
+<!-- モーダルエリアここまで -->

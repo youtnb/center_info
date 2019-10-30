@@ -39,7 +39,7 @@ $(document).on('change', '.search_form :checkbox', function(){
  * @param {type} url
  * @returns {undefined}
  */
-function reset_form(url)
+function resetForm(url)
 {
     //$('.search_form :input').val('');
     //$('.search_form :submit').click();
@@ -51,7 +51,7 @@ function reset_form(url)
  * @param {type} copy_text
  * @returns {undefined}
  */
-function clipboard_copy(copy_text)
+function clipboardCopy(copy_text)
 {
     var input = document.createElement('input');
     input.setAttribute('id', 'clipboard_copy');
@@ -61,4 +61,18 @@ function clipboard_copy(copy_text)
     document.execCommand('copy');
     document.body.removeChild(input);
     alert('クリップボードにコピーしました');
+}
+
+/**
+ * モーダルウィンドウ開閉
+ * @param {type} target
+ * @returns {undefined}
+ */
+function openModal(target)
+{
+    $('#modalArea' + target).fadeIn();
+}
+function closeModal(target)
+{
+    $('#modalArea' + target).fadeOut();
 }

@@ -42,7 +42,7 @@
                 <th scope="col" class="th_middle"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('m_user_id') ?></th>
                 <th scope="col" class="th_middle"><?= $this->Paginator->sort('class') ?></th>
-                <th scope="col" class="th_short"><?= $this->Paginator->sort('type') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col">content</th>
                 <!--<th scope="col" class="actions"><?= __('Actions') ?></th>-->
             </tr>
