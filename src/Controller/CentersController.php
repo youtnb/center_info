@@ -17,7 +17,9 @@ class CentersController extends AppController
     public $components = ['AttachedFile', 'Log'];
     
     const UPLOAD_DIR = UPLOAD_DIR_CENTER;
-    const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
+    const UPLOAD_PATH = WWW_ROOT. DIR_SEP. self::UPLOAD_DIR. DIR_SEP;
+    const PHOTO_DIR = PHOTO_DIR_CENTER;
+    const PHOTO_PATH = WWW_ROOT. DIR_SEP. self::PHOTO_DIR. DIR_SEP;
     
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Center.';
@@ -117,14 +119,30 @@ class CentersController extends AppController
         $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
         
         // 添付ファイル
-        $result = glob(self::UPLOAD_PATH. $center['id']. '/'. '*');
+        $result = glob(self::UPLOAD_PATH. $id. DIR_SEP. '*');
         $file_list = array();
         foreach($result as $file)
         {
-            $file_list[basename($file)] = '/'. implode('/', [self::UPLOAD_DIR, $center['id'], basename($file)]);
+            $path_info = pathinfo($file);
+            $file_list[$path_info['basename']] = DIR_SEP. implode(DIR_SEP, [self::UPLOAD_DIR, $id, $path_info['basename']]);
+        }
+        // 画像
+        $result_photo = glob(self::PHOTO_PATH. $id. DIR_SEP. '*');
+        $photo_list = array();
+        foreach($result_photo as $file)
+        {
+            $path_info = pathinfo($file);
+            // サムネイル画像を対象に処理
+            if (substr($path_info['filename'], -1 * strlen(PHOTO_SAFIX)) == PHOTO_SAFIX)
+            {
+                $pre_name = $this->AttachedFile->removePhotSafix($path_info['basename']);
+                $photo_list[$pre_name] = [
+                    DIR_SEP. implode(DIR_SEP, [self::PHOTO_DIR, $id, $path_info['basename']]),
+                    DIR_SEP. implode(DIR_SEP, [self::PHOTO_DIR, $id, $pre_name])];
+            }
         }
         
-        $this->set(compact('center', 'mDeviceTypes', 'file_list'));
+        $this->set(compact('center', 'mDeviceTypes', 'file_list', 'photo_list'));
     }
 
     /**
@@ -243,8 +261,71 @@ class CentersController extends AppController
             
             $center = $this->Centers->patchEntity($center, $this->request->getData());
             $dir = self::UPLOAD_PATH. $center['id'];
+            
             try {
-                $center['import_file'] = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
+                $this->AttachedFile->upload($this->request->data['import_file'], $dir);
+            } catch (RuntimeException $e){
+                $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
+                $this->Flash->error(__($e->getMessage()));
+                return $this->redirect(['action' => 'index']);
+            }
+            
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $center['id'],
+                'file:'. $this->request->data['import_file']['name'],
+            ]));
+
+            $this->Flash->success(__('The file has been uploaded.'));
+        }
+        
+        return $this->redirect(['action' => 'view', $center['id']]);
+    }
+    
+    /**
+     * ファイル削除処理
+     * @param type $id
+     * @param type $filename
+     * @return type
+     */
+    public function deleteFile($id = null, $filename = null)
+    {
+        if ($filename)
+        {
+            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, DIR_SEP, urldecode($filename)]));
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. urldecode($filename),
+            ]));
+        }
+        
+        return $this->redirect(['action' => 'view', $id]);
+    }
+    
+    /**
+     * 写真保存処理
+     * @param type $id
+     * @return type
+     */
+    public function addPhoto($id = null)
+    {
+        $center = $this->Centers->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
+            if (empty($this->request->data['import_file']['tmp_name']))
+            {
+                $this->Flash->error(__('Please input attached photo.'));
+                return $this->redirect(['action' => 'view', $center['id']]);                
+            }
+            
+            $center = $this->Centers->patchEntity($center, $this->request->getData());
+            $dir = self::PHOTO_PATH. $center['id'];
+            
+            try {
+                $center['import_file'] = $this->AttachedFile->uploadPhoto($this->request->data['import_file'], $dir);
             } catch (RuntimeException $e){
                 $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
                 $this->Flash->error(__($e->getMessage()));
@@ -258,29 +339,30 @@ class CentersController extends AppController
             ]));
 
             $this->Flash->success(__('The file has been uploaded.'));
-            return $this->redirect(['action' => 'view', $center['id']]);
         }
+        
+        return $this->redirect(['action' => 'view', $center['id']]);
     }
     
     /**
-     * ファイル削除処理
+     * 写真削除処理
      * @param type $id
      * @param type $filename
      * @return type
      */
-    public function deleteFile($id = null, $filename = null)
+    public function deletePhoto($id = null, $filename = null)
     {
         if ($filename)
         {
-            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
+            $this->AttachedFile->deletePhoto(implode('', [self::PHOTO_PATH, $id, DIR_SEP, urldecode($filename)]));
+            
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. urldecode($filename),
+            ]));
         }
         
-        // ログ
-        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-            'id:'. $id,
-            'file:'. urldecode($filename),
-        ]));
-
         return $this->redirect(['action' => 'view', $id]);
     }
 }

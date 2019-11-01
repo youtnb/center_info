@@ -668,3 +668,12 @@ div.float_30{
   cursor: pointer;
 }
 
+/* 写真レイアウト */
+div.photos {
+  display: flex;
+  flex-wrap: wrap;
+}
+div.photos div.photo {
+  width: calc(25% - 10px);
+  margin: 0px;
+}

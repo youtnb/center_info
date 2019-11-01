@@ -40,3 +40,5 @@ nbproject/*
 .sass-cache/
 webroot/upfilescen/
 webroot/upfilesdev/
+webroot/upphotoscen/
+webroot/upphotosdev/

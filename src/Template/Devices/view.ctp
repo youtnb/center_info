@@ -5,6 +5,13 @@
  */
 ?>
 <script type="text/javascript">
+function delPhoto(filename)
+{
+   if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
+   {
+       window.location.href = '/center_info/devices/deletePhoto/<?= $device->id ?>/' + encodeURI(filename);
+   }
+}
 function delFile(filename)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
@@ -130,8 +137,21 @@ function delComment(id)
         <?= $this->Text->autoParagraph(h($device->remarks)); ?>
     </div>
     <div class="related">
+        <h4><?= __('写真') ?></h4>
+        <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>
+        <div class="photos">
+        <?php foreach ($photo_list as $key => $val): ?>
+            <div class='photo'>
+                <?= $this->Html->link($this->Html->image($val[0], array('alt'=>basename($val[1]))), $val[1], ['target' => '_blank', 'escape' => false]) ?>
+                <p><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delPhoto('".$key."')"]) ?>&nbsp;<?= $key ?></p>
+            </div>
+        <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="related">
         <h4><?= __('添付ファイル') ?></h4>
         <?= $this->Form->button('ファイル保存', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
+        <?php if (!empty($file_list)): ?>
         <table class="">
             <tr>
                 <th scope="col"><?= __('ファイル') ?></th>
@@ -144,6 +164,7 @@ function delComment(id)
             </tr>
         <?php endforeach; ?>            
         </table>
+        <?php endif; ?>
     </div>
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
@@ -193,6 +214,20 @@ function delComment(id)
     </div>
 </div>
 <!-- モーダルエリアここから -->
+<section id="modalAreaPhoto" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('Photo')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
+            <?= $this->Form->create($device, ['action' => 'addPhoto/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('登録')) ?>
+            <?= $this->Form->end() ?>
+        </div>
+        <div class="close_modal" onclick="closeModal('Photo')">
+        ×
+        </div>
+    </div>
+</section>
 <section id="modalAreaFile" class="modal_area">
     <div class="modal_bg" onclick="closeModal('File')"></div>
     <div class="modal_wrapper">

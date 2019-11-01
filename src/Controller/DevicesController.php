@@ -17,7 +17,9 @@ class DevicesController extends AppController
     public $components = ['AttachedFile', 'Log'];
     
     const UPLOAD_DIR = UPLOAD_DIR_DEVICE;
-    const UPLOAD_PATH = WWW_ROOT. '/'. self::UPLOAD_DIR. '/';
+    const UPLOAD_PATH = WWW_ROOT. DIR_SEP. self::UPLOAD_DIR. DIR_SEP;
+    const PHOTO_DIR = PHOTO_DIR_DEVICE;
+    const PHOTO_PATH = WWW_ROOT. DIR_SEP. self::PHOTO_DIR. DIR_SEP;
 
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
@@ -150,14 +152,30 @@ class DevicesController extends AppController
         $mUsers = $tableMUsers->find('list')->toArray();
         
         // 添付ファイル
-        $result = glob(self::UPLOAD_PATH. $device['id']. '/'. '*');
+        $result = glob(self::UPLOAD_PATH. $id. DIR_SEP. '*');
         $file_list = array();
         foreach($result as $file)
         {
-            $file_list[basename($file)] = '/'. implode('/', [self::UPLOAD_DIR, $device['id'], basename($file)]);
+            $path_info = pathinfo($file);
+            $file_list[$path_info['basename']] = DIR_SEP. implode(DIR_SEP, [self::UPLOAD_DIR, $id, $path_info['basename']]);
+        }
+        // 画像
+        $result_photo = glob(self::PHOTO_PATH. $id. DIR_SEP. '*');
+        $photo_list = array();
+        foreach($result_photo as $file)
+        {
+            $path_info = pathinfo($file);
+            // サムネイル画像を対象に処理
+            if (substr($path_info['filename'], -1 * strlen(PHOTO_SAFIX)) == PHOTO_SAFIX)
+            {
+                $pre_name = $this->AttachedFile->removePhotSafix($path_info['basename']);
+                $photo_list[$pre_name] = [
+                    DIR_SEP . implode(DIR_SEP, [self::PHOTO_DIR, $id, $path_info['basename']]),
+                    DIR_SEP. implode(DIR_SEP, [self::PHOTO_DIR, $id, $pre_name])];
+            }
         }
         
-        $this->set(compact('device', 'file_list', 'mUsers'));
+        $this->set(compact('device', 'file_list', 'photo_list', 'mUsers'));
     }
 
     /**
@@ -320,6 +338,7 @@ class DevicesController extends AppController
             
             $device = $this->Devices->patchEntity($device, $this->request->getData());
             $dir = self::UPLOAD_PATH. $device['id'];
+            
             try {
                 $device['import_file'] = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
             } catch (RuntimeException $e){
@@ -335,8 +354,9 @@ class DevicesController extends AppController
             ]));
 
             $this->Flash->success(__('The file has been uploaded.'));
-            return $this->redirect(['action' => 'view', $device['id']]);
         }
+        
+        return $this->redirect(['action' => 'view', $device['id']]);
     }
     
     /**
@@ -349,16 +369,78 @@ class DevicesController extends AppController
     {
         if ($filename)
         {
-            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, '/', urldecode($filename)]));
+            $this->AttachedFile->delete(implode('', [self::UPLOAD_PATH, $id, DIR_SEP, urldecode($filename)]));
+
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. urldecode($filename),
+            ]));
         }
-        
-        // ログ
-        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-            'id:'. $id,
-            'file:'. urldecode($filename),
-        ]));
 
         return $this->redirect(['action' => 'view', $id]);
     }
     
+    /**
+     * 写真保存処理
+     * @param type $id
+     * @return type
+     */
+    public function addPhoto($id = null)
+    {
+        $device = $this->Devices->get($id, [
+            'contain' => ['Centers']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
+            if (empty($this->request->data['import_file']['tmp_name']))
+            {
+                $this->Flash->error(__('Please input attached photo.'));
+                return $this->redirect(['action' => 'view', $device['id']]);                
+            }
+            
+            $device = $this->Devices->patchEntity($device, $this->request->getData());
+            $dir = self::PHOTO_PATH. $device['id'];
+            
+            try {
+                $device['import_file'] = $this->AttachedFile->uploadPhoto($this->request->data['import_file'], $dir);
+            } catch (RuntimeException $e){
+                $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
+                $this->Flash->error(__($e->getMessage()));
+                return $this->redirect(['action' => 'index']);
+            }
+            
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. $this->request->data['import_file']['name'],
+            ]));
+
+            $this->Flash->success(__('The file has been uploaded.'));
+        }
+        
+        return $this->redirect(['action' => 'view', $device['id']]);
+    }
+    
+    /**
+     * 写真削除処理
+     * @param type $id
+     * @param type $filename
+     * @return type
+     */
+    public function deletePhoto($id = null, $filename = null)
+    {
+        if ($filename)
+        {
+            $this->AttachedFile->deletePhoto(implode('', [self::PHOTO_PATH, $id, '/', urldecode($filename)]));
+            
+            // ログ
+            $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                'id:'. $id,
+                'file:'. urldecode($filename),
+            ]));
+        }
+        
+        return $this->redirect(['action' => 'view', $id]);
+    }
 }
