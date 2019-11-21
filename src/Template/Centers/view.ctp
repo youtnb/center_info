@@ -162,6 +162,7 @@ function delFile(filename)
             <?= $this->Form->file('import_file') ?>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
+            ※ファイルサイズは10MB未満としてください
         </div>
         <div class="close_modal" onclick="closeModal('Photo')">
         ×
@@ -176,6 +177,7 @@ function delFile(filename)
             <?= $this->Form->file('import_file') ?>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
+            ※ファイルサイズは10MB未満としてください
         </div>
         <div class="close_modal" onclick="closeModal('File')">
         ×
