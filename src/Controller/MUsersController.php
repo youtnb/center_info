@@ -13,6 +13,8 @@ use Cake\Event\Event;
  */
 class MUsersController extends AppController
 {
+    public $components = ['Log'];
+    
     /**
      * Index method
      *
@@ -138,6 +140,8 @@ class MUsersController extends AppController
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', ['']));
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error(__('Invalid username or password, try again'));
@@ -149,9 +153,11 @@ class MUsersController extends AppController
      */
     public function logout()
     {
+        // ログ
+        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', ['']));
+        
         $session = $this->request->session();
         $session->destroy();
-        
         return $this->redirect($this->Auth->logout());
     }
 }
