@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use RuntimeException;
+use Cake\Event\Event;
 
 /**
  * Centers Controller
@@ -26,6 +27,21 @@ class CentersController extends AppController
     private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'delete_flag'];
     const SESSION_CLASS_SUB = 'Device.';
     private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id']; // nameとdelete_flagは共有しない
+    
+    //api
+    const AUTHORIZED_API_TOKEN = 'apikey';
+    const BAD_REQUEST_CODE = 400;
+    const NORMAL_REQUEST_CODE = 200;
+
+    /**
+     * 認証不要なアクションを追記
+     * @param \App\Controller\Event $event
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['getCenterList']);
+    }
 
     /**
      * Index method
@@ -364,5 +380,70 @@ class CentersController extends AppController
         }
         
         return $this->redirect(['action' => 'view', $id]);
+    }
+    
+    /**
+     * API実験
+     */
+    public function getCenterList()
+    {
+        // レンダリング不要
+        $this->autoRender = false;
+        // レスポンス形式指定
+        $this->response->type('application/json');
+        
+        // 認証
+        $auth = true;
+        if (!empty($this->request->query))
+        {
+            $key = $this->request->query['key'];
+            if ($key != self::AUTHORIZED_API_TOKEN)
+            {
+                $auth = false;
+            }
+        }
+        else
+        {
+            $auth = false;
+        }
+
+        // 認証成功の場合
+        if ($auth)
+        {
+            $records =  $this->Centers->find('all')->toArray();
+            $data = $this->create_response_data($key, self::NORMAL_REQUEST_CODE, 'success' , $records);
+            //$this->log(json_encode($data),LOG_DEBUG);
+            $this->response->body(json_encode($data,JSON_UNESCAPED_UNICODE));
+        }
+        else
+        {
+            // レスポンス用JSONを生成するための連想配列を生成
+            $data = $this->create_response_data($key, self::BAD_REQUEST_CODE, 'bad request', []);
+            $this->response->body(json_encode($data));
+        }
+    }
+    
+    /**
+     * API実験（レスポンス作成）
+     * @param type $key
+     * @param type $status
+     * @param type $message
+     * @param type $data
+     * @return array
+     */
+    private function create_response_data($key, $status, $message , $data = null)
+    {
+        if ($status === self::NORMAL_REQUEST_CODE)
+        {
+            $data = ['parmas' => ['key' => '[MASK]'],
+                'result' => ['status' => $status, 'message' => $message],
+                'data' => $data];
+        }
+        else
+        {
+            $data = ['parmas' => ['key' => $key],
+                'result' => ['status' => $status, 'message' => $message]];
+        }
+        return $data;
     }
 }
