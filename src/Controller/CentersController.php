@@ -133,6 +133,7 @@ class CentersController extends AppController
 
         $tableMDeviceTypes = TableRegistry::getTableLocator()->get('MDeviceTypes');
         $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
+        $device_color_list = $tableMDeviceTypes->find('list', ['valueField' => 'background_color'])->toArray();
         
         // 添付ファイル
         $result = glob(self::UPLOAD_PATH. $id. DIR_SEP. '*');
@@ -158,7 +159,7 @@ class CentersController extends AppController
             }
         }
         
-        $this->set(compact('center', 'mDeviceTypes', 'file_list', 'photo_list'));
+        $this->set(compact('center', 'mDeviceTypes', 'device_color_list', 'file_list', 'photo_list'));
     }
 
     /**
