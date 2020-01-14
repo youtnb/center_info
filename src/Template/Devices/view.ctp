@@ -59,7 +59,8 @@ function delComment(id)
             <th scope="row"><?= __('受入No') ?></th>
             <td><?= h($device->accepted_no) ?></td>
             <th scope="row"><?= __('端末種別') ?></th>
-            <td colspan="3"><?= $device->has('m_device_type') ? $device->m_device_type->name : '' ?></td>
+            <td style="background-color: <?= $device->has('m_device_type') ? $device->m_device_type->background_color : '' ?>;"><?= $device->has('m_device_type') ? $device->m_device_type->name : '' ?></td>
+            <td colspan="2"></td>
         </tr>
         <tr>
             <th scope="row"><?= __('端末名') ?></th>
@@ -105,9 +106,9 @@ function delComment(id)
         </tr>
         <tr>
             <th scope="row"><?= __('OS種別') ?></th>
-            <td><?= $device->has('m_operation_system') ? $device->m_operation_system->name : '' ?></td>
+            <td style="background-color: <?= $device->has('m_operation_system') ? $device->m_operation_system->background_color : '' ?>;"><?= $device->has('m_operation_system') ? $device->m_operation_system->name : '' ?></td>
             <th scope="row"><?= __('SQLServer種別') ?></th>
-            <td><?= $device->has('m_sqlserver') ? $device->m_sqlserver->name : '' ?></td>
+            <td style="background-color: <?= $device->has('m_sqlserver') ? $device->m_sqlserver->background_color : '' ?>;"><?= $device->has('m_sqlserver') ? $device->m_sqlserver->name : '' ?></td>
             <th scope="row"><?= __('接続先') ?></th>
             <td><?= h($device->connect) ?></td>
         </tr>

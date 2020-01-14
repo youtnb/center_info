@@ -461,7 +461,7 @@ class DevicesController extends AppController
         $devices = $query->all();
         
         $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
-        $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0]);
+        $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0])->toArray();
         
         $this->set(compact('devices', 'mPrefectures'));
         

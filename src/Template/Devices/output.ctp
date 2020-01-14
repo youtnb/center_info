@@ -32,7 +32,7 @@ echo "\r\n";
 foreach ($devices as $device)
 {
     $line = [
-        $device->has('center') ? $mPrefectures->toArray()[$device->center->m_prefecture_id]: '',
+        $device->has('center') ? $mPrefectures[$device->center->m_prefecture_id]: '',
         '',
         $device->has('center') ? $device->center->name: '',
         $device->has('m_device_type') ? $device->m_device_type->name: '',
