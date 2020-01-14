@@ -60,7 +60,19 @@ jQuery(function($)
             </table>
         </fieldset>
     <?= $this->Form->end() ?>
-    <div style="margin:0 0 0 auto; width: 10%;"><?= $this->Paginator->limitControl([10 => 10, 20 => 20, 50 => 50], null, ['label' => '']) ?></div>
+    <?= $this->Form->create(null, ['type' => 'get', 'url' => '/devices/output/']) ?>
+    <fieldset>
+        <?php
+            echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
+            echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
+            echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
+            echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+            echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
+            echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
+            echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+        ?>
+        <?= $this->Form->button(__('CSVダウンロード')) ?>
+    <?= $this->Form->end() ?>
     <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>

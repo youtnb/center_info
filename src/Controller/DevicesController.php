@@ -443,4 +443,32 @@ class DevicesController extends AppController
         
         return $this->redirect(['action' => 'view', $id]);
     }
+    
+    /**
+     * CSV出力
+     */
+    public function output()
+    {
+        $query = $this->Devices->find();
+        if (!empty($this->request->query))
+        {
+            // 一覧検索
+            $query = $this->Devices->find('search', $this->request->query);
+        }
+        
+        $query->contain(['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']);
+        
+        $devices = $query->all();
+        
+        $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
+        $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0]);
+        
+        $this->set(compact('devices', 'mPrefectures'));
+        
+        $this->viewBuilder()->setLayout(false);
+        
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=devices.csv');
+        header('Content-Transfer-Encoding: binary');
+    }
 }
