@@ -45,7 +45,7 @@ foreach ($devices as $device)
         '',
         $device->seria_no,
         '',
-        $device->suport_end_date,
+        $device->support_end_date,
         $device->setup_date,
         $device->has('m_operation_system') ? $device->m_operation_system->name: '',
         $device->has('m_sqlserver') ? $device->m_sqlserver->name: '',
