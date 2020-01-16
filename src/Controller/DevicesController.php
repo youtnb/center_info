@@ -23,6 +23,8 @@ class DevicesController extends AppController
     const PHOTO_PATH = WWW_ROOT. DIR_SEP. self::PHOTO_DIR. DIR_SEP;
     const TEMPLATE_PATH = WWW_ROOT. DIR_SEP. 'template';
 
+    private $sec_flag = ['未', '済', '予'];
+    
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
     private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag'];
@@ -112,7 +114,10 @@ class DevicesController extends AppController
             $centers->where(['m_prefecture_id' => $m_prefecture_id]);
         }
         
-        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers', 'mAreas', 'mPrefectures'));
+        // セキュリティ
+        $sec_flag = $this->sec_flag;
+        
+        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers', 'mAreas', 'mPrefectures', 'sec_flag'));
     }
 
     /**
@@ -177,7 +182,10 @@ class DevicesController extends AppController
             }
         }
         
-        $this->set(compact('device', 'file_list', 'photo_list', 'mUsers'));
+        // セキュリティ
+        $sec_flag = $this->sec_flag;
+        
+        $this->set(compact('device', 'file_list', 'photo_list', 'mUsers', 'sec_flag'));
     }
 
     /**
@@ -464,8 +472,11 @@ class DevicesController extends AppController
 
         $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
         $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0])->toArray();
-
-        $this->set(compact('devices', 'mPrefectures'));
+        
+        // セキュリティ
+        $sec_flag = $this->sec_flag;
+        
+        $this->set(compact('devices', 'mPrefectures', 'sec_flag'));
 
         $this->viewBuilder()->setLayout(false);
 
@@ -523,7 +534,7 @@ class DevicesController extends AppController
             $sheet->setCellValue('E'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
             if ($device->has('m_device_type'))
             {   $sheet->getStyle('E'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mDeviceTypes[$device->m_device_type->id], 1));}
-            $sheet->setCellValue('F'.$line, $device->security_flag ? 'v' : '');
+            $sheet->setCellValue('F'.$line, $device->security_flag ? $this->sec_flag[$device->security_flag] : '');
             $sheet->setCellValue('G'.$line, $device->ip_higher);
             $sheet->setCellValue('H'.$line, $device->ip_lower);
             $sheet->setCellValue('I'.$line, $device->name);

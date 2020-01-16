@@ -92,7 +92,7 @@ function delComment(id)
         </tr>
         <tr>
             <th scope="row"><?= __('予備') ?></th>
-            <td><?= $device->reserve_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
+            <td><?= $device->reserve_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
         <!--
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($device->id) ?></td>
@@ -100,9 +100,9 @@ function delComment(id)
             <td><?= h($device->created) ?></td>
         -->
             <th scope="row"><?= __('稼働中') ?></th>
-            <td><?= $device->running_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
+            <td><?= $device->running_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
             <th scope="row"><?= __('セキュリティソフト') ?></th>
-            <td><?= $device->security_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
+            <td><?= $sec_flag[$device->security_flag] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('OS種別') ?></th>

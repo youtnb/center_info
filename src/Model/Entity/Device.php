@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string|null $ip_higher
  * @property string|null $ip_lower
  * @property bool $reserve_flag
- * @property bool $security_flag
+ * @property int $security_flag
  * @property string|null $model
  * @property string|null $serial_no
  * @property \Cake\I18n\FrozenDate|null $support_end_date

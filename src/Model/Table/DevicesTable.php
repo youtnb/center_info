@@ -120,10 +120,10 @@ class DevicesTable extends Table
             ->requirePresence('reserve_flag', 'create')
             ->allowEmptyString('reserve_flag', false);
 
-        $validator
-            ->boolean('security_flag')
-            ->requirePresence('security_flag', 'create')
-            ->allowEmptyString('security_flag', false);
+//        $validator
+//            ->boolean('security_flag')
+//            ->requirePresence('security_flag', 'create')
+//            ->allowEmptyString('security_flag', false);
 
         $validator
             ->scalar('model')
@@ -301,6 +301,11 @@ class DevicesTable extends Table
         if (isset($options['name']) && !empty($options['name']))
         {
             $query->where([$this->alias().'.name LIKE' => '%'. $options['name']. '%']);
+        }
+        // セキュリティフラグ
+        if (isset($options['security_flag']) && strlen($options['security_flag']) > 0)
+        {
+            $query->where([$this->alias().'.security_flag' => $options['security_flag']]);
         }
         // 削除フラグ
         if (isset($options['delete_flag']) && !empty($options['delete_flag']))

@@ -51,7 +51,8 @@ jQuery(function($)
                 <tr>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
                     <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
-                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名', 'value' => $this->request->query('name')]) ?></td>
+                    <td><?= $this->Form->input('security_flag', ['type' => 'select' ,'options' => $sec_flag, 'empty' => '選択してください', 'label' => 'セキュリティソフト', 'value' => $this->request->query('security_flag')]) ?></td>
+                    <!--<td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名', 'value' => $this->request->query('name')]) ?></td>-->
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
@@ -101,8 +102,8 @@ jQuery(function($)
                 <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
                 <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('security_flag', 'McA') ?></th>
                 <!--
-                <th scope="col"><?= $this->Paginator->sort('security_flag', 'セキュリティ') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('support_end_date', '保守終了日') ?></th>
                 -->
                 <th scope="col" class="th_ymd"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
@@ -111,8 +112,8 @@ jQuery(function($)
                 <th scope="col"><?= $this->Paginator->sort('connect', '接続先') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('remote', 'リモート') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
-                -->
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                -->
                 <th scope="col" class="actions th_actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -128,8 +129,8 @@ jQuery(function($)
                 <td><?= h($device->ip_higher) ?></td>
                 <td><?= h($device->ip_lower) ?></td>
                 <td style="text-align: center"><?php if($device->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
+                <td style="text-align: center"><?= !empty($device->security_flag) ? $sec_flag[$device->security_flag] : '' ?></td>
                 <!--
-                <td style="text-align: center"><?php if($device->security_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($device->support_end_date) ?></td>
                 -->
                 <td><?= h($device->setup_date) ?></td>
@@ -138,8 +139,8 @@ jQuery(function($)
                 <td><?= h($device->connect) ?></td>
                 <td><?= h($device->remote) ?></td>
                 <td><?= h($device->running_flag) ?></td>
-                -->
                 <td style="text-align: center"><?php if($device->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
+                -->
                 <td class="actions">
                     <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
                     /

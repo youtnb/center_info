@@ -36,7 +36,7 @@ foreach ($devices as $device)
         '',
         $device->has('center') ? $device->center->name: '',
         $device->has('m_device_type') ? $device->m_device_type->name: '',
-        $device->security_flag ? 'v' : '',
+        $device->security_flag ? $sec_flag[$device->security_flag] : '',
         $device->ip_higher,
         $device->ip_lower,
         $device->name,

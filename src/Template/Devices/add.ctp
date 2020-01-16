@@ -61,15 +61,15 @@ $(document).ready(function()
             echo "<div class='float_30'>";
             echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '設置日']);
             echo "</div>";
+            echo "<div class='float_30'>";
             echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => 'サポート終了日']);
+            echo "</div>";
+            echo $this->Form->control('security_flag', ['options' => [0 => '未', 1 => '済', 2 => '予'], 'label' => 'セキュリティソフト', 'style' => 'width: 100px;']);
             
             echo "<div class='float_30'>";
             echo $this->Form->control('reserve_flag', ['label' => '予備']);
             echo "</div>";
-            echo "<div class='float_30'>";
             echo $this->Form->control('running_flag', ['label' => '稼働中']);
-            echo "</div>";
-            echo $this->Form->control('security_flag', ['label' => 'セキュリティソフト']);
             
             echo "<div class='float_05'>";
             echo $this->Form->control('m_operation_system_id', ['options' => $mOperationSystems, 'empty' => true, 'label' => 'OS種別', 'style' => 'width: 250px;']);
