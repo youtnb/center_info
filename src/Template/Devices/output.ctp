@@ -2,7 +2,7 @@
 // header
 $line = [
     '都道府県',
-    '',
+    'お客様名',
     'センター名',
     'TYPE',
     'McA',
@@ -33,7 +33,7 @@ foreach ($devices as $device)
 {
     $line = [
         $device->has('center') ? $mPrefectures[$device->center->m_prefecture_id]: '',
-        '',
+        $mCustomers[$device->toArray()['center']['m_customer_id']],
         $device->has('center') ? $device->center->name: '',
         $device->has('m_device_type') ? $device->m_device_type->name: '',
         $device->security_flag ? $sec_flag[$device->security_flag] : '',

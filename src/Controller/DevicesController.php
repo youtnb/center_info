@@ -473,10 +473,13 @@ class DevicesController extends AppController
         $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
         $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0])->toArray();
         
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list', ['valueField' => 'full_name'])->toArray();
+        
         // セキュリティ
         $sec_flag = $this->sec_flag;
         
-        $this->set(compact('devices', 'mPrefectures', 'sec_flag'));
+        $this->set(compact('devices', 'mPrefectures', 'mCustomers', 'sec_flag'));
 
         $this->viewBuilder()->setLayout(false);
 
@@ -516,7 +519,9 @@ class DevicesController extends AppController
         $mOperationSystems = $tableMOperationSystems->find('list', ['valueField' => 'background_color'])->toArray();
         $tableMSqlservers = TableRegistry::getTableLocator()->get('MSqlservers');
         $mSqlservers = $tableMSqlservers->find('list', ['valueField' => 'background_color'])->toArray();
-
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list', ['valueField' => 'full_name'])->toArray();
+        
         // 作成日時
         $sheet->setCellValue('D1', date('Y/m/d h:i:s'));
 
@@ -529,7 +534,7 @@ class DevicesController extends AppController
 
             // データ書き込み
             $sheet->setCellValue('B'.$line, $device->has('center') ? substr('0'.$device->center->m_prefecture_id, -2).$mPrefectures[$device->center->m_prefecture_id] : '');
-            $sheet->setCellValue('C'.$line, '');
+            $sheet->setCellValue('C'.$line, $mCustomers[$device->toArray()['center']['m_customer_id']]);
             $sheet->setCellValue('D'.$line, $device->has('center') ? $device->center->name : '');
             $sheet->setCellValue('E'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
             if ($device->has('m_device_type'))
