@@ -478,3 +478,6 @@ button, .button {
 .copy_button {
     padding: 0.2rem;
 }
+.download_button {
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}

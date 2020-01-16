@@ -29,12 +29,11 @@
         </fieldset>
     <?= $this->Form->end() ?>
     <?= $this->Form->create(null, ['type' => 'get', 'url' => '/logs/output/']) ?>
-    <fieldset>
         <?php
             echo $this->Form->hidden('created_from', ['value' => $this->request->query('created_from')]);
             echo $this->Form->hidden('created_to', ['value' => $this->request->query('created_to')]);
         ?>
-        <?= $this->Form->button(__('CSVダウンロード')) ?>
+        <?= $this->Form->button(__('CSVダウンロード'), ['class' => 'download_button']) ?>
     <?= $this->Form->end() ?>
     <table cellpadding="0" cellspacing="0">
         <thead>

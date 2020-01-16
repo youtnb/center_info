@@ -71,7 +71,7 @@ jQuery(function($)
                 echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
                 echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
             ?>
-            <?= $this->Form->button(__('EXCELダウンロード')) ?>
+            <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->end() ?>
     </div>
     <div style='float: right;'>
@@ -85,10 +85,10 @@ jQuery(function($)
             echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
             echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
         ?>
-        <?= $this->Form->button(__('CSVダウンロード')) ?>
+        <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
     <?= $this->Form->end() ?>
     </div>
-    <div style='clear: both;' />
+    <div style='clear: both;'></div>
     <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
