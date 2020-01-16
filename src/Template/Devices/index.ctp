@@ -60,8 +60,22 @@ jQuery(function($)
             </table>
         </fieldset>
     <?= $this->Form->end() ?>
-    <?= $this->Form->create(null, ['type' => 'get', 'url' => '/devices/output/']) ?>
-    <fieldset>
+    <div style='float: right; margin-left: 5px;'>
+        <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/outputExcel/']) ?>
+            <?php
+                echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
+                echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
+                echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
+                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
+                echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+            ?>
+            <?= $this->Form->button(__('EXCELダウンロード')) ?>
+        <?= $this->Form->end() ?>
+    </div>
+    <div style='float: right;'>
+    <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/output/']) ?>
         <?php
             echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
             echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
@@ -73,6 +87,8 @@ jQuery(function($)
         ?>
         <?= $this->Form->button(__('CSVダウンロード')) ?>
     <?= $this->Form->end() ?>
+    </div>
+    <div style='clear: both;' />
     <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>

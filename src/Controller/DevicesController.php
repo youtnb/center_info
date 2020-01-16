@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use RuntimeException;
+use Cake\Http\CallbackStream;
 
 /**
  * Devices Controller
@@ -20,6 +21,7 @@ class DevicesController extends AppController
     const UPLOAD_PATH = WWW_ROOT. DIR_SEP. self::UPLOAD_DIR. DIR_SEP;
     const PHOTO_DIR = PHOTO_DIR_DEVICE;
     const PHOTO_PATH = WWW_ROOT. DIR_SEP. self::PHOTO_DIR. DIR_SEP;
+    const TEMPLATE_PATH = WWW_ROOT. DIR_SEP. 'template';
 
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
@@ -449,26 +451,148 @@ class DevicesController extends AppController
      */
     public function output()
     {
+        $this->request->allowMethod(['post']);
+        
         $query = $this->Devices->find();
-        if (!empty($this->request->query))
+        if (!empty($this->request->data))
         {
             // 一覧検索
-            $query = $this->Devices->find('search', $this->request->query);
+            $query = $this->Devices->find('search', $this->request->data);
         }
-        
         $query->contain(['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']);
-        
         $devices = $query->all();
-        
+
         $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
         $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0])->toArray();
-        
+
         $this->set(compact('devices', 'mPrefectures'));
-        
+
         $this->viewBuilder()->setLayout(false);
-        
+
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=devices.csv');
+        header('Content-Disposition: attachment; filename=ip_address_list.csv');
         header('Content-Transfer-Encoding: binary');
+    }
+    
+    /**
+     * Excel出力
+     */
+    public function outputExcel()
+    {
+        $this->request->allowMethod(['post']);
+        
+        // テンプレート読込
+        $inputFileName = self::TEMPLATE_PATH . DS . 'template_device.xlsx';
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // データ取得
+        $query = $this->Devices->find();
+        if (!empty($this->request->data))
+        {
+            // 一覧検索
+            $query = $this->Devices->find('search', $this->request->data);
+        }
+        $query->contain(['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']);
+        $devices = $query->all();
+
+        // マスターセット
+        $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
+        $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0])->toArray();
+        $tableMDeviceTypes = TableRegistry::getTableLocator()->get('MDeviceTypes');
+        $mDeviceTypes = $tableMDeviceTypes->find('list', ['valueField' => 'background_color'])->toArray();
+        $tableMOperationSystems = TableRegistry::getTableLocator()->get('MOperationSystems');
+        $mOperationSystems = $tableMOperationSystems->find('list', ['valueField' => 'background_color'])->toArray();
+        $tableMSqlservers = TableRegistry::getTableLocator()->get('MSqlservers');
+        $mSqlservers = $tableMSqlservers->find('list', ['valueField' => 'background_color'])->toArray();
+
+        // 作成日時
+        $sheet->setCellValue('D1', date('Y/m/d h:i:s'));
+
+        $line = 2;
+        $preCenter = '';
+        $color = 'FFFFFFFF';
+        foreach ($devices as $device)
+        {
+            $line++;
+
+            // データ書き込み
+            $sheet->setCellValue('B'.$line, $device->has('center') ? substr('0'.$device->center->m_prefecture_id, -2).$mPrefectures[$device->center->m_prefecture_id] : '');
+            $sheet->setCellValue('C'.$line, '');
+            $sheet->setCellValue('D'.$line, $device->has('center') ? $device->center->name : '');
+            $sheet->setCellValue('E'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
+            if ($device->has('m_device_type'))
+            {   $sheet->getStyle('E'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mDeviceTypes[$device->m_device_type->id], 1));}
+            $sheet->setCellValue('F'.$line, $device->security_flag ? 'v' : '');
+            $sheet->setCellValue('G'.$line, $device->ip_higher);
+            $sheet->setCellValue('H'.$line, $device->ip_lower);
+            $sheet->setCellValue('I'.$line, $device->name);
+            $sheet->setCellValue('J'.$line, $device->reserve_flag ? 'v' : '');
+            $sheet->setCellValue('K'.$line, $device->model);
+            $sheet->setCellValue('L'.$line, strpos($device->remarks, 'R5') !== false ? 'R5' : '');
+            $sheet->setCellValue('M'.$line, $device->seria_no);
+            $sheet->setCellValue('N'.$line, '');
+            $sheet->setCellValue('O'.$line, !empty($device->support_end_date) ? date('Y/m/d', strtotime($device->support_end_date)) : '');
+            if (!empty($device->support_end_date) && strtotime($device->support_end_date) < strtotime(date('Y/m/d')))
+            {
+                $sheet->getStyle('O'.$line)->getFont()->getColor()->setARGB('FFFF0000');
+            }
+            $sheet->setCellValue('P'.$line, !empty($device->setup_date) ? date('Y/m/d', strtotime($device->setup_date)) : '');
+            $sheet->setCellValue('Q'.$line, $device->has('m_operation_system') ? str_replace(['indowsServer ', 'indows '], ['', ''], $device->m_operation_system->name) : '');
+            if ($device->has('m_operation_system'))
+            {
+                $sheet->getStyle('Q'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mOperationSystems[$device->m_operation_system->id], 1));
+                $borders = $sheet->getStyle('Q'.$line)->getBorders();
+                $borders->getTop()->setBorderStyle('thin');
+                $borders->getBottom()->setBorderStyle('thin');
+                $borders->getRight()->setBorderStyle('thin');
+                $borders->getLeft()->setBorderStyle('thin');
+            }
+            $sheet->setCellValue('R'.$line, $device->has('m_sqlserver') ? $device->m_sqlserver->name : '');
+//            if ($device->has('m_sqlserver'))
+//            {   $sheet->getStyle('R'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mSqlservers[$device->m_sqlserver->id], 1));}
+            $sheet->setCellValue('S'.$line, $device->admin_pass);
+            $sheet->setCellValue('T'.$line, $device->has('m_product') ? $device->m_product->name : '');
+            $sheet->setCellValue('U'.$line, $device->has('m_version') ? $device->m_version->name : '');
+            $sheet->setCellValue('V'.$line, $device->connect);
+            $sheet->setCellValue('W'.$line, $device->remote);
+            $sheet->setCellValue('X'.$line, $device->remarks);
+            $sheet->setCellValue('Y'.$line, '');
+
+            // センター境界
+            // 背景色変更
+            if (!empty($preCenter) && $preCenter <> $device->center->name)
+            {
+                if ($color == 'FFFFFFFF'){$color = 'FFFFFFE0';}else{$color = 'FFFFFFFF';}
+            }
+//            $sheet->getStyle('D'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB($color);
+            // 罫線
+            if (!empty($preCenter) && $preCenter <> $device->center->name)
+            {
+                $col = 'D';
+                for ($i=4; $i<=28; $i++)
+                {
+                    $borders = $sheet->getStyle($col.$line)->getBorders();
+                    $borders->getTop()->setBorderStyle('thin');
+                    $col++;
+                }
+            }
+            $preCenter = $device->center->name;
+        }
+
+        // コールバックをストリーム化
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $stream = new CallbackStream(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        // ファイルを出力
+        $response = $this->response
+            ->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            ->withHeader('Content-Disposition', 'attachment;filename="IPアドレス一覧.xlsx"')
+            ->withHeader('Cache-Control', 'max-age=0')
+            ->withBody($stream);
+
+        return $response;
     }
 }
