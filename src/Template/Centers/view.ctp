@@ -74,18 +74,6 @@ function delFile(filename)
         </tr>
     </table>
     <div class="row">
-        <h4><?= __('アクセス') ?></h4>
-        <?= $this->Text->autoParagraph(h($center->access)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('業務内容') ?></h4>
-        <?= $this->Text->autoParagraph(h($center->job)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('備考') ?></h4>
-        <?= $this->Text->autoParagraph(h($center->remarks)); ?>
-    </div>
-    <div class="row">
         <h4><?= __('端末情報') ?></h4>
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
@@ -122,7 +110,15 @@ function delFile(filename)
         </table>
         <?php endif; ?>
     </div>
-    <div class="related">
+    <div class="row">
+        <h4><?= __('アクセス') ?></h4>
+        <?= $this->Text->autoParagraph(h($center->access)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('業務内容') ?></h4>
+        <?= $this->Text->autoParagraph(h($center->job)); ?>
+    </div>
+    <div class="row">
         <h4><?= __('写真') ?></h4>
         <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>
         <div class="photos">
@@ -134,7 +130,7 @@ function delFile(filename)
         <?php endforeach; ?>
         </div>
     </div>
-    <div class="related">
+    <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
         <?= $this->Form->button('ファイル保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
         <?php if (!empty($file_list)): ?>
@@ -151,6 +147,10 @@ function delFile(filename)
         <?php endforeach; ?>            
         </table>
         <?php endif; ?>
+    </div>
+    <div class="row">
+        <h4><?= __('備考') ?></h4>
+        <?= $this->Text->autoParagraph(h($center->remarks)); ?>
     </div>
 </div>
 <!-- モーダルエリアここから -->
