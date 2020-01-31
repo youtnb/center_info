@@ -130,14 +130,6 @@ function delComment(id)
         </tr>
     </table>
     <div class="row">
-        <h4><?= __('改造内容') ?></h4>
-        <?= $this->Text->autoParagraph(h($device->custom)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('備考') ?></h4>
-        <?= $this->Text->autoParagraph(h($device->remarks)); ?>
-    </div>
-    <div class="related">
         <h4><?= __('写真') ?></h4>
         <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>
         <div class="photos">
@@ -149,7 +141,7 @@ function delComment(id)
         <?php endforeach; ?>
         </div>
     </div>
-    <div class="related">
+    <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
         <?= $this->Form->button('ファイル保存', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
         <?php if (!empty($file_list)): ?>
@@ -166,6 +158,14 @@ function delComment(id)
         <?php endforeach; ?>            
         </table>
         <?php endif; ?>
+    </div>
+    <div class="row">
+        <h4><?= __('備考') ?></h4>
+        <?= $this->Text->autoParagraph(h($device->remarks)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('改造内容') ?></h4>
+        <?= $this->Text->autoParagraph(h($device->custom)); ?>
     </div>
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
