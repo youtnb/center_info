@@ -56,12 +56,23 @@ jQuery(function($)
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="4">※顧客・地域・都道府県の指定は、拠点情報一覧と共通です</td>
+                    <td colspan="5">※顧客・地域・都道府県の指定は、拠点情報一覧と共通です</td>
                 </tr>
             </table>
         </fieldset>
     <?= $this->Form->end() ?>
-    <div style='float: right; margin-left: 5px;'>
+    <div style='float: right;'>
+        <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/output/']) ?>
+            <?php
+                echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
+                echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
+                echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
+                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
+                echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+            ?>
+        <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/outputExcel/']) ?>
             <?php
                 echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
@@ -74,19 +85,6 @@ jQuery(function($)
             ?>
             <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->end() ?>
-    </div>
-    <div style='float: right;'>
-    <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/output/']) ?>
-        <?php
-            echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
-            echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
-            echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
-            echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
-            echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
-            echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
-            echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
-        ?>
-        <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
     <?= $this->Form->end() ?>
     </div>
     <div style='clear: both;'></div>
