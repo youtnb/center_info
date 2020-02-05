@@ -62,6 +62,7 @@ jQuery(function($)
         </fieldset>
     <?= $this->Form->end() ?>
     <div style='float: right;'>
+        <div style='float: left; margin-right: 5px;'>
         <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/output/']) ?>
             <?php
                 echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
@@ -72,7 +73,10 @@ jQuery(function($)
                 echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
                 echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
             ?>
-        <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
+            <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
+        <?= $this->Form->end() ?>
+        </div>
+        <div style='float: left;'>
         <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/outputExcel/']) ?>
             <?php
                 echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
@@ -85,7 +89,7 @@ jQuery(function($)
             ?>
             <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->end() ?>
-    <?= $this->Form->end() ?>
+        </div>
     </div>
     <div style='clear: both;'></div>
     <div class="list_table">
