@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MCustomers Model
@@ -74,8 +75,7 @@ class MCustomersTable extends Table
 
         $validator
             ->scalar('remarks')
-            ->requirePresence('remarks', 'create')
-            ->allowEmptyString('remarks', false);
+            ->allowEmptyString('remarks');
 
         $validator
             ->boolean('delete_flag')
@@ -97,5 +97,23 @@ class MCustomersTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+         $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.name' => 'ASC', $this->alias().'.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

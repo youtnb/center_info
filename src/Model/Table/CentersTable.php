@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Centers Model
@@ -113,6 +114,21 @@ class CentersTable extends Table
             ->allowEmptyString('remarks');
 
         $validator
+            ->boolean('thermo_dry_flag')
+            ->requirePresence('thermo_dry_flag', 'create')
+            ->allowEmptyString('thermo_dry_flag', false);
+
+        $validator
+            ->boolean('thermo_chilled_flag')
+            ->requirePresence('thermo_chilled_flag', 'create')
+            ->allowEmptyString('thermo_chilled_flag', false);
+
+        $validator
+            ->boolean('thermo_frozen_flag')
+            ->requirePresence('thermo_frozen_flag', 'create')
+            ->allowEmptyString('thermo_frozen_flag', false);
+
+        $validator
             ->boolean('shoes_flag')
             ->requirePresence('shoes_flag', 'create')
             ->allowEmptyString('shoes_flag', false);
@@ -139,5 +155,76 @@ class CentersTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    /**
+     * 検索初期条件
+     * @param Event $event
+     * @param Query $query
+     * @param type $options
+     * @param type $primary
+     * @return Query
+     */
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.m_prefecture_id' => 'ASC', $this->alias().'.m_customer_id' => 'ASC', $this->alias().'.address' => 'ASC', $this->alias().'.name' => 'ASC']);
+        }
+        
+        return $query;
+    }
+    
+    /**
+     * 一覧検索finder
+     * @param Query $query
+     * @param type $options
+     * @return Query
+     */
+    public function findSearch(Query $query, $options)
+    {
+        // 顧客
+        if (isset($options['m_customer_id']) && !empty($options['m_customer_id']))
+        {
+            $query->where(['m_customer_id' => $options['m_customer_id']]);
+        }
+        // 都道府県
+        if (isset($options['m_prefecture_id']) && !empty($options['m_prefecture_id']))
+        {
+            $query->where(['m_prefecture_id' => $options['m_prefecture_id']]);
+        }
+        else
+        {
+            // 地域
+            if (isset($options['m_area_id']) && !empty($options['m_area_id']))
+            {
+                $sub = $this->MPrefectures->find()->where(['m_area_id' => $options['m_area_id']])->select('id');
+                $query->where([$this->alias().'.m_prefecture_id IN' => $sub]);
+            }
+        }
+        // 拠点名
+        if (isset($options['name']) && !empty($options['name']))
+        {
+            $query->where(['Centers.name LIKE' => '%'. $options['name']. '%']);
+        }
+        // 削除フラグ
+        if (isset($options['delete_flag']) && !empty($options['delete_flag']))
+        {
+            $query->where(['Centers.delete_flag >=' => '0']);
+        }
+        else
+        {
+            $query->where(['Centers.delete_flag =' => '0']);
+        }
+        
+        return $query;
     }
 }

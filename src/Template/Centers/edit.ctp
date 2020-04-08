@@ -6,45 +6,71 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?> </li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') == ROLE_ID_ADMIN){ ?>
         <li><?= $this->Form->postLink(
-                __('Delete'),
+                __('削除'),
                 ['action' => 'delete', $center->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $center->id)]
+                ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Centers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Prefectures'), ['controller' => 'MPrefectures', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Prefecture'), ['controller' => 'MPrefectures', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?></li>
+        <?php } ?>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add', $center->id]) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers form large-9 medium-8 columns content">
     <?= $this->Form->create($center) ?>
     <fieldset>
-        <legend><?= __('Edit Center') ?></legend>
+        <legend><?= __('拠点情報') ?></legend>
         <?php
-            echo $this->Form->control('m_customer_id', ['options' => $mCustomers]);
-            echo $this->Form->control('name');
-            echo $this->Form->control('postcode');
-            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true]);
-            echo $this->Form->control('address');
-            echo $this->Form->control('tel');
-            echo $this->Form->control('officer');
-            echo $this->Form->control('staff');
-            echo $this->Form->control('access');
-            echo $this->Form->control('job');
-            echo $this->Form->control('remarks');
-            echo $this->Form->control('shoes_flag');
-            echo $this->Form->control('delete_flag');
-            echo $this->Form->control('m_user_id', ['options' => $mUsers, 'empty' => true]);
+            echo "<div class='float_10'>";
+            echo $this->Form->control('m_customer_id', ['options' => $mCustomers, 'label' => '顧客', 'style' => 'width: 200px;']);
+             echo "</div>";
+            echo $this->Form->control('name', ['label' => '拠点名', 'style' => 'width: 400px;']);
+
+            echo "<div class='float_05'>";
+            echo $this->Form->control('postcode', ['label' => '郵便番号', 'style' => 'width: 100px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('m_prefecture_id', ['options' => $mPrefectures, 'empty' => true, 'label' => '都道府県', 'style' => 'width: 100px;']);
+            echo "</div>";
+            echo $this->Form->control('address', ['label' => '住所', 'style' => 'width: 400px;']);
+
+            echo $this->Form->control('tel', ['label' => '電話番号', 'style' => 'width: 250px;']);
+
+            echo "<div class='float_15'>";
+            echo $this->Form->control('thermo_dry_flag', ['label' => '温度帯【ドライ】']);
+            echo "</div>";
+            echo "<div class='float_15'>";
+            echo $this->Form->control('thermo_chilled_flag', ['label' => '温度帯【チルド】']);
+            echo "</div>";
+            echo "<div class='float_30'>";
+            echo $this->Form->control('thermo_frozen_flag', ['label' => '温度帯【フローズン】']);
+            echo "</div>";
+            echo $this->Form->control('shoes_flag', ['label' => '要上履き']);
+            
+            echo "<div class='float_10'>";
+            echo $this->Form->control('officer', ['label' => '責任者', 'style' => 'width: 250px;']);
+            echo "</div>";
+            echo $this->Form->control('staff', ['label' => '担当者', 'style' => 'width: 250px;']);
+            
+            echo $this->Form->control('access', ['label' => 'アクセス', 'style' => 'width: 700px;']);
+            echo $this->Form->control('job', ['label' => '業務内容', 'style' => 'width: 700px;']);
+            echo $this->Form->control('remarks', ['label' => '備考', 'style' => 'width: 700px;']);
+
+            echo $this->Form->control('delete_flag', ['label' => '削除']);
+            echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('更新')) ?>
     <?= $this->Form->end() ?>
 </div>

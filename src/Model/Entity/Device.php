@@ -9,11 +9,12 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $center_id
  * @property int $m_device_type_id
+ * @property string|null $accepted_no
  * @property string|null $name
  * @property string|null $ip_higher
  * @property string|null $ip_lower
  * @property bool $reserve_flag
- * @property bool $security_flag
+ * @property int $security_flag
  * @property string|null $model
  * @property string|null $serial_no
  * @property \Cake\I18n\FrozenDate|null $support_end_date
@@ -41,6 +42,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\MVersion $m_version
  * @property \App\Model\Entity\MUser $m_user
  * @property \App\Model\Entity\Comment[] $comments
+ * @property \App\Model\Entity\Custom[] $customs
  */
 class Device extends Entity
 {
@@ -56,6 +58,7 @@ class Device extends Entity
     protected $_accessible = [
         'center_id' => true,
         'm_device_type_id' => true,
+        'accepted_no' => true,
         'name' => true,
         'ip_higher' => true,
         'ip_lower' => true,
@@ -86,6 +89,7 @@ class Device extends Entity
         'm_product' => true,
         'm_version' => true,
         'm_user' => true,
-        'comments' => true
+        'comments' => true,
+        'customs' => true
     ];
 }

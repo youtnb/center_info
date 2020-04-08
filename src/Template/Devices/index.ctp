@@ -4,96 +4,157 @@
  * @var \App\Model\Entity\Device[]|\Cake\Collection\CollectionInterface $devices
  */
 ?>
+<script type="text/javascript">
+jQuery(function($)
+{
+    // 顧客選択時、拠点選択クリア
+    $('#m-customer-id').change(function()
+    {
+        $('#center-id').val('');
+    });
+    // 地域選択時、都道府県選択クリアand拠点選択クリア
+    $('#m-area-id').change(function()
+    {
+        $('#m-prefecture-id').val('');
+        $('#center-id').val('');
+    });
+    // 都道府県選択時、拠点選択クリア
+    $('#m-prefecture-id').change(function()
+    {
+        $('#center-id').val('');
+    });
+});
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Device Types'), ['controller' => 'MDeviceTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Device Type'), ['controller' => 'MDeviceTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Operation Systems'), ['controller' => 'MOperationSystems', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Operation System'), ['controller' => 'MOperationSystems', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Sqlservers'), ['controller' => 'MSqlservers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Sqlserver'), ['controller' => 'MSqlservers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Products'), ['controller' => 'MProducts', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Product'), ['controller' => 'MProducts', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Versions'), ['controller' => 'MVersions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Version'), ['controller' => 'MVersions', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?> </li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="devices index large-9 medium-8 columns content">
-    <h3><?= __('Devices') ?></h3>
+    <h3><?= __('端末情報一覧') ?></h3>
+    <?= $this->Form->create(null, ['type' => 'get']) ?>
+        <fieldset class="search_form">
+            <table>
+                <tr>
+                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客', 'value' => $this->request->query('m_customer_id')]) ?></td>
+                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
+                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
+                    <td><?= $this->Form->input('center_id', ['type' => 'select' ,'options' => $centers, 'empty' => '選択してください', 'label' => '拠点', 'value' => $this->request->query('center_id')]) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('devices/clear');"]) ?></td>
+                </tr>
+                <tr>
+                    <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
+                    <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
+                    <td><?= $this->Form->input('security_flag', ['type' => 'select' ,'options' => $sec_flag, 'empty' => '選択してください', 'label' => 'セキュリティソフト', 'value' => $this->request->query('security_flag')]) ?></td>
+                    <!--<td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '端末名', 'value' => $this->request->query('name')]) ?></td>-->
+                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="5">※顧客・地域・都道府県の指定は、拠点情報一覧と共通です</td>
+                </tr>
+            </table>
+        </fieldset>
+    <?= $this->Form->end() ?>
+    <div style='float: right;'>
+        <div style='float: left; margin-right: 5px;'>
+        <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/output/']) ?>
+            <?php
+                echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
+                echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
+                echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
+                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
+                echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+            ?>
+            <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
+        <?= $this->Form->end() ?>
+        </div>
+        <div style='float: left;'>
+        <?= $this->Form->create(null, ['type' => 'post', 'url' => '/devices/outputExcel/']) ?>
+            <?php
+                echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
+                echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
+                echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
+                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
+                echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+            ?>
+            <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
+        <?= $this->Form->end() ?>
+        </div>
+    </div>
+    <div style='clear: both;'></div>
+    <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('center_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_device_type_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ip_higher') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('ip_lower') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('reserve_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('security_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('model') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('serial_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('support_end_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('setup_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_operation_system_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_sqlserver_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('admin_pass') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_product_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_version_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('connect') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('remote') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('running_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="th_customer"><?= __('顧客') ?></th>
+                <th scope="col" class="th_center"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('name', '端末名') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('security_flag', 'McA') ?></th>
+                <!--
+                <th scope="col"><?= $this->Paginator->sort('support_end_date', '保守終了日') ?></th>
+                -->
+                <th scope="col" class="th_ymd"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
+                <!--
+                <th scope="col"><?= $this->Paginator->sort('m_version_id', 'バージョン') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('connect', '接続先') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('remote', 'リモート') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                -->
+                <th scope="col" class="actions th_actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($devices as $device): ?>
-            <tr>
-                <td><?= $this->Number->format($device->id) ?></td>
-                <td><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
-                <td><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>
+            <tr class="clickable <?= $device->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $device->id]) ?>">
+                <td><?= $mCustomers->toArray()[$device->toArray()['center']['m_customer_id']] ?></td>
+                <td><?= $device->has('center') ? $device->center->name : '' ?></td>
+                <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->
+                <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>
+                <td><?= h($device->accepted_no) ?></td>
                 <td><?= h($device->name) ?></td>
                 <td><?= h($device->ip_higher) ?></td>
                 <td><?= h($device->ip_lower) ?></td>
-                <td><?= h($device->reserve_flag) ?></td>
-                <td><?= h($device->security_flag) ?></td>
-                <td><?= h($device->model) ?></td>
-                <td><?= h($device->serial_no) ?></td>
+                <td style="text-align: center"><?php if($device->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
+                <td style="text-align: center"><?= !empty($device->security_flag) ? $sec_flag[$device->security_flag] : '' ?></td>
+                <!--
                 <td><?= h($device->support_end_date) ?></td>
+                -->
                 <td><?= h($device->setup_date) ?></td>
-                <td><?= $device->has('m_operation_system') ? $this->Html->link($device->m_operation_system->name, ['controller' => 'MOperationSystems', 'action' => 'view', $device->m_operation_system->id]) : '' ?></td>
-                <td><?= $device->has('m_sqlserver') ? $this->Html->link($device->m_sqlserver->name, ['controller' => 'MSqlservers', 'action' => 'view', $device->m_sqlserver->id]) : '' ?></td>
-                <td><?= h($device->admin_pass) ?></td>
-                <td><?= $device->has('m_product') ? $this->Html->link($device->m_product->name, ['controller' => 'MProducts', 'action' => 'view', $device->m_product->id]) : '' ?></td>
+                <!--
                 <td><?= $device->has('m_version') ? $this->Html->link($device->m_version->name, ['controller' => 'MVersions', 'action' => 'view', $device->m_version->id]) : '' ?></td>
                 <td><?= h($device->connect) ?></td>
                 <td><?= h($device->remote) ?></td>
                 <td><?= h($device->running_flag) ?></td>
-                <td><?= h($device->delete_flag) ?></td>
-                <td><?= $device->has('m_user') ? $this->Html->link($device->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $device->m_user->id]) : '' ?></td>
-                <td><?= h($device->created) ?></td>
-                <td><?= h($device->modified) ?></td>
+                <td style="text-align: center"><?php if($device->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
+                -->
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $device->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $device->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $device->id], ['confirm' => __('Are you sure you want to delete # {0}?', $device->id)]) ?>
+                    <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
+                    /
+                    --><?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?><!--
+                    /
+                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>

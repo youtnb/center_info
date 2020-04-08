@@ -38,9 +38,11 @@
                 <td><?= h($comment->created) ?></td>
                 <td><?= h($comment->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $comment->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $comment->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $comment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $comment->id)]) ?>
+                    <?= $this->Html->link(__('閲覧'), ['action' => 'view', $comment->id]) ?>
+                    /
+                    <?= $this->Html->link(__('編集'), ['action' => 'edit', $comment->id]) ?>
+                    /
+                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $comment->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $comment->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

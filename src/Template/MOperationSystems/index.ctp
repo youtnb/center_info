@@ -6,13 +6,18 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New M Operation System'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+    </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= __('OS種別マスタ') ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master', ['own' => 'MOperationSystems']); ?>
 </nav>
 <div class="mOperationSystems index large-9 medium-8 columns content">
     <h3><?= __('M Operation Systems') ?></h3>
@@ -37,7 +42,7 @@
                 <td><?= $this->Number->format($mOperationSystem->id) ?></td>
                 <td><?= h($mOperationSystem->name) ?></td>
                 <td><?= h($mOperationSystem->server_flag) ?></td>
-                <td><?= h($mOperationSystem->background_color) ?></td>
+                <td style="background-color: <?= h($mOperationSystem->background_color) ?>;"><?= h($mOperationSystem->background_color) ?></td>
                 <td><?= $this->Number->format($mOperationSystem->sort) ?></td>
                 <td><?= h($mOperationSystem->delete_flag) ?></td>
                 <td><?= $mOperationSystem->has('m_user') ? $this->Html->link($mOperationSystem->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mOperationSystem->m_user->id]) : '' ?></td>

@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MPrefectures Model
@@ -87,5 +88,23 @@ class MPrefecturesTable extends Table
         $rules->add($rules->existsIn(['m_area_id'], 'MAreas'));
 
         return $rules;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

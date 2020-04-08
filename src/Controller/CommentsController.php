@@ -12,6 +12,8 @@ use App\Controller\AppController;
  */
 class CommentsController extends AppController
 {
+    public $components = ['Log'];
+    
     /**
      * Index method
      *
@@ -51,18 +53,36 @@ class CommentsController extends AppController
     public function add()
     {
         $comment = $this->Comments->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post'))
+        {
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment)) {
-                $this->Flash->success(__('The comment has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            if (empty($comment->content))
+            {
+                $this->Flash->error(__('Please input content.'));
             }
-            $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+            else
+            {
+                if ($this->Comments->save($comment))
+                {
+                    // ログ
+                    $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                        'id:'. $comment->id,
+                        'device_id:'. $comment->device_id,
+                        'content:'. $comment->content,
+                    ]));
+                    $this->Flash->success(__('The comment has been saved.'));
+                }
+                else
+                {
+                    $this->Flash->error(__('The comment could not be saved. Please, try again.'));
+                }
+            }
         }
-        $devices = $this->Comments->Devices->find('list', ['limit' => 200]);
-        $mUsers = $this->Comments->MUsers->find('list', ['limit' => 200]);
-        $this->set(compact('comment', 'devices', 'mUsers'));
+//        $devices = $this->Comments->Devices->find('list', ['limit' => 200]);
+//        $mUsers = $this->Comments->MUsers->find('list', ['limit' => 200]);
+//        $this->set(compact('comment', 'devices', 'mUsers'));
+        
+        return $this->redirect(['controller' => 'devices', 'action' => 'view', $comment['device_id']]);
     }
 
     /**
@@ -86,8 +106,8 @@ class CommentsController extends AppController
             }
             $this->Flash->error(__('The comment could not be saved. Please, try again.'));
         }
-        $devices = $this->Comments->Devices->find('list', ['limit' => 200]);
-        $mUsers = $this->Comments->MUsers->find('list', ['limit' => 200]);
+//        $devices = $this->Comments->Devices->find('list', ['limit' => 200]);
+//        $mUsers = $this->Comments->MUsers->find('list', ['limit' => 200]);
         $this->set(compact('comment', 'devices', 'mUsers'));
     }
 
@@ -109,5 +129,37 @@ class CommentsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    /**
+     * 論理削除
+     *
+     * @param string|null $id Custom id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function deleteLogical($id = null, $device_id = null)
+    {
+        $comment = $this->Comments->get($id);
+        if ($id !== null && $device_id !== null)
+        {
+            $comment->delete_flag = 1;
+            $comment = $this->Comments->patchEntity($comment, $this->request->getData());
+            if ($this->Comments->save($comment))
+            {
+                // ログ
+                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                    'id:'. $comment->id,
+                    'device_id:'. $comment->device_id,
+                ]));
+                
+                $this->Flash->success(__('The comment has been deleted.'));
+            }
+            else
+            {
+                $this->Flash->error(__('The comment could not be deleted. Please, try again.'));    
+            }
+        }
+        return $this->redirect(['controller' => 'devices', 'action' => 'view', $device_id]);
     }
 }

@@ -4,7 +4,9 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Devices Model
@@ -73,6 +75,9 @@ class DevicesTable extends Table
         $this->hasMany('Comments', [
             'foreignKey' => 'device_id'
         ]);
+        $this->hasMany('Customs', [
+            'foreignKey' => 'device_id'
+        ]);
     }
 
     /**
@@ -85,7 +90,16 @@ class DevicesTable extends Table
     {
         $validator
             ->allowEmptyString('id', 'create');
+        
+        $validator
+            ->requirePresence('center_id', 'create')
+            ->greaterThan('center_id', 0);
 
+        $validator
+            ->scalar('accepted_no')
+            ->maxLength('accepted_no', 15)
+            ->allowEmptyString('accepted_no');
+        
         $validator
             ->scalar('name')
             ->maxLength('name', 50)
@@ -106,10 +120,10 @@ class DevicesTable extends Table
             ->requirePresence('reserve_flag', 'create')
             ->allowEmptyString('reserve_flag', false);
 
-        $validator
-            ->boolean('security_flag')
-            ->requirePresence('security_flag', 'create')
-            ->allowEmptyString('security_flag', false);
+//        $validator
+//            ->boolean('security_flag')
+//            ->requirePresence('security_flag', 'create')
+//            ->allowEmptyString('security_flag', false);
 
         $validator
             ->scalar('model')
@@ -183,5 +197,126 @@ class DevicesTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    /**
+     * 検索初期条件
+     * @param Event $event
+     * @param Query $query
+     * @param type $options
+     * @param type $primary
+     * @return Query
+     */
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $sql_array = explode(' ', $query->sql());
+        if (count($sql_array) > 2 && $sql_array[1] <> '1')
+        {   //SQLがexisting(select 1 ～)の場合はorder句を付けない
+            $order = $query->clause('order');
+            if ($order === null || !count($order))
+            {
+                if ($primary)
+                {
+                    $query->order([
+                        'Centers.m_prefecture_id' => 'ASC',
+                        'Centers.m_customer_id' => 'ASC',
+                        'Centers.name' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
+                        $this->alias().'.reserve_flag' => 'ASC'
+                        ]);
+                }
+                else
+                {
+                    $query->order([
+                        'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
+                        'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
+                        $this->alias().'.reserve_flag' => 'ASC'
+                        ]);
+                }
+            }
+        }
+        
+        return $query;
+    }
+    
+    /**
+     * 一覧検索finder
+     * @param Query $query
+     * @param type $options
+     * @return Query
+     */
+    public function findSearch(Query $query, $options)
+    {
+        // 拠点
+        if (isset($options['center_id']) && !empty($options['center_id']))
+        {
+            $query->where([$this->alias().'.center_id' => $options['center_id']]);
+        }
+        else
+        {
+            // 都道府県
+            if (isset($options['m_prefecture_id']) && !empty($options['m_prefecture_id']))
+            {
+                $sub = $this->Centers->find()->where(['m_prefecture_id' => $options['m_prefecture_id']])->select('id');
+                $query->where([$this->alias().'.center_id IN' => $sub]);
+            }
+            else
+            {
+                // 地域
+                if (isset($options['m_area_id']) && !empty($options['m_area_id']))
+                {
+                    $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
+                    $sub_prefecture = $tableMPrefectures->find()->where(['m_area_id' => $options['m_area_id']])->select('id');
+                    $sub = $this->Centers->find()->where(['m_prefecture_id IN' => $sub_prefecture])->select('id');
+                    $query->where([$this->alias().'.center_id IN' => $sub]);
+                }
+            }
+            
+            // 顧客
+            if (isset($options['m_customer_id']) && !empty($options['m_customer_id']))
+            {
+                $sub = $this->Centers->find()->where(['m_customer_id' => $options['m_customer_id']])->select('id');
+                $query->where([$this->alias().'.center_id IN' => $sub]);
+            }
+        }
+        // 端末種別
+        if (isset($options['m_device_type_id']) && !empty($options['m_device_type_id']))
+        {
+            $query->where([$this->alias().'.m_device_type_id' => $options['m_device_type_id']]);
+        }
+        // OS種別
+        if (isset($options['m_operation_system_id']) && !empty($options['m_operation_system_id']))
+        {
+            $query->where([$this->alias().'.m_operation_system_id' => $options['m_operation_system_id']]);
+        }
+        // 端末名
+        if (isset($options['name']) && !empty($options['name']))
+        {
+            $query->where([$this->alias().'.name LIKE' => '%'. $options['name']. '%']);
+        }
+        // セキュリティフラグ
+        if (isset($options['security_flag']) && strlen($options['security_flag']) > 0)
+        {
+            $query->where([$this->alias().'.security_flag' => $options['security_flag']]);
+        }
+        // 削除フラグ
+        if (isset($options['delete_flag']) && !empty($options['delete_flag']))
+        {
+            $query->where([$this->alias().'.delete_flag >=' => '0']);
+        }
+        else
+        {
+            $query->where([$this->alias().'.delete_flag =' => '0']);
+        }
+        
+        return $query;
     }
 }

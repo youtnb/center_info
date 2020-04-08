@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $full_name
- * @property string $remarks
+ * @property string|null $remarks
  * @property bool $delete_flag
  * @property int|null $m_user_id
  * @property \Cake\I18n\FrozenTime $created

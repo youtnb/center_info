@@ -4,68 +4,82 @@
  * @var \App\Model\Entity\Center[]|\Cake\Collection\CollectionInterface $centers
  */
 ?>
+<script type="text/javascript">
+jQuery(function($)
+{
+    // 地域選択時、都道府県選択クリア
+    $('#m-area-id').change(function()
+    {
+        $('#m-prefecture-id').val('');
+    });
+});
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Center'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Prefectures'), ['controller' => 'MPrefectures', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Prefecture'), ['controller' => 'MPrefectures', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Users'), ['controller' => 'MUsers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['controller' => 'MUsers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers index large-9 medium-8 columns content">
-    <h3><?= __('Centers') ?></h3>
+    <h3><?= __('拠点情報一覧') ?></h3>
+    <?= $this->Form->create(null, ['type' => 'get']) ?>
+        <fieldset class="search_form">
+            <table>
+                <tr>
+                    <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客', 'value' => $this->request->query('m_customer_id')]) ?></td>
+                    <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
+                    <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
+                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('centers/clear');"]) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点', 'value' => $this->request->query('name')]) ?></td>
+                    <td style="vertical-align: middle; text-align: center"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="4">※顧客・地域・都道府県の指定は、端末情報一覧と共通です</td>
+                </tr>
+            </table>
+        </fieldset>
+    <?= $this->Form->end() ?>
+    <div class="list_table">
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_customer_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('postcode') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_prefecture_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('address') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tel') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('officer') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('staff') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('shoes_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="th_customer"><?= $this->Paginator->sort('m_customer_id', '顧客') ?></th>
+                <th scope="col" class="th_center"><?= $this->Paginator->sort('name', '拠点') ?></th>
+                <th scope="col" class="th_min"><?= $this->Paginator->sort('postcode', '〒') ?></th>
+                <th scope="col" class="th_short"><?= $this->Paginator->sort('m_prefecture_id', '都道府県') ?></th>
+                <th scope="col" class="th_large"><?= $this->Paginator->sort('address', '住所') ?></th>
+                <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                <th scope="col" class="actions th_actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($centers as $center): ?>
-            <tr>
-                <td><?= $this->Number->format($center->id) ?></td>
-                <td><?= $center->has('m_customer') ? $this->Html->link($center->m_customer->name, ['controller' => 'MCustomers', 'action' => 'view', $center->m_customer->id]) : '' ?></td>
+            <tr class="clickable <?= $center->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Centers', 'action' => 'view', $center->id]) ?>">
+                <td><?= $center->has('m_customer') ? $center->m_customer->name : '' ?></td>
                 <td><?= h($center->name) ?></td>
                 <td><?= h($center->postcode) ?></td>
-                <td><?= $center->has('m_prefecture') ? $this->Html->link($center->m_prefecture->name, ['controller' => 'MPrefectures', 'action' => 'view', $center->m_prefecture->id]) : '' ?></td>
+                <td><?= $center->has('m_prefecture') ? $center->m_prefecture->name : '' ?></td>
                 <td><?= h($center->address) ?></td>
-                <td><?= h($center->tel) ?></td>
-                <td><?= h($center->officer) ?></td>
-                <td><?= h($center->staff) ?></td>
-                <td><?= h($center->shoes_flag) ?></td>
-                <td><?= h($center->delete_flag) ?></td>
-                <td><?= $center->has('m_user') ? $this->Html->link($center->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $center->m_user->id]) : '' ?></td>
-                <td><?= h($center->created) ?></td>
-                <td><?= h($center->modified) ?></td>
+                <td style="text-align: center"><?php if($center->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $center->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $center->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $center->id], ['confirm' => __('Are you sure you want to delete # {0}?', $center->id)]) ?>
+                    <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
+                    /
+                    --><?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?><!--
+                    /
+                    <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>
@@ -77,3 +91,4 @@
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>
 </div>
+    

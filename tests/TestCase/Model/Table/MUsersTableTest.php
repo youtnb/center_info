@@ -24,6 +24,8 @@ class MUsersTableTest extends TestCase
      */
     public $fixtures = [
         'app.MUsers',
+        'app.MDepartments',
+        'app.MRoles',
         'app.Centers',
         'app.Comments',
         'app.Devices',

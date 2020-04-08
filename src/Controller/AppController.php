@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Core\Configure;
 
 /**
  * Application Controller
@@ -45,11 +46,35 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-
+        
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
+
+        // Auth
+        $this->loadComponent('Auth', [
+            'authorize'     => ['Controller'],
+            'authenticate'  => ['Form' => [
+                    'userModel' => 'MUsers',
+                    'finder' => 'login',
+                    'fields' => ['username' => 'email', 'password' => 'password']
+                ]],
+            'storage' => 'Session',
+            'loginAction'   => ['controller' => 'MUsers', 'action' => 'login'],
+            'loginRedirect' => ['controller' => 'Centers', 'action' => 'index'],
+            'logoutRedirect' => ['controller' => 'MUsers', 'action' => 'login'],
+        ]);
+    }
+    
+    public function isAuthorized($user)
+    {
+        // Admin can access every action
+        if (isset($user['m_user_id']) && $user['m_user_id'] === '0') {
+            return true;
+        }
+
+        return true;
     }
 }

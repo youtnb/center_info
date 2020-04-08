@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MOperationSystems Model
@@ -62,7 +63,7 @@ class MOperationSystemsTable extends Table
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 20)
+            ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->allowEmptyString('name', false);
 
@@ -100,5 +101,23 @@ class MOperationSystemsTable extends Table
         $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
 
         return $rules;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.server_flag' => 'DESC', $this->alias().'.sort' => 'ASC', $this->alias().'.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

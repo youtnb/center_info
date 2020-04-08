@@ -6,55 +6,60 @@
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New M User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Centers'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Center'), ['controller' => 'Centers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Comments'), ['controller' => 'Comments', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Comment'), ['controller' => 'Comments', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Devices'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Device'), ['controller' => 'Devices', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Customers'), ['controller' => 'MCustomers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Customer'), ['controller' => 'MCustomers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Device Types'), ['controller' => 'MDeviceTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Device Type'), ['controller' => 'MDeviceTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Operation Systems'), ['controller' => 'MOperationSystems', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Operation System'), ['controller' => 'MOperationSystems', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Products'), ['controller' => 'MProducts', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Product'), ['controller' => 'MProducts', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Sqlservers'), ['controller' => 'MSqlservers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Sqlserver'), ['controller' => 'MSqlservers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List M Versions'), ['controller' => 'MVersions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New M Version'), ['controller' => 'MVersions', 'action' => 'add']) ?></li>
+        <li class="heading"><?= TITLE_CENTER ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
     </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= TITLE_DEVICE ?></li>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?></li>
+    </ul>
+    <ul class="side-nav">
+        <li class="heading"><?= __('ユーザーマスタ') ?></li>
+        <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+    </ul>
+    <?php echo $this->element('navi_master', ['own' => 'MUsers']); ?>
 </nav>
 <div class="mUsers index large-9 medium-8 columns content">
     <h3><?= __('M Users') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
+                <!--
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                -->
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('login') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
+                <!--
                 <th scope="col"><?= $this->Paginator->sort('password') ?></th>
+                -->
+                <th scope="col"><?= $this->Paginator->sort('m_department_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('m_role_id') ?></th>
+                <!--
                 <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+                -->
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($mUsers as $mUser): ?>
             <tr>
+                <!--
                 <td><?= $this->Number->format($mUser->id) ?></td>
+                -->
                 <td><?= h($mUser->name) ?></td>
-                <td><?= h($mUser->login) ?></td>
+                <td><?= h($mUser->email) ?></td>
+                <!--
                 <td><?= h($mUser->password) ?></td>
+                -->
+                <td><?= $mUser->has('m_department') ? $this->Html->link($mUser->m_department->name, ['controller' => 'MDepartments', 'action' => 'view', $mUser->m_department->id]) : '' ?></td>
+                <td><?= $mUser->has('m_role') ? $this->Html->link($mUser->m_role->name, ['controller' => 'MRoles', 'action' => 'view', $mUser->m_role->id]) : '' ?></td>
+                <!--
                 <td><?= h($mUser->delete_flag) ?></td>
-                <td><?= $this->Number->format($mUser->m_user_id) ?></td>
                 <td><?= h($mUser->created) ?></td>
                 <td><?= h($mUser->modified) ?></td>
+                -->
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $mUser->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $mUser->id]) ?>

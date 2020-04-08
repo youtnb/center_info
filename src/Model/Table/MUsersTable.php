@@ -5,20 +5,22 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * MUsers Model
  *
- * @property \App\Model\Table\MUsersTable|\Cake\ORM\Association\BelongsTo $MUsers
+ * @property \App\Model\Table\MDepartmentsTable|\Cake\ORM\Association\BelongsTo $MDepartments
+ * @property \App\Model\Table\MRolesTable|\Cake\ORM\Association\BelongsTo $MRoles
  * @property \App\Model\Table\CentersTable|\Cake\ORM\Association\HasMany $Centers
  * @property \App\Model\Table\CommentsTable|\Cake\ORM\Association\HasMany $Comments
  * @property \App\Model\Table\DevicesTable|\Cake\ORM\Association\HasMany $Devices
+ * @property \App\Model\Table\LogssTable|\Cake\ORM\Association\HasMany $Logs
  * @property \App\Model\Table\MCustomersTable|\Cake\ORM\Association\HasMany $MCustomers
  * @property \App\Model\Table\MDeviceTypesTable|\Cake\ORM\Association\HasMany $MDeviceTypes
  * @property \App\Model\Table\MOperationSystemsTable|\Cake\ORM\Association\HasMany $MOperationSystems
  * @property \App\Model\Table\MProductsTable|\Cake\ORM\Association\HasMany $MProducts
  * @property \App\Model\Table\MSqlserversTable|\Cake\ORM\Association\HasMany $MSqlservers
- * @property \App\Model\Table\MUsersTable|\Cake\ORM\Association\HasMany $MUsers
  * @property \App\Model\Table\MVersionsTable|\Cake\ORM\Association\HasMany $MVersions
  *
  * @method \App\Model\Entity\MUser get($primaryKey, $options = [])
@@ -50,8 +52,13 @@ class MUsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('MUsers', [
-            'foreignKey' => 'm_user_id'
+        $this->belongsTo('MDepartments', [
+            'foreignKey' => 'm_department_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('MRoles', [
+            'foreignKey' => 'm_role_id',
+            'joinType' => 'INNER'
         ]);
         $this->hasMany('Centers', [
             'foreignKey' => 'm_user_id'
@@ -59,7 +66,13 @@ class MUsersTable extends Table
         $this->hasMany('Comments', [
             'foreignKey' => 'm_user_id'
         ]);
+        $this->hasMany('Customs', [
+            'foreignKey' => 'm_user_id'
+        ]);
         $this->hasMany('Devices', [
+            'foreignKey' => 'm_user_id'
+        ]);
+        $this->hasMany('Logs', [
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('MCustomers', [
@@ -75,9 +88,6 @@ class MUsersTable extends Table
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('MSqlservers', [
-            'foreignKey' => 'm_user_id'
-        ]);
-        $this->hasMany('MUsers', [
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('MVersions', [
@@ -103,10 +113,9 @@ class MUsersTable extends Table
             ->allowEmptyString('name', false);
 
         $validator
-            ->scalar('login')
-            ->maxLength('login', 256)
-            ->requirePresence('login', 'create')
-            ->allowEmptyString('login', false);
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->allowEmptyString('email', false);
 
         $validator
             ->scalar('password')
@@ -131,9 +140,44 @@ class MUsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['login']));
-        $rules->add($rules->existsIn(['m_user_id'], 'MUsers'));
+        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->existsIn(['m_department_id'], 'MDepartments'));
+        $rules->add($rules->existsIn(['m_role_id'], 'MRoles'));
 
         return $rules;
+    }
+
+    /**
+     * ログイン用メソッド
+     *
+     * 独自のfindメソッド
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findLogin(Query $query, array $options){
+        // 条件を付与
+        $query->where([
+            'MUsers.delete_flag' => 0,
+        ]);
+        return $query;
+    }
+    
+    public function beforeFind(Event $event ,Query $query, $options, $primary)
+    {
+        // where
+        $where = $query->clause('where');
+        if ($where === null || !count($where))
+        {
+            $query->where([$this->alias().'.delete_flag' => 0]);
+        }
+        // order
+        $order = $query->clause('order');
+        if ($order === null || !count($order))
+        {
+            $query->order([$this->alias().'.id' => 'ASC']);
+        }
+        
+        return $query;
     }
 }

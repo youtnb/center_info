@@ -2,20 +2,23 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * MUser Entity
  *
  * @property int $id
  * @property string $name
- * @property string $login
+ * @property string $email
  * @property string $password
+ * @property int $m_department_id
+ * @property int $m_role_id
  * @property bool $delete_flag
- * @property int|null $m_user_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
- * @property \App\Model\Entity\MUser[] $m_users
+ * @property \App\Model\Entity\MDepartment $m_department
+ * @property \App\Model\Entity\MRole $m_role
  * @property \App\Model\Entity\Center[] $centers
  * @property \App\Model\Entity\Comment[] $comments
  * @property \App\Model\Entity\Device[] $devices
@@ -39,13 +42,15 @@ class MUser extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'login' => true,
+        'email' => true,
         'password' => true,
+        'm_department_id' => true,
+        'm_role_id' => true,
         'delete_flag' => true,
-        'm_user_id' => true,
         'created' => true,
         'modified' => true,
-        'm_users' => true,
+        'm_department' => true,
+        'm_role' => true,
         'centers' => true,
         'comments' => true,
         'devices' => true,
@@ -65,4 +70,16 @@ class MUser extends Entity
     protected $_hidden = [
         'password'
     ];
+
+    /**
+     * パスワードハッシュ化
+     * @param type $password
+     * @return type
+     */
+    protected function _setPassword($password)
+    {
+        if (strlen($password) > 0) {
+            return (new DefaultPasswordHasher)->hash($password);
+        }
+    }
 }
