@@ -384,6 +384,36 @@ class CentersController extends AppController
     }
     
     /**
+     * 
+     * @param type $id
+     */
+    function getDevices($id = null)
+    {
+        if ($id)
+        {
+            $center = $this->Centers->get($id, [
+                'contain' => ['MCustomers', 'MPrefectures', 'MUsers', 'Devices']
+                ]);
+            
+            $tableMDeviceTypes = TableRegistry::getTableLocator()->get('MDeviceTypes');
+            $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
+
+            $this->set(compact('center', 'mDeviceTypes'));
+
+            $this->viewBuilder()->setLayout(false);
+
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=upload_devices.csv');
+            header('Content-Transfer-Encoding: binary');
+        }
+    }
+    
+    function uploadDevices()
+    {
+        
+    }
+    
+    /**
      * API実験
      */
     public function getCenterList()

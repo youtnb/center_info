@@ -75,6 +75,10 @@ function delFile(filename)
     </table>
     <div class="row">
         <h4><?= __('端末情報') ?></h4>
+        <?= $this->Form->button('CSVダウンロード', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/getDevices/$center->id'"]) ?>
+        <div style="float: right;">
+            <?= $this->Form->button('CSV一括更新', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "openModal('Devices')"]) ?>
+        </div>
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
@@ -85,8 +89,9 @@ function delFile(filename)
                 <th scope="col"><?= __('下位IP') ?></th>
                 <th scope="col"><?= __('予備') ?></th>
                 <th scope="col"><?= __('設置日') ?></th>
+                <th scope="col"><?= __('サポート終了') ?></th><!--
                 <th scope="col"><?= __('接続先') ?></th>
-                <th scope="col"><?= __('リモート') ?></th>
+                <th scope="col"><?= __('リモート') ?></th>-->
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
@@ -98,8 +103,9 @@ function delFile(filename)
                 <td><?= h($devices->ip_lower) ?></td>
                 <td><?php if($devices->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($devices->setup_date) ?></td>
+                <td><?= h($devices->support_end_date) ?></td><!--
                 <td><?= h($devices->connect) ?></td>
-                <td><?= h($devices->remote) ?></td>
+                <td><?= h($devices->remote) ?></td>-->
                 <td class="actions">
                     <!-- <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
                     /
@@ -180,6 +186,21 @@ function delFile(filename)
             ※ファイルサイズは10MB未満としてください
         </div>
         <div class="close_modal" onclick="closeModal('File')">
+        ×
+        </div>
+    </div>
+</section>
+<section id="modalAreaDevices" class="modal_area">
+    <div class="modal_bg" onclick="closeModal('Devices')"></div>
+    <div class="modal_wrapper">
+        <div class="modal_contents">
+            <?= $this->Form->create($center, ['action' => 'uploadDevices/'.$center->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->file('import_file') ?>
+            <?= $this->Form->button(__('登録')) ?>
+            <?= $this->Form->end() ?>
+            ※ファイルサイズは10MB未満としてください
+        </div>
+        <div class="close_modal" onclick="closeModal('Devices')">
         ×
         </div>
     </div>
