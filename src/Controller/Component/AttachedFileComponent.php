@@ -57,8 +57,9 @@ class AttachedFileComponent extends Component
             }
 
             // ファイル名の生成
-            $file_name = $file['name'];
- 
+            $pathinfo = pathinfo($file['name']);
+            $file_name = sha1(uniqid(mt_rand(),true)). '.'. $pathinfo['extension'];
+            
             // ファイルの移動
             move_uploaded_file($file['tmp_name'], $dir. DIR_SEP. $file_name);
 //            if (!@move_uploaded_file($file['tmp_name'], $dir. DIR_SEP. $uploadFile))
@@ -122,13 +123,13 @@ class AttachedFileComponent extends Component
                     throw new RuntimeException('Unknown errors.');
             }
 
-            // ファイル名の生成
-            $image_file = $file['tmp_name'];
-            $file_name = $file['name'];
-            /*
-             * TODO:年月日時分秒とか付ける？（ファイル名重複管理的に）
-             */
+            // ファイル名の生成            
+            $pathinfo = pathinfo($file['name']);
+            $file_name = sha1(uniqid(mt_rand(),true)). '.'. $pathinfo['extension'];
             
+            // 画像加工
+            $image_file = $file['tmp_name'];
+
             $new_width = PHOTO_MAX_WIDTH;
             list($original_width, $original_height) = getimagesize($image_file);
             $proportion = $original_width / $original_height;

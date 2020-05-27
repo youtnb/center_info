@@ -55,7 +55,16 @@ class CentersTable extends Table
             'foreignKey' => 'm_user_id'
         ]);
         $this->hasMany('Devices', [
-            'foreignKey' => 'center_id'
+            'foreignKey' => 'center_id',
+            'conditions' => ['delete_flag' => 0]
+        ]);
+        $this->hasMany('Documents', [
+            'foreignKey' => 'center_id',
+            'conditions' => ['device_id' => 0, 'delete_flag' => 0]
+        ]);
+        $this->hasMany('Photos', [
+            'foreignKey' => 'center_id',
+            'conditions' => ['device_id' => 0, 'delete_flag' => 0]
         ]);
     }
 

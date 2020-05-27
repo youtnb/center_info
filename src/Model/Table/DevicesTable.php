@@ -78,6 +78,14 @@ class DevicesTable extends Table
         $this->hasMany('Customs', [
             'foreignKey' => 'device_id'
         ]);
+        $this->hasMany('Documents', [
+            'foreignKey' => 'device_id',
+            'conditions' => ['delete_flag' => 0]
+        ]);
+        $this->hasMany('Photos', [
+            'foreignKey' => 'device_id',
+            'conditions' => ['delete_flag' => 0]
+        ]);
     }
 
     /**
