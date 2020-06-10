@@ -11,3 +11,12 @@
     </div>
     <?= $this->Form->end() ?>
 </div>
+<div style="clear: both;" />
+<div style='margin-left: auto; margin-right: auto; margin-top: 150px; width: 800px;'>
+    <fieldset>
+        <legend><?= __('お知らせ') ?></legend>
+        <?php foreach ($informations as $info): ?>
+        [&nbsp;<?= $info->created->format('Y/m/d') ?>&nbsp;]<?= $this->Text->autoParagraph(h($info->content)) ?>
+        <?php endforeach; ?>
+    </fieldset>
+</div>

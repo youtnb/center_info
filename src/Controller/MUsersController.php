@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
 /**
@@ -146,6 +147,11 @@ class MUsersController extends AppController
             }
             $this->Flash->error(__('Invalid username or password, try again'));
         }
+        
+        $tableInformations = TableRegistry::getTableLocator()->get('Informations');
+        $informations = $tableInformations->find('search', array());
+        
+        $this->set(compact('informations'));
     }
     
     /**

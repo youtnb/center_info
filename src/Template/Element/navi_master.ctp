@@ -19,6 +19,7 @@
         <li class="heading"><?= __('ログ管理') ?></li>
         <?php if(!isset($own)){$own='';} ?>
         <li><?php if($own != 'Logs'){?><?= $this->Html->link(__('ログ管理'), ['controller' => 'Logs', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ログ管理</span><?php } ?></li>
+        <li><?php if($own != 'Logs'){?><?= $this->Html->link(__('お知らせ管理'), ['controller' => 'Informations', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">お知らせ管理</span><?php } ?></li>
     </ul>
     <?php } ?>
     <ul class="side-nav">
