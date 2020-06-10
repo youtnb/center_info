@@ -5,18 +5,18 @@
  */
 ?>
 <script type="text/javascript">
-function delPhoto(filename)
+function delPhoto(filename, id)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
    {
-       window.location.href = '/center_info/devices/deletePhoto/<?= $device->id ?>/' + encodeURI(filename);
+       window.location.href = '/center_info/devices/deletePhoto/<?= $device->id ?>/' + id;
    }
 }
-function delFile(filename)
+function delFile(filename, id)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
    {
-       window.location.href = '/center_info/devices/deleteFile/<?= $device->id ?>/' + encodeURI(filename);
+       window.location.href = '/center_info/devices/deleteFile/<?= $device->id ?>/' + id;
    }
 }
 function delCustom(id)
@@ -132,28 +132,30 @@ function delComment(id)
     <div class="row">
         <h4><?= __('写真') ?></h4>
         <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>
+        <?php if (!empty($device->photos)): ?>
         <div class="photos">
-        <?php foreach ($photo_list as $key => $val): ?>
+        <?php foreach ($device->photos as $pho): ?>
             <div class='photo'>
-                <?= $this->Html->link($this->Html->image($val[0], array('alt'=>basename($val[1]))), $val[1], ['target' => '_blank', 'escape' => false]) ?>
-                <p><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delPhoto('".$key."')"]) ?>&nbsp;<?= $key ?></p>
+                <?= $this->Html->link($this->Html->image($pho->file_path_thmb, array('alt'=>$pho->file_path)), $pho->file_path, ['target' => '_blank', 'escape' => false]) ?>
+                <p><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delPhoto('".$pho->file_name."', '".$pho->id."')"]) ?>&nbsp;<?= $pho->file_name ?></p>
             </div>
         <?php endforeach; ?>
         </div>
+        <?php endif; ?>
     </div>
     <div class="row">
         <h4><?= __('添付ファイル') ?></h4>
         <?= $this->Form->button('ファイル保存', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('File')"]) ?>
-        <?php if (!empty($file_list)): ?>
+        <?php if (!empty($device->documents)): ?>
         <table class="">
             <tr>
                 <th scope="col"><?= __('ファイル') ?></th>
                 <th scope="col" class="th_short"><?= __('') ?></th>
             </tr>
-        <?php foreach ($file_list as $key => $val): ?>
+        <?php foreach ($device->documents as $doc): ?>
             <tr>
-                <td><?= $this->Html->link(__($key), $val, ['target' => '_blank']) ?></td>
-                <td><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delFile('".$key."')"]) ?></td>
+                <td><?= $this->Form->postLink(__($doc->file_name), ['cntroller' => 'Devices', 'action' => 'download', $doc->id]) ?></td>
+                <td><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delFile('".$doc->file_name."', '".$doc->id."')"]) ?></td>
             </tr>
         <?php endforeach; ?>            
         </table>
@@ -220,7 +222,17 @@ function delComment(id)
     <div class="modal_wrapper">
         <div class="modal_contents">
             <?= $this->Form->create($device, ['action' => 'addPhoto/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
-            <?= $this->Form->file('import_file') ?>
+            <?php 
+                echo $this->Form->hidden('center_id', ['value' => $device->center->id]);
+                echo $this->Form->hidden('device_id', ['value' => $device->id]);
+                echo $this->Form->file('import_file');
+                echo $this->Form->hidden('file_name', ['value' => '']);
+                echo $this->Form->hidden('file_path', ['value' => '']);
+                echo $this->Form->hidden('file_path_thmb', ['value' => '']);
+                echo $this->Form->hidden('remarks', ['value' => '']);
+                echo $this->Form->hidden('delete_flag', ['value' => 0]);
+                echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+            ?>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
             ※ファイルサイズは10MB未満としてください
@@ -235,7 +247,17 @@ function delComment(id)
     <div class="modal_wrapper">
         <div class="modal_contents">
             <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
-            <?= $this->Form->file('import_file') ?>
+            <?php 
+                echo $this->Form->hidden('center_id', ['value' => $device->center->id]);
+                echo $this->Form->hidden('device_id', ['value' => $device->id]);
+                echo $this->Form->file('import_file');
+                echo $this->Form->hidden('file_name', ['value' => '']);
+                echo $this->Form->hidden('file_path', ['value' => '']);
+                echo $this->Form->hidden('file_path_thmb', ['value' => '']);
+                echo $this->Form->hidden('remarks', ['value' => '']);
+                echo $this->Form->hidden('delete_flag', ['value' => 0]);
+                echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
+            ?>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
             ※ファイルサイズは10MB未満としてください

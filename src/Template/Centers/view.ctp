@@ -149,7 +149,7 @@ function delFile(filename, id)
             </tr>
         <?php foreach ($center->documents as $doc): ?>
             <tr>
-                <td><?= $this->Form->postLink(__($doc->file_name), ['controller' => 'Centers', 'action' => 'download', $doc->id]); ?></td>
+                <td><?= $this->Form->postLink(__($doc->file_name), ['controller' => 'Centers', 'action' => 'download', $doc->id]) ?></td>
                 <td><?= '&nbsp;'.$this->Form->button('削除', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "delFile('".$doc->file_name."', '".$doc->id."')"]) ?></td>
             </tr>
         <?php endforeach; ?>            

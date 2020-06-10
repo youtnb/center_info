@@ -310,7 +310,7 @@ class CentersController extends AppController
                 
                 // ログ
                 $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $center_id,
+                    'center_id:'. $center_id,
                     'name:'. $document->file_name,
                     'path:'. $document->file_path,
                 ]));
@@ -407,7 +407,7 @@ class CentersController extends AppController
                 
                 // ログ
                 $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $center_id,
+                    'center_id:'. $center_id,
                     'name:'. $photo->file_name,
                     'path:'. $photo->file_path,
                 ]));
@@ -427,6 +427,10 @@ class CentersController extends AppController
         return $this->redirect(['action' => 'view', $center_id]);
     }
     
+    /**
+     * ファイルダウンロード
+     * @param type $id
+     */
     public function download($id = null)
     {
         $this->autoRender = false;
