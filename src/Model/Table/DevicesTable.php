@@ -325,6 +325,88 @@ class DevicesTable extends Table
         {
             $query->where([$this->alias().'.delete_flag =' => '0']);
         }
+        // 設置日
+        if (isset($options['setup_date']) && !empty($options['setup_date']))
+        {
+            $target = trim($options['setup_date']);
+            if (strpos($target, '-') !== false)
+            {
+                if (substr($target, 0, 1) == '-')
+                {
+                    // toのみ
+                    $target = trim(substr($target, 1));
+                    if (preg_match("/^[0-9]+$/", $target))
+                    {
+                        if (strlen($target) == 8) $query->where([$this->alias().'.setup_date <=' => $target]);
+                    }
+                }
+                else
+                {
+                    $date_arr = explode('-', str_replace(' ', '', $target));
+                    if (!empty($date_arr) || count($date_arr) == 1 || count($date_arr) == 2)
+                    {
+                        // from
+                        $from = $date_arr[0];
+                        if (strlen($from) == 8) $query->where([$this->alias().'.setup_date >=' => $from]);
+                        
+                        if (count($date_arr) == 2)
+                        {
+                            // to
+                            $to = $date_arr[1];
+                            if (strlen($to) == 8) $query->where([$this->alias().'.setup_date <=' => $to]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (preg_match("/^[0-9]+$/", $target))
+                {
+                    if (strlen($target) == 8) $query->where([$this->alias().'.setup_date' => $target]);
+                }
+            }
+        }
+        // 保守期限日
+        if (isset($options['support_end_date']) && !empty($options['support_end_date']))
+        {
+            $target = trim($options['support_end_date']);
+            if (strpos($target, '-') !== false)
+            {
+                if (substr($target, 0, 1) == '-')
+                {
+                    // toのみ
+                    $target = trim(substr($target, 1));
+                    if (preg_match("/^[0-9]+$/", $target))
+                    {
+                        if (strlen($target) == 8) $query->where([$this->alias().'.support_end_date <=' => $target]);
+                    }
+                }
+                else
+                {
+                    $date_arr = explode('-', str_replace(' ', '', $target));
+                    if (!empty($date_arr) || count($date_arr) == 1 || count($date_arr) == 2)
+                    {
+                        // from
+                        $from = $date_arr[0];
+                        if (strlen($from) == 8) $query->where([$this->alias().'.support_end_date >=' => $from]);
+                        
+                        if (count($date_arr) == 2)
+                        {
+                            // to
+                            $to = $date_arr[1];
+                            if (strlen($to) == 8) $query->where([$this->alias().'.support_end_date <=' => $to]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (preg_match("/^[0-9]+$/", $target))
+                {
+                    if (strlen($target) == 8) $query->where([$this->alias().'.support_end_date' => $target]);
+                }
+            }
+        }
         
         return $query;
     }

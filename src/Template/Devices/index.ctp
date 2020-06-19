@@ -46,7 +46,7 @@ jQuery(function($)
                     <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
                     <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名', 'value' => $this->request->query('name')]) ?></td>
-                    <td rowspan="2" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('devices/clear');"]) ?></td>
+                    <td rowspan="3" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('devices/clear');"]) ?></td>
                 </tr>
                 <tr>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
@@ -55,7 +55,11 @@ jQuery(function($)
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="5">※顧客・地域・都道府県・拠点名の指定は、拠点情報一覧と共通です</td>
+                    <td colspan="2"><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日（FROM-TO）', 'value' => $this->request->query('setup_date')]) ?></td>
+                    <td colspan="2"><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守期限日（FROM-TO）', 'value' => $this->request->query('support_end_date')]) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="5">※日付はyyyyMMdd形式で指定、ハイフンで範囲指定可能（例.yyyyMMdd-yyyyMMdd、片側のみ可）<br />※顧客・地域・都道府県・拠点名の指定は、拠点情報一覧と共通です</td>
                 </tr>
             </table>
         </fieldset>
@@ -98,16 +102,16 @@ jQuery(function($)
                 <th scope="col" class="th_customer"><?= __('顧客') ?></th>
                 <th scope="col" class="th_center"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
+                <!--
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
+                -->
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('name', '端末名') ?></th>
                 <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
                 <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('security_flag', 'McA') ?></th>
-                <!--
-                <th scope="col"><?= $this->Paginator->sort('support_end_date', '保守終了日') ?></th>
-                -->
                 <th scope="col" class="th_ymd"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
+                <th scope="col" class="th_ymd"><?= $this->Paginator->sort('support_end_date', '保守終了日') ?></th>
                 <!--
                 <th scope="col"><?= $this->Paginator->sort('m_version_id', 'バージョン') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('connect', '接続先') ?></th>
@@ -125,16 +129,14 @@ jQuery(function($)
                 <td><?= $device->has('center') ? $device->center->name : '' ?></td>
                 <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->
                 <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>
-                <td><?= h($device->accepted_no) ?></td>
+                <!--<td><?= h($device->accepted_no) ?></td>-->
                 <td><?= h($device->name) ?></td>
                 <td><?= h($device->ip_higher) ?></td>
                 <td><?= h($device->ip_lower) ?></td>
                 <td style="text-align: center"><?php if($device->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td style="text-align: center"><?= !empty($device->security_flag) ? $sec_flag[$device->security_flag] : '' ?></td>
-                <!--
-                <td><?= h($device->support_end_date) ?></td>
-                -->
                 <td><?= h($device->setup_date) ?></td>
+                <td><?= h($device->support_end_date) ?></td>
                 <!--
                 <td><?= $device->has('m_version') ? $this->Html->link($device->m_version->name, ['controller' => 'MVersions', 'action' => 'view', $device->m_version->id]) : '' ?></td>
                 <td><?= h($device->connect) ?></td>
