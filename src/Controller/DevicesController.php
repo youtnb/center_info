@@ -29,7 +29,7 @@ class DevicesController extends AppController
     const SESSION_CLASS = 'Device.';
     private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag'];
     const SESSION_CLASS_SUB = 'Center.';
-    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id']; // nameとdelete_flagは共有しない
+    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name']; // delete_flagは共有しない
     
     /**
      * Index method
@@ -91,33 +91,16 @@ class DevicesController extends AppController
         $tableMPrefectures = TableRegistry::getTableLocator()->get('MPrefectures');
         $mPrefectures = $tableMPrefectures->find('list')->where(['delete_flag' => 0]);
         
-        $centers = $this->Devices->Centers->find('list')->where(['delete_flag' => 0]);
-        
-        // 顧客指定時
-        if($m_customer_id)
-        {   // 拠点リスト絞り込み
-            $centers->where(['m_customer_id' => $m_customer_id]);
-        }
-        
         // 地域指定時
         if($m_area_id)
         {   // 都道府県リスト絞り込み
             $mPrefectures->where(['m_area_id' => $m_area_id]);
-            // 拠点リスト絞り込み
-            $sub = $tableMPrefectures->find()->where(['m_area_id' => $m_area_id])->select('id');
-            $centers->where(['m_prefecture_id IN' => $sub]);
-        }
-        
-        // 都道府県指定時
-        if($m_prefecture_id)
-        {   // 拠点リスト絞り込み
-            $centers->where(['m_prefecture_id' => $m_prefecture_id]);
         }
         
         // セキュリティ
         $sec_flag = $this->sec_flag;
         
-        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'centers', 'mAreas', 'mPrefectures', 'sec_flag'));
+        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mAreas', 'mPrefectures', 'sec_flag'));
     }
 
     /**

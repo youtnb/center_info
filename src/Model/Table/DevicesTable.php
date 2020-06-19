@@ -295,6 +295,12 @@ class DevicesTable extends Table
                 $query->where([$this->alias().'.center_id IN' => $sub]);
             }
         }
+        //拠点
+        if (isset($options['name']) && !empty($options['name']))
+        {
+            $sub = $this->Centers->find()->where(['name LIKE' => '%'. $options['name']. '%'])->select('id');
+            $query->where([$this->alias().'.center_id IN' => $sub]);
+        }
         // 端末種別
         if (isset($options['m_device_type_id']) && !empty($options['m_device_type_id']))
         {
@@ -304,11 +310,6 @@ class DevicesTable extends Table
         if (isset($options['m_operation_system_id']) && !empty($options['m_operation_system_id']))
         {
             $query->where([$this->alias().'.m_operation_system_id' => $options['m_operation_system_id']]);
-        }
-        // 端末名
-        if (isset($options['name']) && !empty($options['name']))
-        {
-            $query->where([$this->alias().'.name LIKE' => '%'. $options['name']. '%']);
         }
         // セキュリティフラグ
         if (isset($options['security_flag']) && strlen($options['security_flag']) > 0)

@@ -26,7 +26,7 @@ class CentersController extends AppController
     const SESSION_CLASS = 'Center.';
     private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'delete_flag'];
     const SESSION_CLASS_SUB = 'Device.';
-    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id']; // nameとdelete_flagは共有しない
+    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'center_id', 'm_device_type_id', 'm_operation_system_id']; // delete_flagは共有しない
     
     //api
     const AUTHORIZED_API_TOKEN = 'apikey';
