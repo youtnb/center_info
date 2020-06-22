@@ -152,7 +152,7 @@ class DevicesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add($center_id = null)
+    public function add($center_id = null, $id = null)
     {
         $device = $this->Devices->newEntity();
         if ($this->request->is('post'))
@@ -186,7 +186,7 @@ class DevicesController extends AppController
         $mCustomers = $tableMCustomers->find('list');
         
         $m_customer_id = null;
-        if($center_id)
+        if ($center_id)
         {
             // 拠点指定あれば顧客ID逆引き
             $center = $this->Devices->Centers->get($center_id);
@@ -197,6 +197,26 @@ class DevicesController extends AppController
             // 無ければ初期値
             $m_customer_id = array_keys($mCustomers->toArray())[0];
         }
+        
+        if (!empty($id))
+        {
+            // 拠点指定あれば顧客ID逆引き
+            $pre_device = $this->Devices->get($id, [
+                'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
+            ]);
+            $device->m_device_type_id = $pre_device->m_device_type_id;
+            $device->name = $pre_device->name;
+            $device->ip_higher = $pre_device->ip_higher;
+            $device->ip_lower = $pre_device->ip_lower;
+            $device->admin_pass = $pre_device->admin_pass;
+            $device->connect = $pre_device->connect;
+            $device->m_product_id = $pre_device->m_product_id;
+            $device->m_version_id = $pre_device->m_version_id;
+            $device->remote = $pre_device->remote;
+            $device->custom = $pre_device->custom;
+            $device->remarks = $pre_device->remarks;
+        }
+        
         $centers = $this->Devices->Centers->find('list')
             ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
         

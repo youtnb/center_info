@@ -129,6 +129,9 @@ function delComment(id)
             <td><?= $device->delete_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
         </tr>
     </table>
+    <div style="text-align: right">
+    <?= $this->Form->button('＞内容コピーして新規登録を作成する', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?>
+    </div>
     <div class="row">
         <h4><?= __('写真') ?></h4>
         <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>
