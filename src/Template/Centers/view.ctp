@@ -75,10 +75,12 @@ function delFile(filename, id)
     </table>
     <div class="row">
         <h4><?= __('端末情報') ?></h4>
+        <!--
         <?= $this->Form->button('CSVダウンロード', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/getDevices/$center->id'"]) ?>
         <div style="float: right;">
             <?= $this->Form->button('CSV一括更新', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "openModal('Devices')"]) ?>
         </div>
+        -->
         <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
