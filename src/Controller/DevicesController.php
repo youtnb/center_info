@@ -152,7 +152,7 @@ class DevicesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add($center_id = null, $id = null)
+    public function add($center_id = null, $id = null, $type = null)
     {
         $device = $this->Devices->newEntity();
         if ($this->request->is('post'))
@@ -200,7 +200,7 @@ class DevicesController extends AppController
         
         if (!empty($id))
         {
-            // 拠点指定あれば顧客ID逆引き
+            // 端末IDあれば情報引継ぎ
             $pre_device = $this->Devices->get($id, [
                 'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
             ]);
@@ -215,6 +215,20 @@ class DevicesController extends AppController
             $device->remote = $pre_device->remote;
             $device->custom = $pre_device->custom;
             $device->remarks = $pre_device->remarks;
+            
+            if (!empty($type) && $type == "move")
+            {
+                // 拠点移設なら一通りの情報引継ぎ
+                $device->accepted_no = $pre_device->accepted_no;
+                $device->model = $pre_device->model;
+                $device->serial_no = $pre_device->serial_no;
+                $device->setup_date = $pre_device->setup_date;
+                $device->support_end_date = $pre_device->support_end_date;
+                $device->reserve_flag = $pre_device->reserve_flag;
+                $device->running_flag = $pre_device->running_flag;
+                $device->m_operation_system_id = $pre_device->m_operation_system_id;
+                $device->m_sqlserver_id = $pre_device->m_sqlserver_id;
+            }
         }
         
         $centers = $this->Devices->Centers->find('list')

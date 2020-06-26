@@ -130,7 +130,8 @@ function delComment(id)
         </tr>
     </table>
     <div style="text-align: right">
-    <?= $this->Form->button('＞内容コピーして新規登録を作成する', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?>
+    <?= $this->Form->button('＞リプレイス（一部引継ぎ）', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
+    <?= $this->Form->button('＞拠点移設（全情報引継ぎ）', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/move'). "')"]) ?>
     </div>
     <div class="row">
         <h4><?= __('写真') ?></h4>
@@ -165,13 +166,14 @@ function delComment(id)
         <?php endif; ?>
     </div>
     <div class="row">
-        <h4><?= __('備考') ?></h4>
-        <?= $this->Text->autoParagraph(h($device->remarks)); ?>
-    </div>
-    <div class="row">
         <h4><?= __('改造内容') ?></h4>
         <?= $this->Text->autoParagraph(h($device->custom)); ?>
     </div>
+    <div class="row">
+        <h4><?= __('備考') ?></h4>
+        <?= $this->Text->autoParagraph(h($device->remarks)); ?>
+    </div>
+    <!--
     <div class="related">
         <h4><?= __('改造履歴') ?></h4>
         <?= $this->Form->button('改造履歴登録', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "openModal('Custom')"]) ?>
@@ -218,6 +220,7 @@ function delComment(id)
         </table>
         <?php endif; ?>
     </div>
+    -->
 </div>
 <!-- モーダルエリアここから -->
 <section id="modalAreaPhoto" class="modal_area">

@@ -31,7 +31,6 @@
         <legend><?= __('端末情報') ?></legend>
         <h4><?= $centers->toArray()[$device->toArray()['center_id']]; ?></h4>
         <?php
-            echo $this->Form->control('center_id', ['options' => $centers, 'label' => '拠点', 'style' => 'width: 300px;']);
             echo "<div class='float_10'>";
             echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 300px;']);
             echo "</div>";
