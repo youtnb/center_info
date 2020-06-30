@@ -36,7 +36,10 @@ function delFile(filename, id)
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers view large-9 medium-8 columns content">
-    <h3><?= h($center->name) ?></h3>
+    <h3 style="float: left"><?= h($center->name) ?></h3>
+    <div style="float: right">
+        <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/edit/$center->id'"]) ?>
+    </div>
     <table class="">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>
@@ -76,9 +79,9 @@ function delFile(filename, id)
     <div class="row">
         <h4><?= __('端末情報') ?></h4>
         <!--
-        <?= $this->Form->button('CSVダウンロード', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/getDevices/$center->id'"]) ?>
+        <?= $this->Form->button('CSVダウンロード', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/getDevices/$center->id'"]) ?>
         <div style="float: right;">
-            <?= $this->Form->button('CSV一括更新', ['type' => 'button', 'id' => 'openModal', 'class' => 'download_button', 'onclick' => "openModal('Devices')"]) ?>
+            <?= $this->Form->button('CSV一括更新', ['type' => 'button', 'class' => 'download_button', 'onclick' => "openModal('Devices')"]) ?>
         </div>
         -->
         <?php if (!empty($center->devices)): ?>

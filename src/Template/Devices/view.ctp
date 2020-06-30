@@ -49,7 +49,10 @@ function delComment(id)
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="devices view large-9 medium-8 columns content">
-    <h3><?= h($device->name) ?></h3>
+    <h3 style="float: left"><?= h($device->name) ?></h3>
+    <div style="float: right">
+        <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/edit/$device->id'"]) ?>
+    </div>
     <table class="">
         <tr>
             <th scope="row"><?= __('拠点') ?></th>
@@ -130,8 +133,8 @@ function delComment(id)
         </tr>
     </table>
     <div style="text-align: right">
-    <?= $this->Form->button('＞リプレイス（一部引継ぎ）', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
-    <?= $this->Form->button('＞拠点移設（全情報引継ぎ）', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/move'). "')"]) ?>
+    <?= $this->Form->button('リプレイス登録［一部引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
+    <?= $this->Form->button('拠点移設登録［全情報引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/move'). "')"]) ?>
     </div>
     <div class="row">
         <h4><?= __('写真') ?></h4>
