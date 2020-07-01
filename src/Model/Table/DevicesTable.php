@@ -311,6 +311,11 @@ class DevicesTable extends Table
         {
             $query->where([$this->alias().'.m_operation_system_id' => $options['m_operation_system_id']]);
         }
+        // 型式
+        if (isset($options['model']) && !empty($options['model']))
+        {
+            $query->where([$this->alias().'.model LIKE' => '%'. $options['model']. '%']);
+        }
         // セキュリティフラグ
         if (isset($options['security_flag']) && strlen($options['security_flag']) > 0)
         {

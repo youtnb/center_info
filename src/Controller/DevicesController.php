@@ -27,7 +27,7 @@ class DevicesController extends AppController
     
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
-    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag', 'setup_date', 'support_end_date'];
+    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag', 'setup_date', 'support_end_date', 'model'];
     const SESSION_CLASS_SUB = 'Center.';
     private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name']; // delete_flagは共有しない
     

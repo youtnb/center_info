@@ -52,11 +52,13 @@ jQuery(function($)
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
                     <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
                     <td><?= $this->Form->input('security_flag', ['type' => 'select' ,'options' => $sec_flag, 'empty' => '選択してください', 'label' => 'セキュリティソフト', 'value' => $this->request->query('security_flag')]) ?></td>
-                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
+                    <td><?= $this->Form->input('model', ['type' => 'text' , 'label' => '型式', 'value' => $this->request->query('model')]) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日（FROM-TO）', 'value' => $this->request->query('setup_date')]) ?></td>
-                    <td colspan="2"><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守期限日（FROM-TO）', 'value' => $this->request->query('support_end_date')]) ?></td>
+                    <td><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日', 'value' => $this->request->query('setup_date')]) ?></td>
+                    <td><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守期限日', 'value' => $this->request->query('support_end_date')]) ?></td>
+                    <td></td>
+                    <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
                     <td colspan="5">※日付はyyyyMMdd形式で指定、ハイフンで範囲指定可能（例.yyyyMMdd-yyyyMMdd、片側のみ可）<br />※顧客・地域・都道府県・拠点名の指定は、拠点情報一覧と共通です</td>
