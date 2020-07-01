@@ -36,9 +36,10 @@ function delFile(filename, id)
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers view large-9 medium-8 columns content">
-    <h3 style="float: left"><?= h($center->name) ?></h3>
+    <h4 style="float: left"><?= h($center->name) ?></h3>
     <div style="float: right">
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/edit/$center->id'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
     </div>
     <table class="">
         <tr>

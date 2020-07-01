@@ -28,8 +28,12 @@
 </nav>
 <div class="centers form large-9 medium-8 columns content">
     <?= $this->Form->create($center) ?>
+    <h4 style="float: left">拠点情報</h4>
+    <div style="float: right">
+        <?= $this->Form->button('閲覧', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/view/$center->id'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
+    </div>
     <fieldset>
-        <legend><?= __('拠点情報') ?></legend>
         <?php
             echo "<div class='float_10'>";
             echo $this->Form->control('m_customer_id', ['options' => $mCustomers, 'label' => '顧客', 'style' => 'width: 200px;']);

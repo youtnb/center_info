@@ -49,9 +49,10 @@ function delComment(id)
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="devices view large-9 medium-8 columns content">
-    <h3 style="float: left"><?= h($device->name) ?></h3>
+    <h4 style="float: left"><?= h($device->name) ?></h3>
     <div style="float: right">
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/edit/$device->id'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
     </div>
     <table class="">
         <tr>

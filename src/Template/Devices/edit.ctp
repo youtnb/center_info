@@ -27,9 +27,12 @@
 </nav>
 <div class="devices form large-9 medium-8 columns content">
     <?= $this->Form->create($device) ?>
+    <h4 style="float: left">端末情報（<?= $centers->toArray()[$device->toArray()['center_id']]; ?>）</h4>
+    <div style="float: right">
+        <?= $this->Form->button('閲覧', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/view/$device->id'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
+    </div>
     <fieldset>
-        <legend><?= __('端末情報') ?></legend>
-        <h4><?= $centers->toArray()[$device->toArray()['center_id']]; ?></h4>
         <?php
             echo "<div class='float_10'>";
             echo $this->Form->control('accepted_no', ['label' => '受入No', 'style' => 'width: 300px;']);
