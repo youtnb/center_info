@@ -617,8 +617,6 @@ class DevicesController extends AppController
         $mDeviceTypes = $tableMDeviceTypes->find('list', ['valueField' => 'background_color'])->toArray();
         $tableMOperationSystems = TableRegistry::getTableLocator()->get('MOperationSystems');
         $mOperationSystems = $tableMOperationSystems->find('list', ['valueField' => 'background_color'])->toArray();
-        $tableMSqlservers = TableRegistry::getTableLocator()->get('MSqlservers');
-        $mSqlservers = $tableMSqlservers->find('list', ['valueField' => 'background_color'])->toArray();
         $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list', ['valueField' => 'full_name'])->toArray();
         
@@ -627,7 +625,6 @@ class DevicesController extends AppController
 
         $line = 2;
         $preCenter = '';
-        $color = 'FFFFFFFF';
         foreach ($devices as $device)
         {
             $line++;
@@ -646,7 +643,7 @@ class DevicesController extends AppController
             $sheet->setCellValue('J'.$line, $device->reserve_flag ? 'v' : '');
             $sheet->setCellValue('K'.$line, $device->model);
             $sheet->setCellValue('L'.$line, strpos($device->remarks, 'R5') !== false ? 'R5' : '');
-            $sheet->setCellValue('M'.$line, $device->seria_no);
+            $sheet->setCellValue('M'.$line, $device->serial_no);
             $sheet->setCellValue('N'.$line, '');
             $sheet->setCellValue('O'.$line, !empty($device->support_end_date) ? date('Y/m/d', strtotime($device->support_end_date)) : '');
             if (!empty($device->support_end_date) && strtotime($device->support_end_date) < strtotime(date('Y/m/d')))
@@ -665,24 +662,14 @@ class DevicesController extends AppController
                 $borders->getLeft()->setBorderStyle('thin');
             }
             $sheet->setCellValue('R'.$line, $device->has('m_sqlserver') ? $device->m_sqlserver->name : '');
-//            if ($device->has('m_sqlserver'))
-//            {   $sheet->getStyle('R'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mSqlservers[$device->m_sqlserver->id], 1));}
             $sheet->setCellValue('S'.$line, $device->admin_pass);
             $sheet->setCellValue('T'.$line, $device->has('m_product') ? $device->m_product->name : '');
             $sheet->setCellValue('U'.$line, $device->has('m_version') ? $device->m_version->name : '');
             $sheet->setCellValue('V'.$line, $device->connect);
             $sheet->setCellValue('W'.$line, $device->remote);
             $sheet->setCellValue('X'.$line, $device->remarks);
-            $sheet->setCellValue('Y'.$line, '');
 
             // センター境界
-            // 背景色変更
-            if (!empty($preCenter) && $preCenter <> $device->center->name)
-            {
-                if ($color == 'FFFFFFFF'){$color = 'FFFFFFE0';}else{$color = 'FFFFFFFF';}
-            }
-//            $sheet->getStyle('D'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB($color);
-            // 罫線
             if (!empty($preCenter) && $preCenter <> $device->center->name)
             {
                 $col = 'D';
@@ -693,7 +680,16 @@ class DevicesController extends AppController
                     $col++;
                 }
             }
-            $preCenter = $device->center->name;
+            
+            // 削除済
+            if ($device->delete_flag)
+            {
+                foreach(['F','G','H','I','J','K','L','M','N'] as $col)
+                {
+                    $sheet->getStyle($col.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FFBBBBBB');
+                    $sheet->getStyle($col.$line)->getFont()->setStrikethrough(true);
+                }
+            }
         }
 
         // コールバックをストリーム化
