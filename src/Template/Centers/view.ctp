@@ -24,21 +24,27 @@ function delFile(filename, id)
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
         <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?> </li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('編集'), ['action' => 'edit', $center->id]) ?> </li><!--
         <li><?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?> </li>-->
+        <?php } ?>
     </ul>
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <li><?= $this->Html->link(__('登録'), ['controller' => 'Devices', 'action' => 'add', $center->id]) ?></li>
+        <?php } ?>
     </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="centers view large-9 medium-8 columns content">
     <h4 style="float: left"><?= h($center->name) ?></h3>
     <div style="float: right">
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/edit/$center->id'"]) ?>
+        <?php } ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
     </div>
     <table class="">
@@ -98,7 +104,9 @@ function delFile(filename, id)
                 <th scope="col"><?= __('サポート終了') ?></th><!--
                 <th scope="col"><?= __('接続先') ?></th>
                 <th scope="col"><?= __('リモート') ?></th>-->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <th scope="col" class="actions"><?= __('') ?></th>
+                <?php } ?>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
             <tr class="clickable <?= $devices->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>">
@@ -112,11 +120,13 @@ function delFile(filename, id)
                 <td><?= h($devices->support_end_date) ?></td><!--
                 <td><?= h($devices->connect) ?></td>
                 <td><?= h($devices->remote) ?></td>-->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <td class="actions">
                     <!-- <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
                     /
                     --><?= $this->Html->link(__('編集'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
                 </td>
+                <?php } ?>
             </tr>
             <?php endforeach; ?>
         </table>

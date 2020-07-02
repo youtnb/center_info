@@ -62,7 +62,7 @@ $(document).ready(function()
             echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '設置日']);
             echo "</div>";
             echo "<div class='float_30'>";
-            echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => 'サポート終了日']);
+            echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '保守終了日']);
             echo "</div>";
             echo $this->Form->control('security_flag', ['options' => [0 => '未', 1 => '済', 2 => '予'], 'label' => 'セキュリティソフト', 'style' => 'width: 100px;']);
             

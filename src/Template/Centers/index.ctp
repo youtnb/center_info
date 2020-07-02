@@ -17,7 +17,11 @@ jQuery(function($)
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= TITLE_CENTER ?></li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+        <?php }else{ ?>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Centers', 'action' => 'index']) ?></li>
+        <?php } ?>
     </ul>
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
@@ -55,8 +59,10 @@ jQuery(function($)
                 <th scope="col" class="th_min"><?= $this->Paginator->sort('postcode', '〒') ?></th>
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('m_prefecture_id', '都道府県') ?></th>
                 <th scope="col" class="th_large"><?= $this->Paginator->sort('address', '住所') ?></th>
-                <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
+                <!--<th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>-->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <th scope="col" class="actions th_actions"><?= __('') ?></th>
+                <?php } ?>
             </tr>
         </thead>
         <tbody>
@@ -67,7 +73,8 @@ jQuery(function($)
                 <td><?= h($center->postcode) ?></td>
                 <td><?= $center->has('m_prefecture') ? $center->m_prefecture->name : '' ?></td>
                 <td><?= h($center->address) ?></td>
-                <td style="text-align: center"><?php if($center->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
+                <!--<td style="text-align: center"><?php if($center->delete_flag){ echo LIST_CHECK_MARK; } ?></td>-->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <td class="actions">
                     <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $center->id]) ?>
                     /
@@ -75,6 +82,7 @@ jQuery(function($)
                     /
                     <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $center->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $center->id)]) ?>-->
                 </td>
+                <?php } ?>
             </tr>
             <?php endforeach; ?>
         </tbody>

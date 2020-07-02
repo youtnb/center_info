@@ -42,16 +42,20 @@ function delComment(id)
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
         <li><?= $this->Html->link(__('一覧'), ['action' => 'index']) ?> </li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <li><?= $this->Html->link(__('登録'), ['action' => 'add', $device->center->id]) ?> </li>
         <li><?= $this->Html->link(__('編集'), ['action' => 'edit', $device->id]) ?> </li><!--
         <li><?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?> </li>-->
+        <?php } ?>
     </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>
 <div class="devices view large-9 medium-8 columns content">
     <h4 style="float: left"><?= h($device->name) ?></h3>
     <div style="float: right">
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/edit/$device->id'"]) ?>
+        <?php } ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
     </div>
     <table class="">
@@ -91,7 +95,7 @@ function delComment(id)
         <tr>
             <th scope="row"><?= __('設置日') ?></th>
             <td><?= h($device->setup_date) ?></td>
-            <th scope="row"><?= __('サポート終了日') ?></th>
+            <th scope="row"><?= __('保守終了日') ?></th>
             <td colspan="3"><?= h($device->support_end_date) ?></td>
         </tr>
         <tr>
@@ -133,10 +137,12 @@ function delComment(id)
             <td><?= $device->delete_flag ? __(LIST_CHECK_MARK) : __(''); ?></td>
         </tr>
     </table>
+    <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
     <div style="text-align: right">
     <?= $this->Form->button('リプレイス登録［一部引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
     <?= $this->Form->button('拠点移設登録［全情報引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/move'). "')"]) ?>
     </div>
+    <?php } ?>
     <div class="row">
         <h4><?= __('写真') ?></h4>
         <?= $this->Form->button('写真保存', ['type' => 'button', 'id' => 'openModal', 'class' => 'copy_button', 'onclick' => "openModal('Photo')"]) ?>

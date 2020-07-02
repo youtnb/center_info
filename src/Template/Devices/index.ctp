@@ -32,7 +32,11 @@ jQuery(function($)
     </ul>
     <ul class="side-nav">
         <li class="heading"><?= TITLE_DEVICE ?></li>
+        <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
         <li><?= $this->Html->link(__('登録'), ['action' => 'add']) ?></li>
+        <?php }else{ ?>
+        <li><?= $this->Html->link(__('一覧'), ['controller' => 'Devices', 'action' => 'index']) ?> </li>
+        <?php } ?>
     </ul>
     <?php echo $this->element('navi_master'); ?>
 </nav>
@@ -56,7 +60,7 @@ jQuery(function($)
                 </tr>
                 <tr>
                     <td><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日', 'value' => $this->request->query('setup_date')]) ?></td>
-                    <td><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守期限日', 'value' => $this->request->query('support_end_date')]) ?></td>
+                    <td><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守終了日', 'value' => $this->request->query('support_end_date')]) ?></td>
                     <td></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
@@ -73,10 +77,14 @@ jQuery(function($)
                 echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
                 echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
                 echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
-                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
                 echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
                 echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
-                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+                echo $this->Form->hidden('security_flag', ['value' => $this->request->query('security_flag')]);
+                echo $this->Form->hidden('model', ['value' => $this->request->query('model')]);
+                echo $this->Form->hidden('setup_date', ['value' => $this->request->query('setup_date')]);
+                echo $this->Form->hidden('support_end_date', ['value' => $this->request->query('support_end_date')]);
+                echo $this->Form->hidden('delete_flag', ['value' => $this->request->query('delete_flag')]);
             ?>
             <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->end() ?>
@@ -87,10 +95,14 @@ jQuery(function($)
                 echo $this->Form->hidden('m_customer_id', ['value' => $this->request->query('m_customer_id')]);
                 echo $this->Form->hidden('m_area_id', ['value' => $this->request->query('m_area_id')]);
                 echo $this->Form->hidden('m_prefecture_id', ['value' => $this->request->query('m_prefecture_id')]);
-                echo $this->Form->hidden('center_id', ['value' => $this->request->query('center_id')]);
+                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
                 echo $this->Form->hidden('m_device_type_id', ['value' => $this->request->query('m_device_type_id')]);
                 echo $this->Form->hidden('m_operation_system_id', ['value' => $this->request->query('m_operation_system_id')]);
-                echo $this->Form->hidden('name', ['value' => $this->request->query('name')]);
+                echo $this->Form->hidden('security_flag', ['value' => $this->request->query('security_flag')]);
+                echo $this->Form->hidden('model', ['value' => $this->request->query('model')]);
+                echo $this->Form->hidden('setup_date', ['value' => $this->request->query('setup_date')]);
+                echo $this->Form->hidden('support_end_date', ['value' => $this->request->query('support_end_date')]);
+                echo $this->Form->hidden('delete_flag', ['value' => $this->request->query('delete_flag')]);
             ?>
             <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
         <?= $this->Form->end() ?>
@@ -121,7 +133,9 @@ jQuery(function($)
                 <th scope="col"><?= $this->Paginator->sort('running_flag', '稼働') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
                 -->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <th scope="col" class="actions th_actions"><?= __('') ?></th>
+                <?php } ?>
             </tr>
         </thead>
         <tbody>
@@ -146,6 +160,7 @@ jQuery(function($)
                 <td><?= h($device->running_flag) ?></td>
                 <td style="text-align: center"><?php if($device->delete_flag){ echo LIST_CHECK_MARK; } ?></td>
                 -->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
                 <td class="actions">
                     <!--<?= $this->Html->link(__('閲覧'), ['action' => 'view', $device->id]) ?>
                     /
@@ -153,6 +168,7 @@ jQuery(function($)
                     /
                     <?= $this->Form->postLink(__('削除'), ['action' => 'delete', $device->id], ['confirm' => __(DELETE_CONFIRM.' # {0}?', $device->id)]) ?>-->
                 </td>
+                <?php } ?>
             </tr>
             <?php endforeach; ?>
         </tbody>
