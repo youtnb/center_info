@@ -33,6 +33,7 @@
         <?= $this->Form->button('閲覧', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/view/$center->id'"]) ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
     </div>
+    <div style="clear: both;"></div>
     <fieldset>
         <?php
             echo "<div class='float_10'>";

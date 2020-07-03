@@ -27,8 +27,12 @@ $(document).ready(function()
 </nav>
 <div class="devices form large-9 medium-8 columns content">
     <?= $this->Form->create($device) ?>
+    <h4 style="float: left">端末登録</h4>
+    <div style="float: right">
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
+    </div>
+    <div style="clear: both;"></div>
     <fieldset>
-        <legend><?= __('端末登録') ?></legend>
         <?php
             echo "<div class='float_10'>";
             echo $this->Form->control('search_m_customer_id', ['options' => $mCustomers, 'value' => $m_customer_id, 'label' => '顧客', 'style' => 'width: 300px;']);

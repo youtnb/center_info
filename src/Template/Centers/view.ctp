@@ -43,6 +43,7 @@ function delFile(filename, id)
     <h4 style="float: left"><?= h($center->name) ?></h3>
     <div style="float: right">
         <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
+        <?= $this->Form->button('端末登録', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/add/$center->id'"]) ?>
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/edit/$center->id'"]) ?>
         <?php } ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
