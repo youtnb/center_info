@@ -29,7 +29,7 @@ $(document).ready(function()
     <?= $this->Form->create($device) ?>
     <h4 style="float: left">端末登録</h4>
     <div style="float: right">
-        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices'"]) ?>
     </div>
     <div style="clear: both;"></div>
     <fieldset>

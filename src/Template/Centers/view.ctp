@@ -46,7 +46,7 @@ function delFile(filename, id)
         <?= $this->Form->button('端末登録', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/add/$center->id'"]) ?>
         <?= $this->Form->button('編集', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/edit/$center->id'"]) ?>
         <?php } ?>
-        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers'"]) ?>
     </div>
     <table class="">
         <tr>

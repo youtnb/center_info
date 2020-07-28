@@ -30,7 +30,7 @@
     <h4 style="float: left">端末情報（<?= $centers->toArray()[$device->toArray()['center_id']]; ?>）</h4>
     <div style="float: right">
         <?= $this->Form->button('閲覧', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/view/$device->id'"]) ?>
-        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices/index'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices'"]) ?>
     </div>
     <div style="clear: both;"></div>
     <fieldset>

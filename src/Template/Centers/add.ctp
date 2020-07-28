@@ -19,7 +19,7 @@
     <?= $this->Form->create($center) ?>
     <h4 style="float: left">拠点登録</h4>
     <div style="float: right">
-        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/index'"]) ?>
+        <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers'"]) ?>
     </div>
     <div style="clear: both;"></div>
     <fieldset>
