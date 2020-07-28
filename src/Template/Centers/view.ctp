@@ -48,6 +48,7 @@ function delFile(filename, id)
         <?php } ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers'"]) ?>
     </div>
+    <div style="clear: both;"></div>
     <table class="">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>

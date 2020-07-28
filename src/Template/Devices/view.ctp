@@ -58,6 +58,7 @@ function delComment(id)
         <?php } ?>
         <?= $this->Form->button('一覧に戻る', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/devices'"]) ?>
     </div>
+    <div style="clear: both;"></div>
     <table class="">
         <tr>
             <th scope="row"><?= __('拠点') ?></th>
