@@ -677,3 +677,25 @@ div.photos div.photo {
   width: calc(25% - 10px);
   margin: 0px;
 }
+
+/* ファイルドロップゾーン */
+.drop-zone
+{
+    border: 2px dashed #bbbbbb;
+    padding: 30px;
+    border-radius: 20px;
+}
+.hide {
+    display: none;
+}
+.loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.5);
+    background-image: url(../img/icon_loader_c_gw_01_s1.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+}

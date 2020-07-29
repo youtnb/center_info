@@ -329,52 +329,91 @@ class DevicesController extends AppController
     public function addFile($id = null)
     {
         // check post data
-        if (!$this->request->is(['patch', 'post', 'put']))
+        if ($this->request->is(['patch', 'post', 'put']))
         {
-            return $this->redirect(['action' => 'view', $id]);
-        }
-        
-        // check file
-        if (empty($this->request->data['import_file']['tmp_name']))
-        {
-            $this->Flash->error(__('Please input attached file.'));
-            return $this->redirect(['action' => 'view', $id]);  
-        }
-        
-        // upload
-        $dir = self::UPLOAD_PATH. $id;
-        try {
-            $save_name = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
-        } catch (RuntimeException $e){
-            $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
-            $this->Flash->error(__($e->getMessage()));
-            return $this->redirect(['action' => 'index']);
-        }
-        
-        // save
-        $tableDocuments = TableRegistry::getTableLocator()->get('Documents');
-        $document = $tableDocuments->newEntity();
-        if ($save_name)
-        {
-            // DB保存
-            $document = $tableDocuments->patchEntity($document, $this->request->getData());
-            $document->file_name = $this->request->data['import_file']['name'];
-            $document->file_path = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $save_name);
-            if (!$tableDocuments->save($document)) {
-                $this->Flash->error(__('DB was not saved. Please, try again.'));
-            }
-            else
-            {
-                $this->Flash->success(__('The file has been uploaded.'));
-                // ログ
-                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $id,
-                    'file:'. $this->request->data['import_file']['name'],
-                ]));
-            }
+            // upload file
+            $msg = $this->uploadFile($id);
         }
         
         return $this->redirect(['action' => 'view', $id]);
+    }
+    
+    /**
+     * ファイル保存処理（ajax）
+     * @param type $id
+     */
+    public function addFileAjax($id = null)
+    {
+        $this->autoRender = false;
+        $msg = '';
+        
+        // check ajax
+        if ($this->request->is('ajax'))
+        {
+            // upload file
+            $msg = $this->uploadFile($id);
+        }
+        
+        echo $msg;
+    }
+    
+    /**
+     * ファイルアップロード
+     * @return String error message
+     */
+    private function uploadFile($id = null)
+    {
+        $result = '';
+        $save_name = null;
+
+        if (empty($this->request->data['import_file']['tmp_name']))
+        {
+            $result = 'Please input attached file.';
+        }
+        else
+        {
+            // upload
+            $dir = self::UPLOAD_PATH. $id;
+            try {
+                $save_name = $this->AttachedFile->upload($this->request->data['import_file'], $dir);
+            } catch (RuntimeException $e){
+                $result = 'The file could not be uploaded. Please, try again.';
+            }
+
+            // save
+            $tableDocuments = TableRegistry::getTableLocator()->get('Documents');
+            $document = $tableDocuments->newEntity();
+            if ($save_name)
+            {
+                // DB保存
+                $document = $tableDocuments->patchEntity($document, $this->request->getData());
+                $document->file_name = $this->request->data['import_file']['name'];
+                $document->file_path = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $save_name);
+                if (!$tableDocuments->save($document)) {
+                    $result = 'DB was not saved. Please, try again.';
+                }
+                else
+                {
+                    // ログ
+                    $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                        'id:'. $id,
+                        'file:'. $this->request->data['import_file']['name'],
+                    ]));
+                }
+            }
+        }
+        
+        // 結果表示
+        if (empty($result))
+        {
+            $this->Flash->success(__('The file has been uploaded.'));
+        }
+        else
+        {
+            $this->Flash->error(__($result));
+        }
+
+        return $result;
     }
     
     /**
@@ -425,53 +464,92 @@ class DevicesController extends AppController
     public function addPhoto($id = null)
     {
         // check post data
-        if (!$this->request->is(['patch', 'post', 'put']))
+        if ($this->request->is(['patch', 'post', 'put']))
         {
-            return $this->redirect(['action' => 'view', $id]);
-        }
-        
-        // check file
-        if (empty($this->request->data['import_file']['tmp_name']))
-        {
-            $this->Flash->error(__('Please input attached photo.'));
-            return $this->redirect(['action' => 'view', $id]);                
-        }
-
-        // upload
-        $dir = self::PHOTO_PATH. $id;
-        try {
-            $save_name = $this->AttachedFile->uploadPhoto($this->request->data['import_file'], $dir);
-        } catch (RuntimeException $e){
-            $this->Flash->error(__('The file could not be uploaded. Please, try again.'));
-            $this->Flash->error(__($e->getMessage()));
-            return $this->redirect(['action' => 'index']);
-        }
-
-        // save
-        $tablePhotos = TableRegistry::getTableLocator()->get('Photos');
-        $photo = $tablePhotos->newEntity();
-        if ($save_name)
-        {
-            // DB保存
-            $photo = $tablePhotos->patchEntity($photo, $this->request->getData());
-            $photo->file_name = $this->request->data['import_file']['name'];
-            $photo->file_path = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $save_name);
-            $photo->file_path_thmb = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $this->AttachedFile->addPhotoSafix($save_name));
-            if (!$tablePhotos->save($photo)) {
-                $this->Flash->error(__('DB was not saved. Please, try again.'));
-            }
-            else
-            {
-                $this->Flash->success(__('The photo has been uploaded.'));
-                // ログ
-                $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                    'id:'. $id,
-                    'file:'. $this->request->data['import_file']['name'],
-                ]));
-            }
+            // upload photo
+            $msg = $this->uploadPhoto($id);
         }
         
         return $this->redirect(['action' => 'view', $id]);
+    }
+    
+    /**
+     * 写真保存処理（ajax）
+     * @param type $id
+     */
+    public function addPhotoAjax($id = null)
+    {
+        $this->autoRender = false;
+        $msg = '';
+        
+        // check ajax
+        if ($this->request->is('ajax'))
+        {
+            // upload photo
+            $msg = $this->uploadPhoto($id);
+        }
+        
+        echo $msg;
+    }
+    
+    /**
+     * 写真アップロード
+     * @return String error message
+     */
+    private function uploadPhoto($id = null)
+    {
+        $result = '';
+        $save_name = null;
+
+        if (empty($this->request->data['import_file']['tmp_name']))
+        {
+            $result = 'Please input attached photo.';
+        }
+        else
+        {
+            // upload
+            $dir = self::PHOTO_PATH. $id;
+            try {
+                $save_name = $this->AttachedFile->uploadPhoto($this->request->data['import_file'], $dir);
+            } catch (RuntimeException $e){
+                $result = 'The photo could not be uploaded. Please, try again.';
+            }
+
+            // save
+            $tablePhotos = TableRegistry::getTableLocator()->get('Photos');
+            $photo = $tablePhotos->newEntity();
+            if ($save_name)
+            {
+                // DB保存
+                $photo = $tablePhotos->patchEntity($photo, $this->request->getData());
+                $photo->file_name = $this->request->data['import_file']['name'];
+                $photo->file_path = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $save_name);
+                $photo->file_path_thmb = str_replace(WWW_ROOT, '', $dir. DIR_SEP. $this->AttachedFile->addPhotoSafix($save_name));
+                if (!$tablePhotos->save($photo)) {
+                    $result = 'DB was not saved. Please, try again.';
+                }
+                else
+                {
+                    // ログ
+                    $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
+                        'id:'. $id,
+                        'file:'. $this->request->data['import_file']['name'],
+                    ]));
+                }
+            }
+        }
+        
+        // 結果表示
+        if (empty($result))
+        {
+            $this->Flash->success(__('The photo has been uploaded.'));
+        }
+        else
+        {
+            $this->Flash->error(__($result));
+        }
+
+        return $result;
     }
     
     /**

@@ -5,6 +5,96 @@
  */
 ?>
 <script type="text/javascript">
+$(document).ready(function()
+{
+    var dropZonePhoto = document.getElementById('drop-zone-photo');
+    var dropZoneFile = document.getElementById('drop-zone-file');
+    
+    dropZonePhoto.addEventListener('dragover', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#d1e7f0';
+    }, false);
+    dropZonePhoto.addEventListener('dragleave', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#ffffff';
+    }, false);
+    dropZonePhoto.addEventListener('drop', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#ffffff';
+        
+        let files = e.dataTransfer.files;
+        if (files.length > 1) return alert('複数ファイルは同時に登録できません。');
+        let fd = new FormData($('#addPhotoForm').get(0));
+        fd.append('import_file', files[0]);
+
+        let csrf = $('input[name=_csrfToken]').val();
+        
+        $.ajax({
+            url: '/center_info/devices/addPhotoAjax/<?= $device->id; ?>',
+            type: 'post',
+            data: fd,
+            dataType: 'text',
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr){
+                    $('.loading').removeClass('hide');
+                    xhr.setRequestHeader("X-CSRF-Token",csrf);
+                },
+            success : function(res){
+                    window.location.href = './<?= $device->id; ?>';
+                },
+            error : function(){
+                    alert("登録エラーになりました。管理者にご確認ください。");
+                }
+        });
+    }, false);
+    
+     dropZoneFile.addEventListener('dragover', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#d1e7f0';
+    }, false);
+    dropZoneFile.addEventListener('dragleave', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#ffffff';
+    }, false);
+    dropZoneFile.addEventListener('drop', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.style.background = '#ffffff';
+        
+        let files = e.dataTransfer.files;
+        if (files.length > 1) return alert('複数ファイルは同時に登録できません。');
+        let fd = new FormData($('#addFileForm').get(0));
+        fd.append('import_file', files[0]);
+
+        let csrf = $('input[name=_csrfToken]').val();
+        
+        $.ajax({
+            url: '/center_info/devices/addFileAjax/<?= $device->id; ?>',
+            type: 'post',
+            data: fd,
+            dataType: 'text',
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr){
+                    $('.loading').removeClass('hide');
+                    xhr.setRequestHeader("X-CSRF-Token",csrf);
+                },
+            success : function(res){
+                    window.location.href = './<?= $device->id; ?>';
+                },
+            error : function(){
+                    alert("登録エラーになりました。管理者にご確認ください。");
+                }
+        });
+    }, false);
+});
+
 function delPhoto(filename, id)
 {
    if(confirm('「' + filename + '」\r\nを削除します。よろしいですか？'))
@@ -33,6 +123,7 @@ function delComment(id)
        window.location.href = '/center_info/comments/deleteLogical/' + id + '/<?= $device->id ?>';
    }
 }
+
 </script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
@@ -238,7 +329,9 @@ function delComment(id)
     <div class="modal_bg" onclick="closeModal('Photo')"></div>
     <div class="modal_wrapper">
         <div class="modal_contents">
-            <?= $this->Form->create($device, ['action' => 'addPhoto/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->create($device, ['action' => 'addPhoto/'.$device->id, 'enctype' => 'multipart/form-data', 'id' => 'addPhotoForm']) ?>
+            <div id="drop-zone-photo" class="drop-zone">
+                <p>ファイルを「ドラッグ＆ドロップ」もしくは「参照指定」</p>
             <?php 
                 echo $this->Form->hidden('center_id', ['value' => $device->center->id]);
                 echo $this->Form->hidden('device_id', ['value' => $device->id]);
@@ -250,8 +343,10 @@ function delComment(id)
                 echo $this->Form->hidden('delete_flag', ['value' => 0]);
                 echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
             ?>
+            </div>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
+            <div class="loading hide"></div>
             ※ファイルサイズは10MB未満としてください
         </div>
         <div class="close_modal" onclick="closeModal('Photo')">
@@ -263,7 +358,9 @@ function delComment(id)
     <div class="modal_bg" onclick="closeModal('File')"></div>
     <div class="modal_wrapper">
         <div class="modal_contents">
-            <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data']) ?>
+            <?= $this->Form->create($device, ['action' => 'addFile/'.$device->id, 'enctype' => 'multipart/form-data', 'id' => 'addFileForm']) ?>
+            <div id="drop-zone-file" class="drop-zone">
+                <p>ファイルを「ドラッグ＆ドロップ」もしくは「参照指定」</p>
             <?php 
                 echo $this->Form->hidden('center_id', ['value' => $device->center->id]);
                 echo $this->Form->hidden('device_id', ['value' => $device->id]);
@@ -275,8 +372,10 @@ function delComment(id)
                 echo $this->Form->hidden('delete_flag', ['value' => 0]);
                 echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
             ?>
+            </div>
             <?= $this->Form->button(__('登録')) ?>
             <?= $this->Form->end() ?>
+            <div class="loading hide"></div>
             ※ファイルサイズは10MB未満としてください
         </div>
         <div class="close_modal" onclick="closeModal('File')">
