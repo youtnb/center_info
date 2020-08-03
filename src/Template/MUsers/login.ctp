@@ -11,8 +11,8 @@
     </div>
     <?= $this->Form->end() ?>
 </div>
-<div style="clear: both;" />
-<div style='margin-left: auto; margin-right: auto; margin-top: 150px; width: 800px;'>
+<div style="clear: both;"></div>
+<div style='margin-left: auto; margin-right: auto; margin-top: 50px; width: 800px;'>
     <fieldset>
         <legend><?= __('お知らせ') ?></legend>
         <?php foreach ($informations as $info): ?>

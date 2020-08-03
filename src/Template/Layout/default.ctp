@@ -59,7 +59,8 @@ $cakeDescription = '物流拠点情報管理システム';
     <div class="container clearfix">
         <?= $this->fetch('content') ?>
     </div>
-    <footer>
+    <footer class="footer">
+        Copyright 2020 NIPPON FILING CO.,Ltd.
     </footer>
 </body>
 </html>

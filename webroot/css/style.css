@@ -699,3 +699,9 @@ div.photos div.photo {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+/* フッター */
+.footer {
+    color: #999;
+    text-align: center;
+}
