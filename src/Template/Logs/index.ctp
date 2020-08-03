@@ -43,7 +43,6 @@
                 <th scope="col" class="th_middle"><?= $this->Paginator->sort('class') ?></th>
                 <th scope="col" class="th_short_20"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col">content</th>
-                <!--<th scope="col" class="actions"><?= __('Actions') ?></th>-->
             </tr>
         </thead>
         <tbody>
@@ -54,11 +53,6 @@
                 <td><?= h($log->class) ?></td>
                 <td><?= h($log->type) ?></td>
                 <td><?= h($log->content) ?></td>
-                <!--<td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $log->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $log->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $log->id], ['confirm' => __('Are you sure you want to delete # {0}?', $log->id)]) ?>
-                </td>-->
             </tr>
             <?php endforeach; ?>
         </tbody>

@@ -332,7 +332,7 @@ class DevicesController extends AppController
         if ($this->request->is(['patch', 'post', 'put']))
         {
             // upload file
-            $msg = $this->uploadFile($id);
+            $msg = $this->uploadFile($id, true);
         }
         
         return $this->redirect(['action' => 'view', $id]);
@@ -351,7 +351,7 @@ class DevicesController extends AppController
         if ($this->request->is('ajax'))
         {
             // upload file
-            $msg = $this->uploadFile($id);
+            $msg = $this->uploadFile($id, false);
         }
         
         echo $msg;
@@ -361,7 +361,7 @@ class DevicesController extends AppController
      * ファイルアップロード
      * @return String error message
      */
-    private function uploadFile($id = null)
+    private function uploadFile($id = null, $isPost = true)
     {
         $result = '';
         $save_name = null;
@@ -396,8 +396,9 @@ class DevicesController extends AppController
                 {
                     // ログ
                     $this->Log->write(__CLASS__, __FUNCTION__, implode(',', [
-                        'id:'. $id,
+                        'device_id:'. $id,
                         'file:'. $this->request->data['import_file']['name'],
+                        'method:'. ($isPost?'POST':'AJAX')
                     ]));
                 }
             }
