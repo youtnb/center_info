@@ -232,7 +232,8 @@ function delComment(id)
     </table>
     <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
     <div style="text-align: right">
-    <?= $this->Form->button('リプレイス登録［一部引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
+    <?= $this->Form->button('同日設置登録　［一部引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id). "')"]) ?><br/>
+    <?= $this->Form->button('リプレイス登録［一部引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/replace'). "')"]) ?><br/>
     <?= $this->Form->button('拠点移設登録［全情報引継ぎ］', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.location.href = ('".$this->Url->build('/devices/add/'.$device->center->id.'/'.$device->id.'/move'). "')"]) ?>
     </div>
     <?php } ?>

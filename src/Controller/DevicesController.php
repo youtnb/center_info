@@ -204,30 +204,41 @@ class DevicesController extends AppController
             $pre_device = $this->Devices->get($id, [
                 'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
             ]);
-            $device->m_device_type_id = $pre_device->m_device_type_id;
-            $device->name = $pre_device->name;
-            $device->ip_higher = $pre_device->ip_higher;
-            $device->ip_lower = $pre_device->ip_lower;
-            $device->admin_pass = $pre_device->admin_pass;
-            $device->connect = $pre_device->connect;
-            $device->m_product_id = $pre_device->m_product_id;
-            $device->m_version_id = $pre_device->m_version_id;
-            $device->remote = $pre_device->remote;
-            $device->custom = $pre_device->custom;
-            $device->remarks = $pre_device->remarks;
             
-            if (!empty($type) && $type == "move")
+            if (empty($type))
             {
-                // 拠点移設なら一通りの情報引継ぎ
+                //同日設置は受入Noと設置日引継ぎ
                 $device->accepted_no = $pre_device->accepted_no;
-                $device->model = $pre_device->model;
-                $device->serial_no = $pre_device->serial_no;
                 $device->setup_date = $pre_device->setup_date;
-                $device->support_end_date = $pre_device->support_end_date;
-                $device->reserve_flag = $pre_device->reserve_flag;
-                $device->running_flag = $pre_device->running_flag;
-                $device->m_operation_system_id = $pre_device->m_operation_system_id;
-                $device->m_sqlserver_id = $pre_device->m_sqlserver_id;
+            }
+            else
+            {
+                // リプレイスまたは拠点移設
+                $device->m_device_type_id = $pre_device->m_device_type_id;
+                $device->name = $pre_device->name;
+                $device->ip_higher = $pre_device->ip_higher;
+                $device->ip_lower = $pre_device->ip_lower;
+                $device->admin_pass = $pre_device->admin_pass;
+                $device->connect = $pre_device->connect;
+                $device->m_product_id = $pre_device->m_product_id;
+                $device->m_version_id = $pre_device->m_version_id;
+                $device->remote = $pre_device->remote;
+                $device->custom = $pre_device->custom;
+                $device->remarks = $pre_device->remarks;
+
+                if (!empty($type) && $type == "move")
+                {
+                    // 拠点移設なら一通りの情報引継ぎ
+                    $device->accepted_no = $pre_device->accepted_no;
+                    $device->model = $pre_device->model;
+                    $device->serial_no = $pre_device->serial_no;
+                    $device->setup_date = $pre_device->setup_date;
+                    $device->support_end_date = $pre_device->support_end_date;
+                    $device->reserve_flag = $pre_device->reserve_flag;
+                    $device->running_flag = $pre_device->running_flag;
+                    $device->m_operation_system_id = $pre_device->m_operation_system_id;
+                    $device->m_sqlserver_id = $pre_device->m_sqlserver_id;
+                }
             }
         }
         
