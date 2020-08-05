@@ -47,8 +47,9 @@ $cakeDescription = '物流拠点情報管理システム';
         </ul>
         <div class="top-bar-section">
             <ul class="right">
-                <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
+                <!--<li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>-->
+                <!--<li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>-->
+                <li><a target="_blank" href="http://192.168.1.7/wp_knowledge/">NF-Knowledge</a></li>
                 <?php if($this->request->session()->read('Auth.User.id')){ ?>
                 <li><?= $this->Html->link(__('ログアウト'), ['controller' => 'MUsers', 'action' => 'logout']) ?></li>
                 <?php } ?>
