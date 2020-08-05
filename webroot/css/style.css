@@ -592,7 +592,7 @@ div.list_table table tr:nth-child(odd) td{
     background: #eee;
 }
 /* 削除データ行文字色 */
-div.list_table table tr.delete_content td{
+table tr.delete_content td{
     color: olive;
 }
 /* 行クリック */

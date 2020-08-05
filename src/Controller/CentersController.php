@@ -135,7 +135,10 @@ class CentersController extends AppController
         $mDeviceTypes = $tableMDeviceTypes->find('list')->toArray();
         $device_color_list = $tableMDeviceTypes->find('list', ['valueField' => 'background_color'])->toArray();
         
-        $this->set(compact('center', 'mDeviceTypes', 'device_color_list'));
+        $tableDevices = TableRegistry::getTableLocator()->get('Devices');
+        $delDevices = $tableDevices->find('search', ['center_id' => $id, 'delete_flag' => 1, 'delete_only' => 1])->order('id');
+        
+        $this->set(compact('center', 'mDeviceTypes', 'device_color_list', 'delDevices'));
     }
 
     /**

@@ -93,6 +93,19 @@ $(document).ready(function()
                 }
         });
     }, false);
+    
+    $('#display_delete').click(function() {
+        $(".delrow").toggle(200);
+        if($('#display_delete').text() == '▼削除表示')
+        {
+            $('#display_delete').text('▲削除済非表示')
+        }
+        else
+        {
+            $('#display_delete').text('▼削除表示')
+        }
+
+    });
 });
 
 function delPhoto(filename, id)
@@ -177,13 +190,13 @@ function delFile(filename, id)
     </table>
     <div class="row">
         <h4><?= __('端末情報') ?></h4>
+        <?php if (!empty($center->devices) || !empty($delDevices)): ?>
         <!--
         <?= $this->Form->button('CSVダウンロード', ['type' => 'button', 'class' => 'download_button', 'onclick' => "window.location.href = '/center_info/centers/getDevices/$center->id'"]) ?>
         <div style="float: right;">
             <?= $this->Form->button('CSV一括更新', ['type' => 'button', 'class' => 'download_button', 'onclick' => "openModal('Devices')"]) ?>
         </div>
         -->
-        <?php if (!empty($center->devices)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('端末名') ?></th>
@@ -197,7 +210,7 @@ function delFile(filename, id)
                 <th scope="col"><?= __('接続先') ?></th>
                 <th scope="col"><?= __('リモート') ?></th>-->
                 <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
-                <th scope="col" class="actions"><?= __('') ?></th>
+                <th scope="col" class="actions"></th>
                 <?php } ?>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
@@ -221,7 +234,33 @@ function delFile(filename, id)
                 <?php } ?>
             </tr>
             <?php endforeach; ?>
+            <?php foreach ($delDevices as $devices): ?>
+            <tr class="delrow clickable <?= $devices->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>" style="display: none;">
+                <td><?= h($devices->name) ?></td>
+                <td style="background-color: <?= h($device_color_list[$devices->m_device_type_id]) ?>;"><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td>
+                <td><?= h($devices->accepted_no) ?></td>
+                <td><?= h($devices->ip_higher) ?></td>
+                <td><?= h($devices->ip_lower) ?></td>
+                <td><?php if($devices->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
+                <td><?= h($devices->setup_date) ?></td>
+                <td><?= h($devices->support_end_date) ?></td><!--
+                <td><?= h($devices->connect) ?></td>
+                <td><?= h($devices->remote) ?></td>-->
+                <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
+                <td class="actions">
+                    <!-- <?= $this->Html->link(__('閲覧'), ['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>
+                    /
+                    --><?= $this->Html->link(__('編集'), ['controller' => 'Devices', 'action' => 'edit', $devices->id]) ?>
+                </td>
+                <?php } ?>
+            </tr>
+            <?php endforeach; ?>
         </table>
+        <?php if (!empty($delDevices->toArray())): ?>
+        <div style="float: right">
+            <?= $this->Form->button('▼削除表示', ['type' => 'button', 'id' => 'display_delete', 'class' => 'copy_button', 'onclick' => 'return false']) ?>
+        </div>
+        <?php endif; ?>
         <?php endif; ?>
     </div>
     <div class="row">

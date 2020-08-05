@@ -221,6 +221,10 @@ class DevicesTable extends Table
         $where = $query->clause('where');
         if ($where === null || !count($where))
         {
+            // 削除済み拠点は対象外
+            $sub = $this->Centers->find()->where(['delete_flag' => '1'])->select('id');
+            $query->where([$this->alias().'.center_id NOT IN' => $sub]);
+
             $query->where([$this->alias().'.delete_flag' => 0]);
         }
         // order
@@ -263,6 +267,10 @@ class DevicesTable extends Table
      */
     public function findSearch(Query $query, $options)
     {
+        // 削除済み拠点は対象外
+        $sub = $this->Centers->find()->where(['delete_flag' => '1'])->select('id');
+        $query->where([$this->alias().'.center_id NOT IN' => $sub]);
+
         // 拠点
         if (isset($options['center_id']) && !empty($options['center_id']))
         {
@@ -324,7 +332,15 @@ class DevicesTable extends Table
         // 削除フラグ
         if (isset($options['delete_flag']) && !empty($options['delete_flag']))
         {
-            $query->where([$this->alias().'.delete_flag >=' => '0']);
+            if (isset($options['delete_only']) && !empty($options['delete_only']))
+            {
+                // 拠点詳細
+                $query->where([$this->alias().'.delete_flag =' => '1']);
+            }
+            else
+            {
+                $query->where([$this->alias().'.delete_flag >=' => '0']);
+            }
         }
         else
         {
