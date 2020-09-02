@@ -163,7 +163,13 @@ function delFile(filename, id)
                 echo $center->postcode ? '〒'. substr($center->postcode, 0, 3). ' - '. substr($center->postcode, 3). '&nbsp;': '';
                 echo $center->has('m_prefecture') ? $center->m_prefecture->name : '';
                 echo h($center->address);
+                if (!empty($center->map))
+                {
+                    echo '&nbsp;';
+                    echo $this->Form->button('GoogleMap', ['type' => 'button', 'class' => 'copy_button', 'onclick' => "window.open('$center->map','_blank','')"]);
+                }
             ?>
+            </td>
         </tr>
         <tr>
             <th scope="row"><?= __('電話番号') ?></th>

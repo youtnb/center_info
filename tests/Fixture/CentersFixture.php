@@ -25,6 +25,7 @@ class CentersFixture extends TestFixture
         'officer' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => 'センター長', 'precision' => null, 'fixed' => null],
         'staff' => ['type' => 'string', 'length' => 50, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '現場担当者', 'precision' => null, 'fixed' => null],
         'access' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => 'アクセス方法', 'precision' => null],
+        'map' => ['type' => 'text', 'length' => 256, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => 'GoogleMapアドレス', 'precision' => null, 'fixed' => null],
         'job' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '業務情報', 'precision' => null],
         'remarks' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '備考', 'precision' => null],
         'shoes_flag' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '上履きフラグ', 'precision' => null],

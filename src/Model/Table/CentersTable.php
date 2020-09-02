@@ -115,6 +115,11 @@ class CentersTable extends Table
             ->allowEmptyString('access');
 
         $validator
+            ->scalar('map')
+            ->maxLength('map', 256)
+            ->allowEmptyString('map');
+
+        $validator
             ->scalar('job')
             ->allowEmptyString('job');
 

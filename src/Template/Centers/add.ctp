@@ -37,6 +37,8 @@
             echo "</div>";
             echo $this->Form->control('address', ['label' => '住所', 'style' => 'width: 400px;']);
             
+            echo $this->Form->control('map', ['label' => 'GoogleMap URL', 'style' => 'width: 600px;']);
+
             echo $this->Form->control('tel', ['label' => '電話番号', 'style' => 'width: 250px;']);
             
             echo "<div class='float_15'>";
