@@ -31,6 +31,11 @@ echo "\r\n";
 // body
 foreach ($devices as $device)
 {
+    $ip_higher = $device->ip_higher;
+    $ip_higher .= empty($device->ip_higher_ex)? "": " / ".$device->ip_higher_ex;
+    $ip_lower = $device->ip_lower;
+    $ip_lower .= empty($device->ip_lower_ex)? "": " / ".$device->ip_lower_ex;
+    
     $line = [
         $device->has('center') ? $mPrefectures[$device->center->m_prefecture_id]: '',
         $mCustomers[$device->toArray()['center']['m_customer_id']],
@@ -38,8 +43,8 @@ foreach ($devices as $device)
         $device->accepted_no,
         $device->has('m_device_type') ? $device->m_device_type->name: '',
         $device->security_flag ? $sec_flag[$device->security_flag] : '',
-        $device->ip_higher,
-        $device->ip_lower,
+        $ip_higher,
+        $ip_lower,
         $device->name,
         $device->reserve_flag ? 'v' : '',
         $device->model,

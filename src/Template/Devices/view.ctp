@@ -176,11 +176,21 @@ function delComment(id)
             <td><?= h($device->ip_higher) ?><?php if(!empty($device->ip_higher)){
                 echo '&nbsp;';
                 echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_higher.'\');']);
+            } ?><?php if(!empty($device->ip_higher_ex)){
+                echo '<br />';
+                echo h($device->ip_higher_ex);
+                echo '&nbsp;';
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_higher_ex.'\');']);
             } ?></td>
             <th scope="row"><?= __('下位IP') ?></th>
             <td><?= h($device->ip_lower) ?><?php if(!empty($device->ip_lower)){
                 echo '&nbsp;';
                 echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_lower.'\');']);
+            } ?><?php if(!empty($device->ip_lower_ex)){
+                echo '<br />';
+                echo h($device->ip_lower_ex);
+                echo '&nbsp;';
+                echo $this->Form->button('COPY', ['type' => 'button', 'class' => 'copy_button', 'onclick' => 'clipboardCopy(\''.$device->ip_lower_ex.'\');']);
             } ?></td>
             <th scope="row"><?= __('AdminPass') ?></th>
             <td><?= h($device->admin_pass) ?></td>
@@ -188,22 +198,10 @@ function delComment(id)
         <tr>
             <th scope="row"><?= __('設置日') ?></th>
             <td><?= h($device->setup_date) ?></td>
+            <th scope="row"><?= __('設置場所') ?></th>
+            <td><?= h($device->setup_place) ?></td>
             <th scope="row"><?= __('保守終了日') ?></th>
-            <td colspan="3"><?= h($device->support_end_date) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('予備') ?></th>
-            <td><?= $device->reserve_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
-        <!--
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($device->id) ?></td>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($device->created) ?></td>
-        -->
-            <th scope="row"><?= __('稼働中') ?></th>
-            <td><?= $device->running_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
-            <th scope="row"><?= __('セキュリティソフト') ?></th>
-            <td><?= $sec_flag[$device->security_flag] ?></td>
+            <td><?= h($device->support_end_date) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('OS種別') ?></th>
@@ -220,6 +218,22 @@ function delComment(id)
             <td><?= $device->has('m_version') ? $device->m_version->name : '' ?></td>
             <th scope="row"><?= __('リモート') ?></th>
             <td><?= h($device->remote) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('予備') ?></th>
+            <td><?= $device->reserve_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
+        <!--
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($device->id) ?></td>
+            <th scope="row"><?= __('Created') ?></th>
+            <td><?= h($device->created) ?></td>
+            <th scope="row"><?= __('稼働中') ?></th>
+            <td><?= $device->running_flag ? __(LIST_CHECK_MARK) : __('') ?></td>
+        -->
+            <th scope="row"><?= __('RAIDレベル') ?></th>
+            <td><?= h($device->raid) ?></td>
+            <th scope="row"><?= __('セキュリティソフト') ?></th>
+            <td><?= $sec_flag[$device->security_flag] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('最終更新日時') ?></th>

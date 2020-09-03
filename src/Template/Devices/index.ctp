@@ -115,13 +115,13 @@ jQuery(function($)
             <tr>
                 <th scope="col" class="th_customer"><?= __('顧客') ?></th>
                 <th scope="col" class="th_center"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
-                <th scope="col" class="th_short"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
+                <th scope="col" class="th_min"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
                 <!--
                 <th scope="col" class="th_short"><?= $this->Paginator->sort('accepted_no', '受入No') ?></th>
                 -->
-                <th scope="col" class="th_short"><?= $this->Paginator->sort('name', '端末名') ?></th>
-                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
-                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
+                <th scope="col" class="th_short_20"><?= $this->Paginator->sort('name', '端末名') ?></th>
+                <th scope="col" class="th_ip"><?= $this->Paginator->sort('ip_higher', '上位IP') ?></th>
+                <th scope="col" class="th_ip"><?= $this->Paginator->sort('ip_lower', '下位IP') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('reserve_flag', '予備') ?></th>
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('security_flag', 'McA') ?></th>
                 <th scope="col" class="th_ymd"><?= $this->Paginator->sort('setup_date', '設置日') ?></th>
@@ -134,7 +134,7 @@ jQuery(function($)
                 <th scope="col" class="th_flag"><?= $this->Paginator->sort('delete_flag', '削除') ?></th>
                 -->
                 <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
-                <th scope="col" class="actions th_actions"><?= __('') ?></th>
+                <th scope="col" class="actions th_min"><?= __('') ?></th>
                 <?php } ?>
             </tr>
         </thead>
@@ -147,8 +147,14 @@ jQuery(function($)
                 <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>
                 <!--<td><?= h($device->accepted_no) ?></td>-->
                 <td><?= h($device->name) ?></td>
-                <td><?= h($device->ip_higher) ?></td>
-                <td><?= h($device->ip_lower) ?></td>
+                <td><?= h($device->ip_higher) ?><?php if(!empty($device->ip_higher_ex)){
+                    echo '<br />';
+                    echo $device->ip_higher_ex;
+                } ?></td>
+                <td><?= h($device->ip_lower) ?><?php if(!empty($device->ip_lower_ex)){
+                    echo '<br />';
+                    echo $device->ip_lower_ex;
+                } ?></td>
                 <td style="text-align: center"><?php if($device->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td style="text-align: center"><?= !empty($device->security_flag) ? $sec_flag[$device->security_flag] : '' ?></td>
                 <td><?= h($device->setup_date) ?></td>

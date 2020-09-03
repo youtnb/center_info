@@ -205,27 +205,33 @@ function delFile(filename, id)
         -->
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('端末名') ?></th>
-                <th scope="col"><?= __('端末種別') ?></th>
-                <th scope="col"><?= __('受入No') ?></th>
-                <th scope="col"><?= __('上位IP') ?></th>
-                <th scope="col"><?= __('下位IP') ?></th>
-                <th scope="col"><?= __('予備') ?></th>
-                <th scope="col"><?= __('設置日') ?></th>
-                <th scope="col"><?= __('サポート終了') ?></th><!--
+                <th scope="col" class="th_short_20"><?= __('端末名') ?></th>
+                <th scope="col" class="th_min"><?= __('端末種別') ?></th><!--
+                <th scope="col" class="th_short"><?= __('受入No') ?></th>-->
+                <th scope="col" class="th_ip"><?= __('上位IP') ?></th>
+                <th scope="col" class="th_ip"><?= __('下位IP') ?></th>
+                <th scope="col" class="th_flag"><?= __('予備') ?></th>
+                <th scope="col" class="th_ymd"><?= __('設置日') ?></th>
+                <th scope="col" class="th_ymd"><?= __('サポート終了') ?></th><!--
                 <th scope="col"><?= __('接続先') ?></th>
                 <th scope="col"><?= __('リモート') ?></th>-->
                 <?php if($this->request->session()->read('Auth.User.m_role_id') != ROLE_ID_GUEST){ ?>
-                <th scope="col" class="actions"></th>
+                <th scope="col" class="actions th_min"></th>
                 <?php } ?>
             </tr>
             <?php foreach ($center->devices as $devices): ?>
             <tr class="clickable <?= $devices->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>">
                 <td><?= h($devices->name) ?></td>
-                <td style="background-color: <?= h($device_color_list[$devices->m_device_type_id]) ?>;"><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td>
-                <td><?= h($devices->accepted_no) ?></td>
-                <td><?= h($devices->ip_higher) ?></td>
-                <td><?= h($devices->ip_lower) ?></td>
+                <td style="background-color: <?= h($device_color_list[$devices->m_device_type_id]) ?>;"><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td><!--
+                <td><?= h($devices->accepted_no) ?></td>-->
+                <td><?= h($devices->ip_higher) ?><?php if(!empty($devices->ip_higher_ex)){
+                    echo '<br />';
+                    echo $devices->ip_higher_ex;
+                } ?></td>
+                <td><?= h($devices->ip_lower) ?><?php if(!empty($devices->ip_lower_ex)){
+                    echo '<br />';
+                    echo $devices->ip_lower_ex;
+                } ?></td>
                 <td><?php if($devices->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($devices->setup_date) ?></td>
                 <td><?= h($devices->support_end_date) ?></td><!--
@@ -245,8 +251,14 @@ function delFile(filename, id)
                 <td><?= h($devices->name) ?></td>
                 <td style="background-color: <?= h($device_color_list[$devices->m_device_type_id]) ?>;"><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td>
                 <td><?= h($devices->accepted_no) ?></td>
-                <td><?= h($devices->ip_higher) ?></td>
-                <td><?= h($devices->ip_lower) ?></td>
+                <td><?= h($devices->ip_higher) ?><?php if(!empty($devices->ip_higher_ex)){
+                    echo '&nbsp;';
+                    echo $devices->ip_higher_ex;
+                } ?></td>
+                <td><?= h($devices->ip_lower) ?><?php if(!empty($devices->ip_lower_ex)){
+                    echo '&nbsp;';
+                    echo $devices->ip_lower_ex;
+                } ?></td>
                 <td><?php if($devices->reserve_flag){ echo LIST_CHECK_MARK; } ?></td>
                 <td><?= h($devices->setup_date) ?></td>
                 <td><?= h($devices->support_end_date) ?></td><!--

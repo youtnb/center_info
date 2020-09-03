@@ -581,6 +581,9 @@ div.list_table{
 .th_short_20{
     width: 120px;
 }
+.th_ip{
+    width: 135px;
+}
 .th_middle{
     width: 150px;
 }

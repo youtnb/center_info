@@ -718,21 +718,29 @@ class DevicesController extends AppController
         foreach ($devices as $device)
         {
             $line++;
-
+            
+            $ip_higher = $device->ip_higher;
+            $ip_higher .= empty($device->ip_higher_ex)? "": " \r\n".$device->ip_higher_ex;
+            $ip_lower = $device->ip_lower;
+            $ip_lower .= empty($device->ip_lower_ex)? "": " \r\n".$device->ip_lower_ex;
+    
             // データ書き込み
-            $sheet->setCellValue('B'.$line, $device->has('center') ? substr('0'.$device->center->m_prefecture_id, -2).$mPrefectures[$device->center->m_prefecture_id] : '');
-            $sheet->setCellValue('C'.$line, $mCustomers[$device->toArray()['center']['m_customer_id']]);
-            $sheet->setCellValue('D'.$line, $device->has('center') ? $device->center->name : '');
+//            if (empty($preCenter) || $preCenter <> $device->center->id)
+//            {
+                $sheet->setCellValue('B'.$line, $device->has('center') ? substr('0'.$device->center->m_prefecture_id, -2).$mPrefectures[$device->center->m_prefecture_id] : '');
+                $sheet->setCellValue('C'.$line, $mCustomers[$device->toArray()['center']['m_customer_id']]);
+                $sheet->setCellValue('D'.$line, $device->has('center') ? $device->center->name : '');
+//            }
             $sheet->setCellValue('E'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
             if ($device->has('m_device_type'))
             {   $sheet->getStyle('E'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mDeviceTypes[$device->m_device_type->id], 1));}
             $sheet->setCellValue('F'.$line, $device->security_flag ? $this->sec_flag[$device->security_flag] : '');
-            $sheet->setCellValue('G'.$line, $device->ip_higher);
-            $sheet->setCellValue('H'.$line, $device->ip_lower);
+            $sheet->setCellValue('G'.$line, $ip_higher);
+            $sheet->setCellValue('H'.$line, $ip_lower);
             $sheet->setCellValue('I'.$line, $device->name);
             $sheet->setCellValue('J'.$line, $device->reserve_flag ? 'v' : '');
             $sheet->setCellValue('K'.$line, $device->model);
-            $sheet->setCellValue('L'.$line, strpos($device->remarks, 'R5') !== false ? 'R5' : '');
+            $sheet->setCellValue('L'.$line, $device->raid);
             $sheet->setCellValue('M'.$line, $device->serial_no);
             $sheet->setCellValue('N'.$line, '');
             $sheet->setCellValue('O'.$line, !empty($device->support_end_date) ? date('Y/m/d', strtotime($device->support_end_date)) : '');
@@ -760,10 +768,10 @@ class DevicesController extends AppController
             $sheet->setCellValue('X'.$line, $device->remarks);
 
             // センター境界
-            if (!empty($preCenter) && $preCenter <> $device->center->name)
+            if (!empty($preCenter) && $preCenter <> $device->center->id)
             {
-                $col = 'D';
-                for ($i=4; $i<=28; $i++)
+                $col = 'A';
+                for ($i=1; $i<=28; $i++)
                 {
                     $borders = $sheet->getStyle($col.$line)->getBorders();
                     $borders->getTop()->setBorderStyle('thin');
@@ -774,12 +782,16 @@ class DevicesController extends AppController
             // 削除済
             if ($device->delete_flag)
             {
-                foreach(['F','G','H','I','J','K','L','M','N'] as $col)
+                $col = 'F';
+                for ($i=6; $i<=28; $i++)
                 {
                     $sheet->getStyle($col.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FFBBBBBB');
                     $sheet->getStyle($col.$line)->getFont()->setStrikethrough(true);
+                    $col++;
                 }
             }
+            
+            $preCenter = $device->center->id;
         }
 
         // コールバックをストリーム化

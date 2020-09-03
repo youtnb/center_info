@@ -12,13 +12,17 @@ use Cake\ORM\Entity;
  * @property string|null $accepted_no
  * @property string|null $name
  * @property string|null $ip_higher
+ * @property string|null $ip_higher_ex
  * @property string|null $ip_lower
+ * @property string|null $ip_lower_ex
  * @property bool $reserve_flag
  * @property int $security_flag
  * @property string|null $model
  * @property string|null $serial_no
+ * @property string|null $raid
  * @property \Cake\I18n\FrozenDate|null $support_end_date
  * @property \Cake\I18n\FrozenDate|null $setup_date
+ * @property string|null $setup_place
  * @property int|null $m_operation_system_id
  * @property int|null $m_sqlserver_id
  * @property string|null $admin_pass
@@ -61,13 +65,17 @@ class Device extends Entity
         'accepted_no' => true,
         'name' => true,
         'ip_higher' => true,
+        'ip_higher_ex' => true,
         'ip_lower' => true,
+        'ip_lower_ex' => true,
         'reserve_flag' => true,
         'security_flag' => true,
         'model' => true,
         'serial_no' => true,
+        'raid' => true,
         'support_end_date' => true,
         'setup_date' => true,
+        'setup_place' => true,
         'm_operation_system_id' => true,
         'm_sqlserver_id' => true,
         'admin_pass' => true,

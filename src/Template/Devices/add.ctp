@@ -62,18 +62,21 @@ $(document).ready(function()
             echo "</div>";
             echo $this->Form->control('admin_pass', ['label' => 'AdminPass', 'style' => 'width: 250px;']);
 
+            echo "<div class='float_05'>";
+            echo $this->Form->control('ip_higher_ex', ['label' => '追加上位IP', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo "<div class='float_05'>";
+            echo $this->Form->control('ip_lower_ex', ['label' => '追加下位IP', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo $this->Form->control('setup_place', ['label' => '設置場所', 'style' => 'width: 250px;']);
+
             echo "<div class='float_30'>";
-            echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '設置日']);
+            echo $this->Form->control('setup_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 10, 'minYear' => date('Y') - 5, 'empty' => true, 'label' => '設置日']);
             echo "</div>";
             echo "<div class='float_30'>";
-            echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 5, 'minYear' => date('Y') - 10, 'empty' => true, 'label' => '保守終了日']);
+            echo $this->Form->control('support_end_date', ['dateFormat' => 'YMD', 'monthNames' => false, 'maxYear' => date('Y') + 10, 'minYear' => date('Y') - 5, 'empty' => true, 'label' => '保守終了日']);
             echo "</div>";
             echo $this->Form->control('security_flag', ['options' => [0 => '未', 1 => '済', 2 => '予'], 'label' => 'セキュリティソフト', 'style' => 'width: 100px;']);
-            
-            echo "<div class='float_30'>";
-            echo $this->Form->control('reserve_flag', ['label' => '予備']);
-            echo "</div>";
-            echo $this->Form->control('running_flag', ['label' => '稼働中']);
             
             echo "<div class='float_05'>";
             echo $this->Form->control('m_operation_system_id', ['options' => $mOperationSystems, 'empty' => true, 'label' => 'OS種別', 'style' => 'width: 250px;']);
@@ -89,8 +92,16 @@ $(document).ready(function()
             echo "<div class='float_05'>";
             echo $this->Form->control('m_version_id', ['options' => $mVersions, 'empty' => true, 'label' => 'Appバージョン', 'style' => 'width: 200px;']);
             echo "</div>";
-            echo $this->Form->control('remote', ['label' => 'リモート', 'style' => 'width: 250px;']);
-
+            echo "<div class='float_05'>";
+            echo $this->Form->control('remote', ['label' => 'リモート', 'style' => 'width: 200px;']);
+            echo "</div>";
+            echo $this->Form->control('raid', ['label' => 'RAIDレベル', 'style' => 'width: 50px;']);
+            
+            //echo "<div class='float_30'>";
+            echo $this->Form->control('reserve_flag', ['label' => '予備']);
+            //echo "</div>";
+            //echo $this->Form->control('running_flag', ['label' => '稼働中']);
+            
             echo $this->Form->control('custom', ['label' => '改造内容', 'style' => 'width: 700px;']);
             echo $this->Form->control('remarks', ['label' => '備考', 'style' => 'width: 700px;']);
             echo $this->Form->hidden('delete_flag', ['value' => 0]);

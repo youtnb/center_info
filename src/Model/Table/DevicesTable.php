@@ -119,9 +119,19 @@ class DevicesTable extends Table
             ->allowEmptyString('ip_higher');
 
         $validator
+            ->scalar('ip_higher_ex')
+            ->maxLength('ip_higher_ex', 15)
+            ->allowEmptyString('ip_higher_ex');
+
+        $validator
             ->scalar('ip_lower')
             ->maxLength('ip_lower', 15)
             ->allowEmptyString('ip_lower');
+
+        $validator
+            ->scalar('ip_lower_ex')
+            ->maxLength('ip_lower_ex', 15)
+            ->allowEmptyString('ip_lower_ex');
 
         $validator
             ->boolean('reserve_flag')
@@ -144,12 +154,22 @@ class DevicesTable extends Table
             ->allowEmptyString('serial_no');
 
         $validator
+            ->scalar('raid')
+            ->maxLength('raid', 20)
+            ->allowEmptyString('raid');
+
+        $validator
             ->date('support_end_date')
             ->allowEmptyDate('support_end_date');
 
         $validator
             ->date('setup_date')
             ->allowEmptyDate('setup_date');
+
+        $validator
+            ->scalar('setup_place')
+            ->maxLength('setup_place', 50)
+            ->allowEmptyString('setup_place');
 
         $validator
             ->scalar('admin_pass')
@@ -240,6 +260,7 @@ class DevicesTable extends Table
                         'Centers.m_prefecture_id' => 'ASC',
                         'Centers.m_customer_id' => 'ASC',
                         'Centers.name' => 'ASC',
+                        'Centers.id' => 'ASC',
                         'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
                         'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
                         $this->alias().'.reserve_flag' => 'ASC'
