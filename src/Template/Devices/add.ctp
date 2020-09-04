@@ -100,7 +100,7 @@ $(document).ready(function()
             //echo "<div class='float_30'>";
             echo $this->Form->control('reserve_flag', ['label' => '予備']);
             //echo "</div>";
-            //echo $this->Form->control('running_flag', ['label' => '稼働中']);
+            echo $this->Form->hidden('running_flag', ['value' => 0]);
             
             echo $this->Form->control('custom', ['label' => '改造内容', 'style' => 'width: 700px;']);
             echo $this->Form->control('remarks', ['label' => '備考', 'style' => 'width: 700px;']);
