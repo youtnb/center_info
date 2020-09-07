@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Informations Controller
@@ -12,6 +13,15 @@ use App\Controller\AppController;
  */
 class InformationsController extends AppController
 {
+    /**
+     * 認証不要なアクションを定義
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['index', 'add', 'edit', 'view', 'delete']);
+    }
+
     /**
      * Index method
      *
