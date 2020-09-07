@@ -52,7 +52,7 @@ $(document).ready(function()
         });
     }, false);
     
-     dropZoneFile.addEventListener('dragover', function(e) {
+    dropZoneFile.addEventListener('dragover', function(e) {
         e.stopPropagation();
         e.preventDefault();
         this.style.background = '#d1e7f0';
@@ -447,3 +447,6 @@ function delComment(id)
     </div>
 </section>
 <!-- モーダルエリアここまで -->
+<!-- コピー後メッセージ -->
+<div id="popup">クリップボードにコピーしました</div>
+<!-- コピー後メッセージここまで -->

@@ -708,3 +708,18 @@ div.photos div.photo {
     color: #999;
     text-align: center;
 }
+
+/* ポップアップメッセージダイアログ */
+#popup{
+  width:25%;
+  line-height:50px;
+  background:#7db;
+  padding:0 4%;
+  box-sizing:border-box;
+  display:none;
+  position:fixed;
+  top:10%;
+  left:50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

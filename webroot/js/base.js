@@ -60,7 +60,10 @@ function clipboardCopy(copy_text)
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
-    alert('クリップボードにコピーしました');
+    //メッセージ表示
+    $('#popup').fadeIn('normal',function () {
+        $(this).delay(600).fadeOut('slow');
+    });
 }
 
 /**
