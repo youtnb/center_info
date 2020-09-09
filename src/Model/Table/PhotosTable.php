@@ -130,7 +130,7 @@ class PhotosTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.file_name' => 'DESC', $this->alias().'.created' => 'DESC']);
+            $query->order([$this->alias().'.created' => 'ASC', $this->alias().'.file_name' => 'DESC']);
         }
         
         return $query;

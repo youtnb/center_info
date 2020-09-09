@@ -129,12 +129,13 @@ class AttachedFileComponent extends Component
             
             // 画像加工
             $image_file = $file['tmp_name'];
-
+            
             $new_width = PHOTO_MAX_WIDTH;
             list($original_width, $original_height) = getimagesize($image_file);
             $proportion = $original_width / $original_height;
             $new_height = $new_width / $proportion;
-            if($proportion < 1){
+            if($proportion < 1)
+            {
                 // 縦横入替
                 $new_height = $new_width;
                 $new_width = $new_width * $proportion;
@@ -174,6 +175,47 @@ class AttachedFileComponent extends Component
 
             // サムネイル
             ImageCopyResampled($new_image, $original_image, 0, 0, 0, 0, $new_width, $new_height, $original_width, $original_height);
+            
+            // Orientation
+            $exif_datas = exif_read_data($image_file);
+            if(isset($exif_datas['Orientation']))
+            {
+                $orientation = $exif_datas['Orientation'];
+                if($new_image)
+                {
+                    ini_set('memory_limit', '256M');
+                    
+                    // 未定義
+                    if($orientation == 0){
+                    // 通常
+                    }else if($orientation == 1){
+                    // 左右反転
+                    }else if($orientation == 2){
+                          $this->image_flop($new_image);
+                    // 180°回転
+                    }else if($orientation == 3){
+                        $new_image = $this->image_rotate($new_image,180, 0);
+                    // 上下反転
+                    }else if($orientation == 4){
+                        $new_image = $this->image_Flip($new_image);
+                    // 反時計回りに90°回転 上下反転
+                    }else if($orientation == 5){
+                        $new_image = $this->image_rotate($new_image,90, 0);
+                        $new_image = $this->image_flip($new_image);
+                    // 時計回りに90°回転
+                    }else if($orientation == 6){
+                        $new_image = $this->image_rotate($new_image,270, 0);
+                    // 時計回りに90°回転 上下反転
+                    }else if($orientation == 7){
+                        $new_image = $this->image_rotate($new_image,270, 0);
+                        $new_image = $this->image_flip($new_image);
+                    // 反時計回りに90°回転
+                    }else if($orientation == 8){
+                        $new_image = $this->image_rotate($new_image,90, 0);
+                    }
+                }
+            }
+            // サムネイル保存
             imagejpeg($new_image , $dir. DIR_SEP. $this->addPhotoSafix($file_info['basename']));
             // 元画像
             move_uploaded_file($image_file, $dir. DIR_SEP. $file_info['basename']);
@@ -183,6 +225,54 @@ class AttachedFileComponent extends Component
         }
         
         return $file_info['basename'];
+    }
+    
+    // 画像の左右反転
+    private function image_flop($image)
+    {
+        // 画像の幅を取得
+        $w = imagesx($image);
+        // 画像の高さを取得
+        $h = imagesy($image);
+        // 変換後の画像の生成（元の画像と同じサイズ）
+        $destImage = imagecreatetruecolor($w,$h);
+        // 逆側から色を取得
+        for($i=($w-1);$i>=0;$i--)
+        {
+            for($j=0;$j<$h;$j++)
+            {
+                $color_index = imagecolorat($image,$i,$j);
+                $colors = imagecolorsforindex($image,$color_index);
+                imagesetpixel($destImage,abs($i-$w+1),$j,imagecolorallocate($destImage,$colors["red"],$colors["green"],$colors["blue"]));
+            }
+        }
+        return $destImage;
+    }
+    // 上下反転
+    private function image_flip($image)
+    {
+        // 画像の幅を取得
+        $w = imagesx($image);
+        // 画像の高さを取得
+        $h = imagesy($image);
+        // 変換後の画像の生成（元の画像と同じサイズ）
+        $destImage = imagecreatetruecolor($w,$h);
+        // 逆側から色を取得
+        for($i=0;$i<$w;$i++)
+        {
+            for($j=($h-1);$j>=0;$j--)
+            {
+                $color_index = imagecolorat($image,$i,$j);
+                $colors = imagecolorsforindex($image,$color_index);
+                imagesetpixel($destImage,$i,abs($j-$h+1),imagecolorallocate($destImage,$colors["red"],$colors["green"],$colors["blue"]));
+            }
+        }
+        return $destImage;
+    }
+    // 画像を回転
+    private function image_rotate($image, $angle, $bgd_color)
+    {
+        return imagerotate($image, $angle, $bgd_color, 0);
     }
     
     /**
