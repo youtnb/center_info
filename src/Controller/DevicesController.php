@@ -27,7 +27,7 @@ class DevicesController extends AppController
     
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
-    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag', 'setup_date', 'support_end_date', 'model'];
+    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag', 'setup_date', 'support_end_date', 'model','m_warehouse_id'];
     const SESSION_CLASS_SUB = 'Center.';
     private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name']; // delete_flagは共有しない
     
@@ -53,16 +53,12 @@ class DevicesController extends AppController
         }
 
         $query = $this->Devices->find();
-        $m_customer_id = null;
         $m_area_id = null;
-        $m_prefecture_id = null;
         if (!empty($this->request->query))
         {
             // 一覧検索
             $query = $this->Devices->find('search', $this->request->query);
-            if (isset($this->request->query['m_customer_id'])) $m_customer_id = $this->request->query['m_customer_id'];
             if (isset($this->request->query['m_area_id'])) $m_area_id = $this->request->query['m_area_id'];
-            if (isset($this->request->query['m_prefecture_id'])) $m_prefecture_id = $this->request->query['m_prefecture_id'];
             
             // セッションに検索条件保存
             foreach($this->search_items as $i)
@@ -100,7 +96,22 @@ class DevicesController extends AppController
         // セキュリティ
         $sec_flag = $this->sec_flag;
         
-        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mAreas', 'mPrefectures', 'sec_flag'));
+        // 建屋
+        $tableMWarehouse = TableRegistry::getTableLocator()->get('MWarehouses');
+        $mWarehouses = $tableMWarehouse->find('all');
+        $mWarehouse = [];
+        $warehouse_names = [];
+        foreach ($mWarehouses as $warehouse)
+        {
+            if ($warehouse->center_id_1) $warehouse_names[$warehouse->center_id_1] = $warehouse->name;
+            if ($warehouse->center_id_2) $warehouse_names[$warehouse->center_id_2] = $warehouse->name;
+            if ($warehouse->center_id_3) $warehouse_names[$warehouse->center_id_3] = $warehouse->name;
+            if ($warehouse->center_id_4) $warehouse_names[$warehouse->center_id_4] = $warehouse->name;
+            if ($warehouse->center_id_5) $warehouse_names[$warehouse->center_id_5] = $warehouse->name;
+            $mWarehouse[$warehouse->id] = $warehouse->name;
+        }
+        
+        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mAreas', 'mPrefectures', 'sec_flag', 'mWarehouse', 'warehouse_names'));
     }
 
     /**
@@ -709,12 +720,24 @@ class DevicesController extends AppController
         $mOperationSystems = $tableMOperationSystems->find('list', ['valueField' => 'background_color'])->toArray();
         $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list', ['valueField' => 'full_name'])->toArray();
+        $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+        $mWarehouses = $tableMWarehouses->find('all');
+        $warehouse_icons = [];
+        foreach ($mWarehouses as $mWarehouse)
+        {
+            if ($mWarehouse->center_id_1) $warehouse_icons[$mWarehouse->center_id_1] = $mWarehouse->name;
+            if ($mWarehouse->center_id_2) $warehouse_icons[$mWarehouse->center_id_2] = $mWarehouse->name;
+            if ($mWarehouse->center_id_3) $warehouse_icons[$mWarehouse->center_id_3] = $mWarehouse->name;
+            if ($mWarehouse->center_id_4) $warehouse_icons[$mWarehouse->center_id_4] = $mWarehouse->name;
+            if ($mWarehouse->center_id_5) $warehouse_icons[$mWarehouse->center_id_5] = $mWarehouse->name;
+        }
         
         // 作成日時
-        $sheet->setCellValue('D1', date('Y/m/d h:i:s'));
+        $sheet->setCellValue('E1', date('Y/m/d h:i:s'));
 
         $line = 2;
         $preCenter = '';
+        $preWarehouse = '';
         foreach ($devices as $device)
         {
             $line++;
@@ -723,58 +746,66 @@ class DevicesController extends AppController
             $ip_higher .= empty($device->ip_higher_ex)? "": " \r\n".$device->ip_higher_ex;
             $ip_lower = $device->ip_lower;
             $ip_lower .= empty($device->ip_lower_ex)? "": " \r\n".$device->ip_lower_ex;
-    
+            
+            $warehouse = array_key_exists($device->center_id, $warehouse_icons) ? $warehouse_icons[$device->center_id] : '';
+            
             // データ書き込み
 //            if (empty($preCenter) || $preCenter <> $device->center->id)
 //            {
                 $sheet->setCellValue('B'.$line, $device->has('center') ? substr('0'.$device->center->m_prefecture_id, -2).$mPrefectures[$device->center->m_prefecture_id] : '');
                 $sheet->setCellValue('C'.$line, $mCustomers[$device->toArray()['center']['m_customer_id']]);
-                $sheet->setCellValue('D'.$line, $device->has('center') ? $device->center->name : '');
+                $sheet->setCellValue('D'.$line, $warehouse);
+                $sheet->setCellValue('E'.$line, $device->has('center') ? $device->center->name : '');
 //            }
-            $sheet->setCellValue('E'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
+            $sheet->setCellValue('F'.$line, $device->has('m_device_type') ? $device->m_device_type->name : '');
             if ($device->has('m_device_type'))
-            {   $sheet->getStyle('E'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mDeviceTypes[$device->m_device_type->id], 1));}
-            $sheet->setCellValue('F'.$line, $device->security_flag ? $this->sec_flag[$device->security_flag] : '');
-            $sheet->setCellValue('G'.$line, $ip_higher);
-            $sheet->setCellValue('H'.$line, $ip_lower);
-            $sheet->setCellValue('I'.$line, $device->name);
-            $sheet->setCellValue('J'.$line, $device->reserve_flag ? 'v' : '');
-            $sheet->setCellValue('K'.$line, $device->model);
-            $sheet->setCellValue('L'.$line, $device->raid);
-            $sheet->setCellValue('M'.$line, $device->serial_no);
-            $sheet->setCellValue('N'.$line, '');
-            $sheet->setCellValue('O'.$line, !empty($device->support_end_date) ? date('Y/m/d', strtotime($device->support_end_date)) : '');
+            {   $sheet->getStyle('F'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mDeviceTypes[$device->m_device_type->id], 1));}
+            $sheet->setCellValue('G'.$line, $device->security_flag ? $this->sec_flag[$device->security_flag] : '');
+            $sheet->setCellValue('H'.$line, $ip_higher);
+            $sheet->setCellValue('I'.$line, $ip_lower);
+            $sheet->setCellValue('J'.$line, $device->name);
+            $sheet->setCellValue('K'.$line, $device->reserve_flag ? 'v' : '');
+            $sheet->setCellValue('L'.$line, $device->model);
+            $sheet->setCellValue('M'.$line, $device->raid);
+            $sheet->setCellValue('N'.$line, $device->serial_no);
+            $sheet->setCellValue('O'.$line, '');
+            $sheet->setCellValue('P'.$line, !empty($device->support_end_date) ? date('Y/m/d', strtotime($device->support_end_date)) : '');
             if (!empty($device->support_end_date) && strtotime($device->support_end_date) < strtotime(date('Y/m/d')))
             {
-                $sheet->getStyle('O'.$line)->getFont()->getColor()->setARGB('FFFF0000');
+                $sheet->getStyle('P'.$line)->getFont()->getColor()->setARGB('FFFF0000');
             }
-            $sheet->setCellValue('P'.$line, !empty($device->setup_date) ? date('Y/m/d', strtotime($device->setup_date)) : '');
-            $sheet->setCellValue('Q'.$line, $device->has('m_operation_system') ? str_replace(['indowsServer ', 'indows '], ['', ''], $device->m_operation_system->name) : '');
+            $sheet->setCellValue('Q'.$line, !empty($device->setup_date) ? date('Y/m/d', strtotime($device->setup_date)) : '');
+            $sheet->setCellValue('R'.$line, $device->has('m_operation_system') ? str_replace(['indowsServer ', 'indows '], ['', ''], $device->m_operation_system->name) : '');
             if ($device->has('m_operation_system'))
             {
-                $sheet->getStyle('Q'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mOperationSystems[$device->m_operation_system->id], 1));
-                $borders = $sheet->getStyle('Q'.$line)->getBorders();
+                $sheet->getStyle('R'.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FF'. substr($mOperationSystems[$device->m_operation_system->id], 1));
+                $borders = $sheet->getStyle('R'.$line)->getBorders();
                 $borders->getTop()->setBorderStyle('thin');
                 $borders->getBottom()->setBorderStyle('thin');
                 $borders->getRight()->setBorderStyle('thin');
                 $borders->getLeft()->setBorderStyle('thin');
             }
-            $sheet->setCellValue('R'.$line, $device->has('m_sqlserver') ? $device->m_sqlserver->name : '');
-            $sheet->setCellValue('S'.$line, $device->admin_pass);
-            $sheet->setCellValue('T'.$line, $device->has('m_product') ? $device->m_product->name : '');
-            $sheet->setCellValue('U'.$line, $device->has('m_version') ? $device->m_version->name : '');
-            $sheet->setCellValue('V'.$line, $device->connect);
-            $sheet->setCellValue('W'.$line, $device->remote);
-            $sheet->setCellValue('X'.$line, $device->remarks);
+            $sheet->setCellValue('S'.$line, $device->has('m_sqlserver') ? $device->m_sqlserver->name : '');
+            $sheet->setCellValue('T'.$line, $device->admin_pass);
+            $sheet->setCellValue('U'.$line, $device->has('m_product') ? $device->m_product->name : '');
+            $sheet->setCellValue('V'.$line, $device->has('m_version') ? $device->m_version->name : '');
+            $sheet->setCellValue('W'.$line, $device->connect);
+            $sheet->setCellValue('X'.$line, $device->remote);
+            $sheet->setCellValue('Y'.$line, $device->remarks);
 
             // センター境界
             if (!empty($preCenter) && $preCenter <> $device->center->id)
             {
+                $border_coler = 'FF555555';
+                if ($preWarehouse <> '' && $preWarehouse == $warehouse)
+                {
+                    $border_coler = 'FF999933';
+                }
                 $col = 'A';
-                for ($i=1; $i<=28; $i++)
+                for ($i=1; $i<=29; $i++)
                 {
                     $borders = $sheet->getStyle($col.$line)->getBorders();
-                    $borders->getTop()->setBorderStyle('thin');
+                    $borders->getTop()->setBorderStyle('thin')->getColor()->setARGB($border_coler);
                     $col++;
                 }
             }
@@ -783,7 +814,7 @@ class DevicesController extends AppController
             if ($device->delete_flag)
             {
                 $col = 'F';
-                for ($i=6; $i<=28; $i++)
+                for ($i=7; $i<=29; $i++)
                 {
                     $sheet->getStyle($col.$line)->getFill()->setFillType('solid')->getStartColor()->setARGB('FFBBBBBB');
                     $sheet->getStyle($col.$line)->getFont()->setStrikethrough(true);
@@ -791,6 +822,7 @@ class DevicesController extends AppController
                 }
             }
             
+            $preWarehouse = $warehouse;
             $preCenter = $device->center->id;
         }
 

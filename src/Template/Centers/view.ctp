@@ -171,6 +171,16 @@ function delFile(filename, id)
             ?>
             </td>
         </tr>
+        <?php if ($same_list): ?>
+        <tr>
+            <th scope="row"><?= __('同一建屋') ?></th>
+            <td colspan="3">
+            <?php foreach ($same_list as $id => $name): ?>
+                <?= $this->Html->link($name, ['controller' => 'Centers', 'action' => 'view', $id], ['target' => '_blank']); ?><br />
+            <?php endforeach; ?>
+            </td>
+        </tr>
+        <?php endif; ?>
         <tr>
             <th scope="row"><?= __('電話番号') ?></th>
             <td><?= h($center->tel) ?></td>
@@ -250,7 +260,6 @@ function delFile(filename, id)
             <tr class="delrow clickable <?= $devices->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $devices->id]) ?>" style="display: none;">
                 <td><?= h($devices->name) ?></td>
                 <td style="background-color: <?= h($device_color_list[$devices->m_device_type_id]) ?>;"><?= h($mDeviceTypes[$devices->m_device_type_id]) ?></td>
-                <td><?= h($devices->accepted_no) ?></td>
                 <td><?= h($devices->ip_higher) ?><?php if(!empty($devices->ip_higher_ex)){
                     echo '&nbsp;';
                     echo $devices->ip_higher_ex;

@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
 
@@ -191,7 +192,12 @@ class CentersTable extends Table
         $order = $query->clause('order');
         if ($order === null || !count($order))
         {
-            $query->order([$this->alias().'.m_prefecture_id' => 'ASC', $this->alias().'.m_customer_id' => 'ASC', $this->alias().'.address' => 'ASC', $this->alias().'.name' => 'ASC']);
+            $query->order([
+                $this->alias().'.m_prefecture_id' => 'ASC',
+                $this->alias().'.m_customer_id' => 'ASC',
+                $this->alias().'.address' => 'ASC',
+                "CASE WHEN ".$this->alias().".id = 88 THEN 0 ELSE 1 END" => 'ASC', // 埼玉チルドTPLだけ特別扱い（建屋で揃えるため）
+                $this->alias().'.name' => 'ASC']);
         }
         
         return $query;
@@ -227,8 +233,32 @@ class CentersTable extends Table
         // 拠点名
         if (isset($options['name']) && !empty($options['name']))
         {
-            $query->where(['Centers.name LIKE' => '%'. $options['name']. '%']);
+            // 建屋も考慮
+            $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+            $mWarehouses = $tableMWarehouses->find()->where(['name LIKE' => '%'. $options['name']. '%']);
+            $list = [];
+            foreach($mWarehouses as $warehouse)
+            {
+                if ($warehouse->center_id_1) $list[] = $warehouse->center_id_1;
+                if ($warehouse->center_id_2) $list[] = $warehouse->center_id_2;
+                if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
+                if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
+                if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+            }
+
+            if ($list) 
+            {
+                $query->where(['OR' => [
+                    [$this->alias().'.id IN' => $list],
+                    ['Centers.name LIKE' => '%'. $options['name']. '%']
+                    ]]);
+            }
+            else
+            {
+                $query->where(['Centers.name LIKE' => '%'. $options['name']. '%']);
+            }
         }
+        
         // 削除フラグ
         if (isset($options['delete_flag']) && !empty($options['delete_flag']))
         {

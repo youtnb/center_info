@@ -55,13 +55,13 @@ jQuery(function($)
                 <tr>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
                     <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
-                    <td><?= $this->Form->input('security_flag', ['type' => 'select' ,'options' => $sec_flag, 'empty' => '選択してください', 'label' => 'セキュリティソフト', 'value' => $this->request->query('security_flag')]) ?></td>
                     <td><?= $this->Form->input('model', ['type' => 'text' , 'label' => '型式', 'value' => $this->request->query('model')]) ?></td>
+                    <td><?= $this->Form->input('m_warehouse_id', ['type' => 'select' ,'options' => $mWarehouse, 'empty' => '選択してください', 'label' => '建屋', 'value' => $this->request->query('m_warehouse_id')]) ?></td>
                 </tr>
                 <tr>
                     <td><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日', 'value' => $this->request->query('setup_date')]) ?></td>
                     <td><?= $this->Form->input('support_end_date', ['type' => 'text' , 'label' => '保守終了日', 'value' => $this->request->query('support_end_date')]) ?></td>
-                    <td></td>
+                    <td><?= $this->Form->input('security_flag', ['type' => 'select' ,'options' => $sec_flag, 'empty' => '選択してください', 'label' => 'セキュリティソフト', 'value' => $this->request->query('security_flag')]) ?></td>
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
@@ -84,6 +84,7 @@ jQuery(function($)
                 echo $this->Form->hidden('model', ['value' => $this->request->query('model')]);
                 echo $this->Form->hidden('setup_date', ['value' => $this->request->query('setup_date')]);
                 echo $this->Form->hidden('support_end_date', ['value' => $this->request->query('support_end_date')]);
+                echo $this->Form->hidden('m_warehouse_id', ['value' => $this->request->query('m_warehouse_id')]);
                 echo $this->Form->hidden('delete_flag', ['value' => $this->request->query('delete_flag')]);
             ?>
             <?= $this->Form->button(__('CSV ダウンロード'), ['class' => 'download_button']) ?>
@@ -102,6 +103,7 @@ jQuery(function($)
                 echo $this->Form->hidden('model', ['value' => $this->request->query('model')]);
                 echo $this->Form->hidden('setup_date', ['value' => $this->request->query('setup_date')]);
                 echo $this->Form->hidden('support_end_date', ['value' => $this->request->query('support_end_date')]);
+                echo $this->Form->hidden('m_warehouse_id', ['value' => $this->request->query('m_warehouse_id')]);
                 echo $this->Form->hidden('delete_flag', ['value' => $this->request->query('delete_flag')]);
             ?>
             <?= $this->Form->button(__('EXCEL ダウンロード'), ['class' => 'download_button']) ?>
@@ -114,6 +116,7 @@ jQuery(function($)
         <thead>
             <tr>
                 <th scope="col" class="th_customer"><?= __('顧客') ?></th>
+                <th scope="col" class="th_short"><?= __('建屋') ?></th>
                 <th scope="col" class="th_center"><?= $this->Paginator->sort('center_id', '拠点') ?></th>
                 <th scope="col" class="th_min"><?= $this->Paginator->sort('m_device_type_id', '端末種別') ?></th>
                 <!--
@@ -142,6 +145,7 @@ jQuery(function($)
             <?php foreach ($devices as $device): ?>
             <tr class="clickable <?= $device->delete_flag?'delete_content':'' ?>" data-href="<?= $this->Url->build(['controller' => 'Devices', 'action' => 'view', $device->id]) ?>">
                 <td><?= $mCustomers->toArray()[$device->toArray()['center']['m_customer_id']] ?></td>
+                <td><?= array_key_exists($device->center_id, $warehouse_names) ? $warehouse_names[$device->center_id] : '';  ?></td>
                 <td><?= $device->has('center') ? $device->center->name : '' ?></td>
                 <!--<td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= $device->has('m_device_type') ? $this->Html->link($device->m_device_type->name, ['controller' => 'MDeviceTypes', 'action' => 'view', $device->m_device_type->id]) : '' ?></td>-->
                 <td style="background-color: <?= h($device->m_device_type->background_color) ?>;"><?= h($device->m_device_type->name) ?></td>

@@ -94,7 +94,21 @@ class CentersController extends AppController
             $mPrefectures->where(['m_area_id' => $m_area_id]);
         }
         
-        $this->set(compact('centers', 'mCustomers', 'mPrefectures', 'mAreas'));
+        $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+        $mWarehouses = $tableMWarehouses->find('all');
+        $mWarehouse = [];
+        $warehouse_names = [];
+        foreach ($mWarehouses as $warehouse)
+        {
+            if ($warehouse->center_id_1) $warehouse_names[$warehouse->center_id_1] = $warehouse->name;
+            if ($warehouse->center_id_2) $warehouse_names[$warehouse->center_id_2] = $warehouse->name;
+            if ($warehouse->center_id_3) $warehouse_names[$warehouse->center_id_3] = $warehouse->name;
+            if ($warehouse->center_id_4) $warehouse_names[$warehouse->center_id_4] = $warehouse->name;
+            if ($warehouse->center_id_5) $warehouse_names[$warehouse->center_id_5] = $warehouse->name;
+            $mWarehouse[$warehouse->id] = $warehouse->name;
+        }
+        
+        $this->set(compact('centers', 'mCustomers', 'mPrefectures', 'mAreas', 'mWarehouse', 'warehouse_names'));
     }
 
     /**
@@ -138,7 +152,26 @@ class CentersController extends AppController
         $tableDevices = TableRegistry::getTableLocator()->get('Devices');
         $delDevices = $tableDevices->find('search', ['center_id' => $id, 'delete_flag' => 1, 'delete_only' => 1])->order('id');
         
-        $this->set(compact('center', 'mDeviceTypes', 'device_color_list', 'delDevices'));
+        $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+        $warehouses = $tableMWarehouses->find('all')->where(['OR' => [
+            ['center_id_1' => $id], ['center_id_2' => $id], ['center_id_3' => $id], ['center_id_4' => $id], ['center_id_5' => $id]
+        ]]);
+        $warehouse_list = [];
+        $same_list = [];
+        foreach ($warehouses as $warehouse)
+        {
+            if ($warehouse->center_id_1) $warehouse_list[] = $warehouse->center_id_1;
+            if ($warehouse->center_id_2) $warehouse_list[] = $warehouse->center_id_2;
+            if ($warehouse->center_id_3) $warehouse_list[] = $warehouse->center_id_3;
+            if ($warehouse->center_id_4) $warehouse_list[] = $warehouse->center_id_4;
+            if ($warehouse->center_id_5) $warehouse_list[] = $warehouse->center_id_5;
+        }
+        if ($warehouse_list)
+        {
+            $same_list = $this->Centers->find('list')->where(['Centers.id IN' => $warehouse_list, 'Centers.id <>' => $id])->toArray();
+        }
+        
+        $this->set(compact('center', 'mDeviceTypes', 'device_color_list', 'delDevices', 'same_list'));
     }
 
     /**

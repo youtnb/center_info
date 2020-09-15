@@ -259,8 +259,9 @@ class DevicesTable extends Table
                     $query->order([
                         'Centers.m_prefecture_id' => 'ASC',
                         'Centers.m_customer_id' => 'ASC',
+                        'Centers.address' => 'ASC',
+                        "CASE WHEN Centers.id = 88 THEN 0 ELSE 1 END" => 'ASC', // 埼玉チルドTPLだけ特別扱い（建屋で揃えるため）
                         'Centers.name' => 'ASC',
-                        'Centers.id' => 'ASC',
                         'inet_aton('.$this->alias().'.ip_lower)' => 'ASC',
                         'inet_aton('.$this->alias().'.ip_higher)' => 'ASC',
                         $this->alias().'.reserve_flag' => 'ASC'
@@ -324,12 +325,39 @@ class DevicesTable extends Table
                 $query->where([$this->alias().'.center_id IN' => $sub]);
             }
         }
+        
         //拠点
         if (isset($options['name']) && !empty($options['name']))
         {
+            // 建屋も考慮
+            $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+            $mWarehouses = $tableMWarehouses->find()->where(['name LIKE' => '%'. $options['name']. '%']);
+            $list = [];
+            foreach($mWarehouses as $warehouse)
+            {
+                if ($warehouse->center_id_1) $list[] = $warehouse->center_id_1;
+                if ($warehouse->center_id_2) $list[] = $warehouse->center_id_2;
+                if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
+                if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
+                if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+            }
+
+            // 拠点名
             $sub = $this->Centers->find()->where(['name LIKE' => '%'. $options['name']. '%'])->select('id');
-            $query->where([$this->alias().'.center_id IN' => $sub]);
+            
+            if ($list) 
+            {
+                $query->where(['OR' => [
+                    [$this->alias().'.center_id IN' => $list],
+                    [$this->alias().'.center_id IN' => $sub]
+                    ]]);
+            }
+            else
+            {
+                $query->where([$this->alias().'.center_id IN' => $sub]);
+            }
         }
+        
         // 端末種別
         if (isset($options['m_device_type_id']) && !empty($options['m_device_type_id']))
         {
@@ -448,6 +476,21 @@ class DevicesTable extends Table
                     if (strlen($target) == 8) $query->where([$this->alias().'.support_end_date' => $target]);
                 }
             }
+        }
+        
+        // 建屋
+        if (isset($options['m_warehouse_id']) && !empty($options['m_warehouse_id']))
+        {
+            $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+            $warehouse = $tableMWarehouses->get(intval($options['m_warehouse_id']));
+            $list = [];
+            if ($warehouse->center_id_1) $list[] = $warehouse->center_id_1;
+            if ($warehouse->center_id_2) $list[] = $warehouse->center_id_2;
+            if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
+            if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
+            if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+            
+            if ($list) $query->where([$this->alias().'.center_id IN' => $list]);
         }
         
         return $query;

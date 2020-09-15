@@ -8,6 +8,7 @@
         <li><?php if($own != 'MSqlservers'){?><?= $this->Html->link(__('SQLServer種別マスタ'), ['controller' => 'MSqlservers', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">SQLServer種別マスタ</span><?php } ?></li>
         <li><?php if($own != 'MProducts'){?><?= $this->Html->link(__('製造種別マスタ'), ['controller' => 'MProducts', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">製造種別マスタ</span><?php } ?></li>
         <li><?php if($own != 'MVersions'){?><?= $this->Html->link(__('バージョンマスタ'), ['controller' => 'MVersions', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">バージョンマスタ</span><?php } ?></li>
+        <li><?php if($own != 'MWarehouses'){?><?= $this->Html->link(__('建屋マスタ'), ['controller' => 'MWarehouses', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">建屋マスタ</span><?php } ?></li>
         <?php if($this->request->session()->read('Auth.User.m_role_id') == ROLE_ID_ADMIN){ ?>
         <li><?php if($own != 'MUsers'){?><?= $this->Html->link(__('ユーザーマスタ'), ['controller' => 'MUsers', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ユーザーマスタ</span><?php } ?></li>
         <li><?php if($own != 'MDepartments'){?><?= $this->Html->link(__('部署マスタ'), ['controller' => 'MDepartments', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">部署マスタ</span><?php } ?></li>
@@ -19,7 +20,7 @@
         <li class="heading"><?= __('ログ管理') ?></li>
         <?php if(!isset($own)){$own='';} ?>
         <li><?php if($own != 'Logs'){?><?= $this->Html->link(__('ログ管理'), ['controller' => 'Logs', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">ログ管理</span><?php } ?></li>
-        <li><?php if($own != 'Logs'){?><?= $this->Html->link(__('お知らせ管理'), ['controller' => 'Informations', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">お知らせ管理</span><?php } ?></li>
+        <li><?php if($own != 'Informations'){?><?= $this->Html->link(__('お知らせ管理'), ['controller' => 'Informations', 'action' => 'index']) ?><?php }else{ ?><span class="no-anc">お知らせ管理</span><?php } ?></li>
     </ul>
     <?php } ?>
     <ul class="side-nav">
