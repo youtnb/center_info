@@ -83,6 +83,12 @@ class MWarehousesTable extends Table
             ->allowEmptyString('center_id_5');
 
         $validator
+            ->allowEmptyString('center_id_6');
+
+        $validator
+            ->allowEmptyString('center_id_7');
+
+        $validator
             ->scalar('remarks')
             ->allowEmptyString('remarks');
 

@@ -244,6 +244,8 @@ class CentersTable extends Table
                 if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
                 if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
                 if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+                if ($warehouse->center_id_6) $list[] = $warehouse->center_id_6;
+                if ($warehouse->center_id_7) $list[] = $warehouse->center_id_7;
             }
 
             if ($list) 
@@ -257,6 +259,23 @@ class CentersTable extends Table
             {
                 $query->where(['Centers.name LIKE' => '%'. $options['name']. '%']);
             }
+        }
+        
+        // 建屋
+        if (isset($options['m_warehouse_id']) && !empty($options['m_warehouse_id']))
+        {
+            $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
+            $warehouse = $tableMWarehouses->get(intval($options['m_warehouse_id']));
+            $list = [];
+            if ($warehouse->center_id_1) $list[] = $warehouse->center_id_1;
+            if ($warehouse->center_id_2) $list[] = $warehouse->center_id_2;
+            if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
+            if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
+            if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+            if ($warehouse->center_id_6) $list[] = $warehouse->center_id_6;
+            if ($warehouse->center_id_7) $list[] = $warehouse->center_id_7;
+            
+            if ($list) $query->where([$this->alias().'.id IN' => $list]);
         }
         
         // 削除フラグ

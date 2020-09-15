@@ -14,6 +14,8 @@ use Cake\ORM\Entity;
  * @property int|null $center_id_3
  * @property int|null $center_id_4
  * @property int|null $center_id_5
+ * @property int|null $center_id_6
+ * @property int|null $center_id_7
  * @property string|null $remarks
  * @property int|null $m_user_id
  * @property \Cake\I18n\FrozenTime $created
@@ -40,6 +42,8 @@ class MWarehouse extends Entity
         'center_id_3' => true,
         'center_id_4' => true,
         'center_id_5' => true,
+        'center_id_6' => true,
+        'center_id_7' => true,
         'remarks' => true,
         'm_user_id' => true,
         'created' => true,

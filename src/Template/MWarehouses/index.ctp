@@ -27,15 +27,7 @@
                 <!--<th scope="col"><?= $this->Paginator->sort('id') ?></th>-->
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('icon') ?>
-                <th scope="col"><?= __('登録拠点') ?></th><!--
-                <th scope="col"><?= $this->Paginator->sort('center_id_1') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('center_id_2') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('center_id_3') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('center_id_4') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('center_id_5') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('m_user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>-->
+                <th scope="col"><?= __('登録拠点') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -51,15 +43,9 @@
                     if ($mWarehouse->center_id_3){echo $centers[$mWarehouse->center_id_3]. '<br />';}
                     if ($mWarehouse->center_id_4){echo $centers[$mWarehouse->center_id_4]. '<br />';}
                     if ($mWarehouse->center_id_5){echo $centers[$mWarehouse->center_id_5]. '<br />';}
-                ?></td><!--
-                <td><?= $this->Number->format($mWarehouse->center_id_1) ?></td>
-                <td><?= $this->Number->format($mWarehouse->center_id_2) ?></td>
-                <td><?= $this->Number->format($mWarehouse->center_id_3) ?></td>
-                <td><?= $this->Number->format($mWarehouse->center_id_4) ?></td>
-                <td><?= $this->Number->format($mWarehouse->center_id_5) ?></td>
-                <td><?= $mWarehouse->has('m_user') ? $this->Html->link($mWarehouse->m_user->name, ['controller' => 'MUsers', 'action' => 'view', $mWarehouse->m_user->id]) : '' ?></td>
-                <td><?= h($mWarehouse->created) ?></td>
-                <td><?= h($mWarehouse->modified) ?></td>-->
+                    if ($mWarehouse->center_id_6){echo $centers[$mWarehouse->center_id_6]. '<br />';}
+                    if ($mWarehouse->center_id_7){echo $centers[$mWarehouse->center_id_7]. '<br />';}
+                ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $mWarehouse->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $mWarehouse->id]) ?>

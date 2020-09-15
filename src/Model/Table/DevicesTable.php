@@ -340,6 +340,8 @@ class DevicesTable extends Table
                 if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
                 if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
                 if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+                if ($warehouse->center_id_6) $list[] = $warehouse->center_id_6;
+                if ($warehouse->center_id_7) $list[] = $warehouse->center_id_7;
             }
 
             // 拠点名
@@ -489,6 +491,8 @@ class DevicesTable extends Table
             if ($warehouse->center_id_3) $list[] = $warehouse->center_id_3;
             if ($warehouse->center_id_4) $list[] = $warehouse->center_id_4;
             if ($warehouse->center_id_5) $list[] = $warehouse->center_id_5;
+            if ($warehouse->center_id_6) $list[] = $warehouse->center_id_6;
+            if ($warehouse->center_id_7) $list[] = $warehouse->center_id_7;
             
             if ($list) $query->where([$this->alias().'.center_id IN' => $list]);
         }

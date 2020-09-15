@@ -105,6 +105,8 @@ class CentersController extends AppController
             if ($warehouse->center_id_3) $warehouse_names[$warehouse->center_id_3] = $warehouse->name;
             if ($warehouse->center_id_4) $warehouse_names[$warehouse->center_id_4] = $warehouse->name;
             if ($warehouse->center_id_5) $warehouse_names[$warehouse->center_id_5] = $warehouse->name;
+            if ($warehouse->center_id_6) $warehouse_names[$warehouse->center_id_6] = $warehouse->name;
+            if ($warehouse->center_id_7) $warehouse_names[$warehouse->center_id_7] = $warehouse->name;
             $mWarehouse[$warehouse->id] = $warehouse->name;
         }
         
@@ -165,6 +167,8 @@ class CentersController extends AppController
             if ($warehouse->center_id_3) $warehouse_list[] = $warehouse->center_id_3;
             if ($warehouse->center_id_4) $warehouse_list[] = $warehouse->center_id_4;
             if ($warehouse->center_id_5) $warehouse_list[] = $warehouse->center_id_5;
+            if ($warehouse->center_id_6) $warehouse_list[] = $warehouse->center_id_6;
+            if ($warehouse->center_id_7) $warehouse_list[] = $warehouse->center_id_7;
         }
         if ($warehouse_list)
         {

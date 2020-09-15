@@ -108,6 +108,8 @@ class DevicesController extends AppController
             if ($warehouse->center_id_3) $warehouse_names[$warehouse->center_id_3] = $warehouse->name;
             if ($warehouse->center_id_4) $warehouse_names[$warehouse->center_id_4] = $warehouse->name;
             if ($warehouse->center_id_5) $warehouse_names[$warehouse->center_id_5] = $warehouse->name;
+            if ($warehouse->center_id_6) $warehouse_names[$warehouse->center_id_6] = $warehouse->name;
+            if ($warehouse->center_id_7) $warehouse_names[$warehouse->center_id_7] = $warehouse->name;
             $mWarehouse[$warehouse->id] = $warehouse->name;
         }
         
@@ -730,6 +732,8 @@ class DevicesController extends AppController
             if ($mWarehouse->center_id_3) $warehouse_icons[$mWarehouse->center_id_3] = $mWarehouse->name;
             if ($mWarehouse->center_id_4) $warehouse_icons[$mWarehouse->center_id_4] = $mWarehouse->name;
             if ($mWarehouse->center_id_5) $warehouse_icons[$mWarehouse->center_id_5] = $mWarehouse->name;
+            if ($mWarehouse->center_id_6) $warehouse_icons[$mWarehouse->center_id_6] = $mWarehouse->name;
+            if ($mWarehouse->center_id_7) $warehouse_icons[$mWarehouse->center_id_7] = $mWarehouse->name;
         }
         
         // 作成日時

@@ -55,6 +55,14 @@
             <td><?= $this->Number->format($mWarehouse->center_id_5) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Center Id 6') ?></th>
+            <td><?= $this->Number->format($mWarehouse->center_id_5) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Center Id 7') ?></th>
+            <td><?= $this->Number->format($mWarehouse->center_id_5) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Created') ?></th>
             <td><?= h($mWarehouse->created) ?></td>
         </tr>

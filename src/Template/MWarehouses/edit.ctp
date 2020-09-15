@@ -28,6 +28,8 @@
             echo $this->Form->control('center_id_3', ['options' => $centers, 'empty' => '選択してください']);
             echo $this->Form->control('center_id_4', ['options' => $centers, 'empty' => '選択してください']);
             echo $this->Form->control('center_id_5', ['options' => $centers, 'empty' => '選択してください']);
+            echo $this->Form->control('center_id_6', ['options' => $centers, 'empty' => '選択してください']);
+            echo $this->Form->control('center_id_7', ['options' => $centers, 'empty' => '選択してください']);
             echo $this->Form->control('remarks');
             echo $this->Form->hidden('m_user_id', ['value' => $this->request->session()->read('Auth.User.id')]);
         ?>
