@@ -32,7 +32,7 @@ class LogComponent extends Component
             'm_user_id' => $this->request->session()->read('Auth.User.id'),
             'class' => basename($class),
             'type' => $type,
-            'content' => $content,
+            'content' => $_SERVER['REMOTE_ADDR'].'/'.$content,
         ]);
         $tableLogs->save($log);
     }
