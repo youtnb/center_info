@@ -27,9 +27,28 @@ class DevicesController extends AppController
     
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Device.';
-    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'center_id', 'm_device_type_id', 'm_operation_system_id', 'name', 'delete_flag', 'setup_date', 'support_end_date', 'model','m_warehouse_id'];
+    private $search_items = [
+        'm_customer_id',
+        'm_area_id',
+        'm_prefecture_id',
+        'name',
+        'm_device_type_id',
+        'm_operation_system_id',
+        'model',
+        'm_warehouse_id',
+        'setup_date',
+        'support_end_date',
+        'delete_flag',
+        ];
+    // 拠点管理で共有する検索条件
     const SESSION_CLASS_SUB = 'Center.';
-    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name']; // delete_flagは共有しない
+    private $search_items_sub = [
+        'm_customer_id',
+        'm_area_id',
+        'm_prefecture_id',
+        'm_warehouse_id',
+        'name'
+        ]; // delete_flagは共有しない
     
     /**
      * Index method
@@ -39,7 +58,15 @@ class DevicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
+            'contain' => [
+                'Centers',
+                'MDeviceTypes',
+                'MOperationSystems',
+                'MSqlservers',
+                'MProducts',
+                'MVersions',
+                'MUsers'
+                ]
         ];
         
         // パラメータ無いときはセッションから検索条件取得
@@ -113,7 +140,20 @@ class DevicesController extends AppController
             $mWarehouse[$warehouse->id] = $warehouse->name;
         }
         
-        $this->set(compact('devices', 'mCustomers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mAreas', 'mPrefectures', 'sec_flag', 'mWarehouse', 'warehouse_names'));
+        $this->set(compact(
+            'devices',
+            'mCustomers',
+            'mDeviceTypes',
+            'mOperationSystems',
+            'mSqlservers',
+            'mProducts',
+            'mVersions',
+            'mAreas',
+            'mPrefectures',
+            'sec_flag',
+            'mWarehouse',
+            'warehouse_names'
+            ));
     }
 
     /**
@@ -147,7 +187,19 @@ class DevicesController extends AppController
     public function view($id = null)
     {
         $device = $this->Devices->get($id, [
-            'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers', 'Comments', 'Customs', 'Documents', 'Photos']
+            'contain' => [
+                'Centers',
+                'MDeviceTypes',
+                'MOperationSystems',
+                'MSqlservers',
+                'MProducts',
+                'MVersions',
+                'MUsers',
+                'Comments',
+                'Customs',
+                'Documents',
+                'Photos'
+                ]
         ]);
         
         // ユーザー
@@ -215,7 +267,15 @@ class DevicesController extends AppController
         {
             // 端末IDあれば情報引継ぎ
             $pre_device = $this->Devices->get($id, [
-                'contain' => ['Centers', 'MDeviceTypes', 'MOperationSystems', 'MSqlservers', 'MProducts', 'MVersions', 'MUsers']
+                'contain' => [
+                    'Centers',
+                    'MDeviceTypes',
+                    'MOperationSystems',
+                    'MSqlservers',
+                    'MProducts',
+                    'MVersions',
+                    'MUsers'
+                    ]
             ]);
             
             if (empty($type))
@@ -258,7 +318,19 @@ class DevicesController extends AppController
         $centers = $this->Devices->Centers->find('list')
             ->where(['m_customer_id' => $m_customer_id, 'delete_flag' => 0]);
         
-        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers', 'mCustomers', 'center_id', 'm_customer_id'));
+        $this->set(compact(
+            'device',
+            'centers',
+            'mDeviceTypes',
+            'mOperationSystems',
+            'mSqlservers',
+            'mProducts',
+            'mVersions',
+            'mUsers',
+            'mCustomers',
+            'center_id',
+            'm_customer_id'
+            ));
     }
 
     /**
@@ -303,7 +375,17 @@ class DevicesController extends AppController
         $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
         $mCustomers = $tableMCustomers->find('list');
         
-        $this->set(compact('device', 'centers', 'mDeviceTypes', 'mOperationSystems', 'mSqlservers', 'mProducts', 'mVersions', 'mUsers'. 'mCustomers'));
+        $this->set(compact(
+            'device',
+            'centers',
+            'mDeviceTypes',
+            'mOperationSystems',
+            'mSqlservers',
+            'mProducts',
+            'mVersions',
+            'mUsers',
+            'mCustomers'
+            ));
     }
 
     /**

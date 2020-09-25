@@ -49,14 +49,14 @@ jQuery(function($)
                     <td><?= $this->Form->input('m_customer_id', ['type' => 'select' ,'options' => $mCustomers, 'empty' => '選択してください', 'label' => '顧客', 'value' => $this->request->query('m_customer_id')]) ?></td>
                     <td><?= $this->Form->input('m_area_id', ['type' => 'select' ,'options' => $mAreas, 'empty' => '選択してください', 'label' => '地域', 'value' => $this->request->query('m_area_id')]) ?></td>
                     <td><?= $this->Form->input('m_prefecture_id', ['type' => 'select' ,'options' => $mPrefectures, 'empty' => '選択してください', 'label' => '都道府県', 'value' => $this->request->query('m_prefecture_id')]) ?></td>
-                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名', 'value' => $this->request->query('name')]) ?></td>
+                    <td><?= $this->Form->input('m_warehouse_id', ['type' => 'select' ,'options' => $mWarehouse, 'empty' => '選択してください', 'label' => '建屋', 'value' => $this->request->query('m_warehouse_id')]) ?></td>
                     <td rowspan="3" style="vertical-align: middle; text-align: center"><?= $this->Form->button('検索') ?>&nbsp;<?= $this->Form->button('クリア', ['type' => 'button', 'onclick' => "resetForm('devices/clear');"]) ?></td>
                 </tr>
                 <tr>
+                    <td><?= $this->Form->input('name', ['type' => 'text' , 'label' => '拠点名・建屋名', 'value' => $this->request->query('name')]) ?></td>
                     <td><?= $this->Form->input('m_device_type_id', ['type' => 'select' ,'options' => $mDeviceTypes, 'empty' => '選択してください', 'label' => '端末種別', 'value' => $this->request->query('m_device_type_id')]) ?></td>
                     <td><?= $this->Form->input('m_operation_system_id', ['type' => 'select' ,'options' => $mOperationSystems, 'empty' => '選択してください', 'label' => 'OS種別', 'value' => $this->request->query('m_operation_system_id')]) ?></td>
                     <td><?= $this->Form->input('model', ['type' => 'text' , 'label' => '型式', 'value' => $this->request->query('model')]) ?></td>
-                    <td><?= $this->Form->input('m_warehouse_id', ['type' => 'select' ,'options' => $mWarehouse, 'empty' => '選択してください', 'label' => '建屋', 'value' => $this->request->query('m_warehouse_id')]) ?></td>
                 </tr>
                 <tr>
                     <td><?= $this->Form->input('setup_date', ['type' => 'text' , 'label' => '設置日', 'value' => $this->request->query('setup_date')]) ?></td>
@@ -65,7 +65,7 @@ jQuery(function($)
                     <td style="vertical-align: middle;"><?= $this->Form->input('delete_flag', ['type' => 'checkbox' , 'label' => '削除済みも表示する', 'checked' => $this->request->query('delete_flag')?'checked':'']) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="5">※日付はyyyyMMdd形式で指定、ハイフンで範囲指定可能（例.yyyyMMdd-yyyyMMdd、片側のみ可）<br />※顧客・地域・都道府県・拠点名の指定は、拠点情報一覧と共通です</td>
+                    <td colspan="5">※日付はyyyyMMdd形式で指定、ハイフンで範囲指定可能（例.yyyyMMdd-yyyyMMdd、片側のみ可）<br />※顧客・地域・都道府県・建屋・拠点名・建屋名の指定は、拠点情報一覧と共通です</td>
                 </tr>
             </table>
         </fieldset>

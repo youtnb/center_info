@@ -24,9 +24,23 @@ class CentersController extends AppController
     
     // セッションに保存する検索条件
     const SESSION_CLASS = 'Center.';
-    private $search_items = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'delete_flag'];
+    private $search_items = [
+        'm_customer_id',
+        'm_area_id',
+        'm_prefecture_id',
+        'm_warehouse_id',
+        'name',
+        'delete_flag'
+        ];
+    // 端末管理で共有する検索条件
     const SESSION_CLASS_SUB = 'Device.';
-    private $search_items_sub = ['m_customer_id', 'm_area_id', 'm_prefecture_id', 'name', 'center_id', 'm_device_type_id', 'm_operation_system_id']; // delete_flagは共有しない
+    private $search_items_sub = [
+        'm_customer_id',
+        'm_area_id',
+        'm_prefecture_id',
+        'm_warehouse_id',
+        'name',
+        ]; // delete_flagは共有しない
     
     //api
     const AUTHORIZED_API_TOKEN = 'apikey';
