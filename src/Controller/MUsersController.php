@@ -160,7 +160,7 @@ class MUsersController extends AppController
     public function logout()
     {
         // ログ
-        $this->Log->write(__CLASS__, __FUNCTION__, implode(',', ['']));
+        //$this->Log->write(__CLASS__, __FUNCTION__, implode(',', ['']));
         
         $session = $this->request->session();
         $session->destroy();
