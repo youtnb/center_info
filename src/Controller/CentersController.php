@@ -170,7 +170,7 @@ class CentersController extends AppController
         
         $tableMWarehouses = TableRegistry::getTableLocator()->get('MWarehouses');
         $warehouses = $tableMWarehouses->find('all')->where(['OR' => [
-            ['center_id_1' => $id], ['center_id_2' => $id], ['center_id_3' => $id], ['center_id_4' => $id], ['center_id_5' => $id]
+            ['center_id_1' => $id], ['center_id_2' => $id], ['center_id_3' => $id], ['center_id_4' => $id], ['center_id_5' => $id], ['center_id_6' => $id], ['center_id_7' => $id]
         ]]);
         $warehouse_list = [];
         $same_list = [];
