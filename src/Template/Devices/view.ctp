@@ -154,14 +154,19 @@ function delComment(id)
     <table class="">
         <tr>
             <th scope="row"><?= __('拠点') ?></th>
-            <td colspan="5"><?= $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '' ?></td>
+            <td colspan="5"><?php 
+                echo $device->has('center') ? $this->Html->link($device->center->name, ['controller' => 'Centers', 'action' => 'view', $device->center->id]) : '';
+            ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('受入No') ?></th>
-            <td><?= h($device->accepted_no) ?></td>
+            <th scope="row"><?= __('顧客') ?></th>
+            <td><?php 
+                echo array_key_exists($device->center->m_customer_id, $mCustomers) ? $mCustomers[$device->center->m_customer_id] : $device->center->m_customer_id;
+            ?></td>
             <th scope="row"><?= __('端末種別') ?></th>
             <td style="background-color: <?= $device->has('m_device_type') ? $device->m_device_type->background_color : '' ?>;"><?= $device->has('m_device_type') ? $device->m_device_type->name : '' ?></td>
-            <td colspan="2"></td>
+            <th scope="row"><?= __('受入No') ?></th>
+            <td><?= h($device->accepted_no) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('端末名') ?></th>

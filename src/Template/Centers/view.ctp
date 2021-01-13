@@ -155,7 +155,7 @@ function delFile(filename, id)
     <table class="">
         <tr>
             <th scope="row"><?= __('顧客') ?></th>
-            <td colspan="3"><?= h($center->m_customer->name) ?></td>
+            <td colspan="3"><?= h($center->m_customer->full_name) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('住所') ?></th>

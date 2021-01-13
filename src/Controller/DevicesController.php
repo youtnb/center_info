@@ -205,11 +205,14 @@ class DevicesController extends AppController
         // ユーザー
         $tableMUsers = TableRegistry::getTableLocator()->get('MUsers');
         $mUsers = $tableMUsers->find('list')->toArray();
+        // 顧客
+        $tableMCustomers = TableRegistry::getTableLocator()->get('MCustomers');
+        $mCustomers = $tableMCustomers->find('list', ['valueField' => 'full_name'])->toArray();
         
         // セキュリティ
         $sec_flag = $this->sec_flag;
         
-        $this->set(compact('device', 'mUsers', 'sec_flag'));
+        $this->set(compact('device', 'mUsers', 'mCustomers', 'sec_flag'));
     }
 
     /**
