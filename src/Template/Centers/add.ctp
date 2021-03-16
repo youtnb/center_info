@@ -39,6 +39,8 @@
             
             echo $this->Form->control('map', ['label' => 'GoogleMap URL', 'style' => 'width: 600px;']);
 
+            echo $this->Form->control('knowledge', ['label' => 'NF-Knowledge URL', 'style' => 'width: 600px;']);
+
             echo $this->Form->control('tel', ['label' => '電話番号', 'style' => 'width: 250px;']);
             
             echo "<div class='float_15'>";

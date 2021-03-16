@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string|null $staff
  * @property string|null $access
  * @property string|null $map
+ * @property string|null $knowledge
  * @property string|null $job
  * @property string|null $remarks
  * @property bool $thermo_dry_flag
@@ -55,6 +56,7 @@ class Center extends Entity
         'staff' => true,
         'access' => true,
         'map' => true,
+        'knowledge' => true,
         'job' => true,
         'remarks' => true,
         'thermo_dry_flag' => true,
